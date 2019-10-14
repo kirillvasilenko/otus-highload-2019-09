@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.Ui", "1.Ui", "{4D2AD450-0B70-497E-82F6-8D2B8361C23A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.App", "2.App", "{772BD7D0-0804-447F-ABC2-CAB9FA429449}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3.Domain", "3.Domain", "{F3DD0A25-4FDA-4FED-BF73-4D70FD890A09}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.Utils", "4.Utils", "{4A047A5D-C258-4978-8E9C-EF02FD9B2EBC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5.Tests", "5.Tests", "{27BE7D45-1E0D-4005-91CC-651D621BAA69}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialNetwork.AspNet", "1.Ui\SocialNetwork.AspNet\SocialNetwork.AspNet.csproj", "{27822973-77C7-471F-8C8E-311012065066}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{27822973-77C7-471F-8C8E-311012065066} = {4D2AD450-0B70-497E-82F6-8D2B8361C23A}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{27822973-77C7-471F-8C8E-311012065066}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27822973-77C7-471F-8C8E-311012065066}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27822973-77C7-471F-8C8E-311012065066}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27822973-77C7-471F-8C8E-311012065066}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
