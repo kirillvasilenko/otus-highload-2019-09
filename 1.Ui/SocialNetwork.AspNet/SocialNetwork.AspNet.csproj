@@ -12,4 +12,9 @@
       <PackageReference Include="Serilog.Sinks.File" Version="4.0.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\2.App\SocialNetwork\SocialNetwork.csproj" />
+      <ProjectReference Include="..\..\3.Domain\SocialNetwork.Repo.MySql\SocialNetwork.Repo.MySql.csproj" />
+    </ItemGroup>
+
 </Project>
