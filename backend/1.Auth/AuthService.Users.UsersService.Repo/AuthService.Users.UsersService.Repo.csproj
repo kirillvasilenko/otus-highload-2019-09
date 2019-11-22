@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\2.Users\UsersService.Model\UsersService.Model.csproj" />
+      <ProjectReference Include="..\AuthService.Users\AuthService.Users.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Amursoft.PasswordHasher" Version="0.1.0" />
+      <PackageReference Include="AutoMapper" Version="9.0.0" />
+    </ItemGroup>
+
+</Project>
