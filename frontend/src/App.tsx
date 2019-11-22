@@ -5,16 +5,26 @@ import {
   Route
 } from "react-router-dom";
 import './App.css';
-import AuthPage from "./pages/authPage";
-import MainLayout from "./modules/mainLayout";
-import {AUTH, HOME} from "./pages/pagesRoutes";
-import HomePage from "./pages/homePage";
-import PrivateRoute from "./pages/privateRoute";
+import AuthPage from "pages/authPage/authPage";
+import MainLayout from "modules/mainLayout/mainLayout";
+import {AUTH, HOME} from "pages/routes.constants";
+import HomePage from "pages/homePage/homePage";
+import PrivateRoute from "pages/privateRoute/privateRoute";
+// import BaselineGrid from "components/baselineGrid/baselineGrid";
+
+type X = {
+  hello?: {
+    world: string
+  }
+}
 
 const App: React.FC = () => {
+  const x: X = {};
   return (
     <Router>
+      {/*<BaselineGrid/>*/}
       <MainLayout>
+        <h1>{x.hello?.world}</h1>
         <Switch>
           <Route path={AUTH}>
             <AuthPage/>

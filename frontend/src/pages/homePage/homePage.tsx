@@ -1,6 +1,4 @@
 import React from "react";
-import LoginForm from "../modules/loginForm";
-import RegistrationForm from "../modules/registrationForm";
 
 const HomePage: React.FC = () => {
   return <div>

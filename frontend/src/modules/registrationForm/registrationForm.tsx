@@ -1,8 +1,7 @@
 import React, {ChangeEvent, useCallback, useState} from 'react';
-import Form from "../components/form";
-import Input from "../components/input";
-import styles from "./auth.module.css";
-import classNames from "classnames";
+import Form from "components/form/form";
+import Input from "components/form/input";
+import Surface from "components/surface/surface";
 
 const RegistrationForm = () => {
   const [email, setEmail] = useState("");
@@ -21,8 +20,8 @@ const RegistrationForm = () => {
     setNewPassword(e.target.value);
   }, []);
 
-  return <div className={classNames(styles.auth, styles.auth_registration)}>
-    <h3>Registration</h3>
+  return <Surface>
+    <h4>Registration</h4>
     <Form name={"registration-form"}>
       <Input placeholder={"Email"} type={"email"} autoComplete={"off"} name={"email"} value={email}
              onChange={handleChangeEmail}/>
@@ -31,7 +30,7 @@ const RegistrationForm = () => {
       <Input placeholder={"Confirm password"} type={"password"} autoComplete={"off"} value={newPassword}
              onChange={handleNewChangePassword}/>
     </Form>
-  </div>
+  </Surface>
 };
 
 export default RegistrationForm;

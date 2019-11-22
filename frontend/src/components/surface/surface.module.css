@@ -1,0 +1,16 @@
+.surface {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    background-color: var(--main-color);
+    padding: var(--pixel-line-height);
+    margin-top: var(--pixel-line-height);
+    color: var(--light-color);
+    box-shadow: var(--elevation-2);
+    border-radius: var(--border-radius-l);
+}
+
+.surface h1, .surface h2, .surface h3, .surface h4{
+    color: var(--light-color);
+    margin-top: 0;
+}

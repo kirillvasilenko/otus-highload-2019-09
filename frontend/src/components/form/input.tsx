@@ -3,7 +3,7 @@ import classNames from "classnames";
 import styles from "./form.module.css";
 
 const Input: React.FC<InputProps> = ({className, ...props}) => {
-  const cn = classNames(styles.input, className);
+  const cn = classNames(styles.input, "text_small", className);
   return <input className={cn} {...props}/>
 };
 

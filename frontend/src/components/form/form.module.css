@@ -1,0 +1,24 @@
+.form {
+    display: flex;
+    flex-direction: column;
+}
+
+.input {
+    height: calc(var(--pixel-line-height) * 2);
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid var(--light-color);
+    border-radius: var(--border-radius-s);
+    box-shadow: none;
+    color: var(--light-color);
+    background-color: transparent;
+}
+
+.input::placeholder {
+    color: var(--light-color);
+    opacity: 0.5;
+}
+
+.input + .input {
+    margin-top: var(--pixel-line-height);
+}

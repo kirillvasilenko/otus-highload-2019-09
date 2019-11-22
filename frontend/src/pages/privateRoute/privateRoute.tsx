@@ -1,6 +1,6 @@
 import React from "react";
 import {Route, Redirect, RouteProps} from "react-router-dom";
-import {AUTH} from "./pagesRoutes";
+import {AUTH} from "pages/routes.constants";
 
 const PrivateRoute: React.FC<RouteProps> = ({children, ...props}) => {
   const isAuthenticated = false;

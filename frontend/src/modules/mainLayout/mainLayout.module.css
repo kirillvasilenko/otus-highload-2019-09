@@ -1,0 +1,17 @@
+.app {
+
+}
+
+.header {
+    background-color: var(--main-color);
+    padding: var(--pixel-line-height);
+    box-shadow: var(--elevation-3);
+}
+
+.main {
+
+}
+
+.footer {
+
+}

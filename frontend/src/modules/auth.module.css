@@ -1,9 +1,0 @@
-.auth {
-    display: flex;
-    flex-direction: column;
-    width: 300px;
-}
-
-.auth_login {}
-
-.auth_registration {}

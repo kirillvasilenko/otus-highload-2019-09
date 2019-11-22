@@ -1,0 +1,18 @@
+.navigation {}
+
+.list {
+    list-style-type: none;
+    display: inline-flex;
+    margin: 0 0 0 auto;
+    padding: 0;
+}
+
+.item {}
+
+.item + .item {
+    margin-left: 10px;
+}
+
+.link {
+    color: var(--light-color);
+}
