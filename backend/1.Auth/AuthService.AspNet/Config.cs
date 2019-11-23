@@ -11,6 +11,7 @@ namespace SocialNetwork.AspNet
         public static readonly Client WebAppClient = new Client
         {
             ClientId = "web.spa",
+            RequireClientSecret = false,
             AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
 
             AllowedScopes =

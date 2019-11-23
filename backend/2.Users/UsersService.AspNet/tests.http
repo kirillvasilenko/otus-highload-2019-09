@@ -1,0 +1,26 @@
+POST http://localhost:5000/connect/token
+Content-Type: application/x-www-form-urlencoded
+Accept: application/json
+Host: localhost:5000
+
+grant_type=password&username=user@example.com&password=string&scope=webapp.public&client_id=web.spa
+
+###
+
+POST http://localhost:5000/api/Registration
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "password": "string",
+  "repeatedPassword": "string",
+  "givenName": "GivenName",
+  "age": 15
+}
+
+###
+
+GET http://localhost:5001/api/users/15
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjVVa3NJSFRWTWxZMmJaOS16N28zVHciLCJ0eXAiOiJhdCtqd3QifQ.eyJuYmYiOjE1NzQ1MzkyMzcsImV4cCI6MTU3NDU0MjgzNywiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwIiwiYXVkIjoid2ViYXBwIiwiY2xpZW50X2lkIjoid2ViLnNwYSIsInN1YiI6IjE1IiwiYXV0aF90aW1lIjoxNTc0NTM5MjM3LCJpZHAiOiJsb2NhbCIsInNjb3BlIjpbIndlYmFwcC5wdWJsaWMiXSwiYW1yIjpbInB3ZCJdfQ.ZTLYtfPUGQoSkJoMELEtsrAw_tg6VP_RGtgWoSQsE0k2Mo8nN1Zguh_0IzyTRUrMmKowiPWuHgVjlOI1WSY5Ih-on82zf3K-VQ3S3oHU9_ZqlqK1aWFK5-_QBNmTDPvuqNv0qarv06NAU9G6NxY6hDl6DoQbA5BMdTIjh64G3fYXKAiN7cgq8fPVGoIFfAWDzg15UVwpwze6S0kok_Yg4jGDP1o9LbJac2aawfR3AlJ4bISrrHfMiITkiEBAhyqbEdJVR9aQfJLqDg_RtyeQnr2OzxgB2Ir6KVZoyHdP4DfZPwkeeAHXFRH5t1FxhOWCUTO0fuUbkN3UQgwlcRc76A
+
+###
