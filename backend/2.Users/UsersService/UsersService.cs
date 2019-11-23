@@ -21,7 +21,6 @@ namespace UsersService
 
         public async Task<User> GetUser(long id)
         {
-            throw new InvalidOperationException("Ept");
             return await repo.Get(id);
         }
     }

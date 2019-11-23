@@ -1,17 +1,20 @@
-using System.Collections.Generic;
-using System.Reflection;
+using Amursoft.PasswordHasher;
+using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
+using UsersService.Repo.MySql;
 
 namespace AuthService.Users.UsersService.Repo
 {
     public static class DiExtensions
     {
-        public static void AddUsersServiceRepo(this IServiceCollection services, List<Assembly> autoMapperAssemblies)
+        public static IServiceCollection AddUsersServiceRepo(this IServiceCollection services, string userDbConnection)
         {
-            services.AddScoped<IAuthUsersService, AuthUsersServiceRepo>();
-            services.AddTransient<IRegistrationUsersService, RegistrationUsersServiceRepo>();
-
-            autoMapperAssemblies.Add(typeof(DiExtensions).Assembly);
+            return services
+                .AddAutoMapper(typeof(DiExtensions).Assembly)
+                .AddScoped<IAuthUsersService, AuthUsersServiceRepo>()
+                .AddTransient<IRegistrationUsersService, RegistrationUsersServiceRepo>()
+                .AddPbkdf2PasswordHasher()
+                .AddReposMySql(userDbConnection);
         }
     }
 }

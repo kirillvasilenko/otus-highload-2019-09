@@ -15,6 +15,8 @@ namespace SocialNetwork.AspNet
 {
     public class Program
     {
+        public const string AppName = "AuthService";
+        
         public static void Main(string[] args)
         {
             Environment.CurrentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);

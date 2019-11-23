@@ -1,23 +1,22 @@
 using System;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
-using AutoMapper.Configuration;
-using Microsoft.AspNetCore.Authentication.Cookies;
+using System.IO;
+using AuthService.Users;
+using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using SocialNetwork.AspNet.Utils;
+using YadnexTank.PhantomAmmo.AspNetCore;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
 namespace SocialNetwork.AspNet
 {
     public class Startup
     {
+        private const string Version = "v1";
+        
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -29,23 +28,52 @@ namespace SocialNetwork.AspNet
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-
-            services.ConfigureDi(Configuration);
             
+            services.AddAll(Configuration.GetConnectionString("UsersDb"));
+
             services.AddIdentityServer()
-                .LoadSigningCredentialFrom(Configuration["SigningCertificate:Path"], Configuration["SigningCertificate:Password"])
+                .LoadSigningCredentialFrom(Configuration["SigningCertificate:Path"],
+                    Configuration["SigningCertificate:Password"])
                 .AddInMemoryApiResources(Config.Apis)
                 .AddInMemoryClients(Config.Clients)
                 .AddUsers();
+            
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc(Version, new OpenApiInfo
+                {
+                    Title = Program.AppName,
+                    Version = Version
+                });
+
+                //Set the comments path for the swagger json and ui.
+                foreach (var docFile in Directory.GetFiles(AppContext.BaseDirectory, "*.xml"))
+                {
+                    c.IncludeXmlComments(docFile, true);
+                }
+            });
+
+            services.AddPhantomAmmoCollector(Configuration.GetSection("PhantomAmmoCollector"));
+            services.AddProblemDetails(opts =>
+            {
+                opts.Map<UserRegistrationException>(ex => new ExceptionProblemDetails(ex, StatusCodes.Status400BadRequest));
+                opts.Map<Exception>(ex => new ExceptionProblemDetails(ex, StatusCodes.Status500InternalServerError));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            app.UseProblemDetails();
+            app.UsePhantomAmmoCollector();
+            
+            app.UseSwagger()
+                .UseSwaggerUI(c =>
+                    {
+                        c.SwaggerEndpoint($"/swagger/{Version}/swagger.json",
+                            $"{Program.AppName} API");
+                    }
+                );
             
             app.UseRouting();
 

@@ -1,44 +1,38 @@
-using System;
 using System.Threading.Tasks;
-using AuthService;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using AuthService.Users;
 using AuthService.Users.Dtos;
 using Microsoft.AspNetCore.Http;
 
 namespace SocialNetwork.AspNet.Controllers
 {
+    /// <summary>
+    /// Users service
+    /// </summary>
     [ApiController]
     [Route("api/[controller]")]
     public class RegistrationController : ControllerBase
     {
         private readonly IRegistrationUsersService service;
-        private readonly ILogger<RegistrationController> logger;
 
-        public RegistrationController(IRegistrationUsersService service, ILogger<RegistrationController> logger)
+        public RegistrationController(IRegistrationUsersService service)
         {
             this.service = service;
-            this.logger = logger;
         }
 
+        /// <summary>
+        /// Register new user.
+        /// </summary>
+        /// <param name="data">Data of new user.</param>
+        /// <returns>User</returns>
         [HttpPost]
+        [ProducesResponseType(typeof(AuthUser), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<AuthUser>> RegisterUser(RegisterUserData data)
         {
-            try
-            {
-                return await service.RegisterUser(data);
-            }
-            catch (UserRegistrationException e)
-            {
-                return BadRequest(e.Message);
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e, e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
-            
+            return await service.RegisterUser(data);
         }
     }
 }

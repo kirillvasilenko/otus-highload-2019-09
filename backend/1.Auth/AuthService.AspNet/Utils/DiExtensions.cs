@@ -12,14 +12,11 @@ namespace SocialNetwork.AspNet.Utils
 {
     public static class DiExtensions
     {
-        public static void ConfigureDi(
+        public static IServiceCollection AddAll(
             this IServiceCollection services,
-            IConfiguration configuration)
+            string userDbConnection)
         {
-            var autoMapperAssemblies = new List<Assembly>();
-            services.AddUsersServiceRepo(autoMapperAssemblies);
-            
-            services.AddAutoMapper(autoMapperAssemblies);
+            return services.AddUsersServiceRepo(userDbConnection);
         }
         
         public static IIdentityServerBuilder AddUsers(this IIdentityServerBuilder builder)

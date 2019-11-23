@@ -12,11 +12,10 @@ namespace AuthService.Tests._1.Ui
         [Fact]
         public void ConfigurationIsValid()
         {
-            var services = new ServiceCollection();
-            var configuration = new ConfigurationBuilder().Build();
+            var provider = new ServiceCollection()
+                .AddAll(string.Empty)
+                .BuildServiceProvider();
             
-            services.ConfigureDi(configuration);
-            var provider = services.BuildServiceProvider();
             var mapper = provider.GetService<IMapper>();
             
             mapper.ConfigurationProvider.AssertConfigurationIsValid();

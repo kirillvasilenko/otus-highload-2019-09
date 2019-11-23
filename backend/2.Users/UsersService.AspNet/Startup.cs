@@ -1,21 +1,21 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using UsersService.Model;
 using UsersService.Repo.MySql;
-using IHostingEnvironment = Microsoft.Extensions.Hosting.IHostingEnvironment;
+using YadnexTank.PhantomAmmo.AspNetCore;
 
 namespace UsersService.AspNet
 {
+// Extension method used to add the middleware to the HTTP request pipeline.
+
     public class Startup
     {
         private const string Version = "v1";
@@ -30,11 +30,22 @@ namespace UsersService.AspNet
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers(options =>
-                options.Filters.Add(typeof(CustomExceptionFilter)));
-            
             services.AddUsersService();
             services.AddReposMySql(Configuration.GetConnectionString("MySql"));
+            
+            /*services.AddAuthentication(options =>
+            {
+		
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(o =>
+            {
+                o.Authority = "authority1";
+                o.Audience = "audience1";
+                o.RequireHttpsMetadata = false;
+            });*/
+            
+            services.AddControllers( opts => opts.Filters.Add(new AllowAnonymousFilter()));
             
             services.AddSwaggerGen(c =>
             {
@@ -50,11 +61,21 @@ namespace UsersService.AspNet
                     c.IncludeXmlComments(docFile, true);
                 }
             });
+
+            services.AddPhantomAmmoCollector(Configuration.GetSection("PhantomAmmoCollector"));
+            services.AddProblemDetails(opts =>
+            {
+                opts.Map<ItemNotFoundException>(ex => new ExceptionProblemDetails(ex, StatusCodes.Status400BadRequest));
+                opts.Map<Exception>(ex => new ExceptionProblemDetails(ex, StatusCodes.Status500InternalServerError));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseProblemDetails();
+            app.UsePhantomAmmoCollector();
+            
             app.UseSwagger()
                 .UseSwaggerUI(c =>
                     {
@@ -62,11 +83,11 @@ namespace UsersService.AspNet
                             $"{Program.AppName} API");
                     }
                 );
-            
+
             app.UseRouting();
 
-            //app.UseAuthorization();
-
+            app.UseAuthorization();
+            
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
