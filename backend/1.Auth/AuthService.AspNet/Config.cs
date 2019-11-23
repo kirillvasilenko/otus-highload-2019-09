@@ -1,23 +1,36 @@
 using System.Collections.Generic;
+using IdentityModel;
 using IdentityServer4.Models;
 
 namespace SocialNetwork.AspNet
 {
     public static class Config
     {
+        public static readonly string WebAppScopes = $"webapp.public {OidcConstants.StandardScopes.OfflineAccess}";
+
+        public static readonly Client WebAppClient = new Client
+        {
+            ClientId = "web.spa",
+            AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
+
+            AllowedScopes =
+            {
+                "webapp.public"
+            },
+
+            AllowOfflineAccess = true
+        };
         
         public static IEnumerable<ApiResource> Apis =>
             new List<ApiResource>
             {
                 new ApiResource
                 {
-                    Name = "users",
-                    DisplayName = "Users API",
+                    Name = "webapp",
+                    DisplayName = "Web Application",
                     Scopes = new List<Scope>
                     {
-                        new Scope("users.read"),
-                        new Scope("users.write"),
-                        new Scope("users.admin"),
+                        new Scope("webapp.public")
                     },
                     UserClaims = new []{"role"}
                 }
@@ -26,19 +39,7 @@ namespace SocialNetwork.AspNet
         public static IEnumerable<Client> Clients =>
             new List<Client>
             {
-                new Client
-                {
-                    ClientId = "web.spa",
-                    AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
-
-                    AllowedScopes =
-                    {
-                        "users.read",
-                        "users.write"
-                    },
-
-                    AllowOfflineAccess = true
-                }
+                WebAppClient
             };
     }
 }

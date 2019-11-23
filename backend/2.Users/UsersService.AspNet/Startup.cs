@@ -86,7 +86,7 @@ namespace UsersService.AspNet
                 options.Authority = Config["Auth:AuthorityUrl"];
                 options.RequireHttpsMetadata = Config.GetSection("Auth").GetValue("RequireHttpsMetadata", true);
 
-                options.Audience = "users";
+                options.Audience = "webapp";
 
                 options.TokenValidationParameters.NameClaimType = JwtClaimTypes.Subject;
                 options.TokenValidationParameters.RoleClaimType = JwtClaimTypes.Role;

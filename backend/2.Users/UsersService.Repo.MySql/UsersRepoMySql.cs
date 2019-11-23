@@ -85,7 +85,7 @@ SELECT LAST_INSERT_ID();";
             var addedUserId = await connection.QuerySingleAsync<long>(insertSql, new
             {
                 email = user.Email,
-                email_varified = user.EmailVerified,
+                email_verified = user.EmailVerified,
                 password = user.Password,
                 given_name = user.GivenName,
                 family_name = user.FamilyName,
