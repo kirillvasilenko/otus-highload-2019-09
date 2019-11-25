@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using UsersService.Model;
 
@@ -12,6 +13,11 @@ namespace UsersService
         public UsersService(IUsersRepo repo)
         {
             this.repo = repo;
+        }
+
+        public async Task<int> GetCount()
+        {
+            return await repo.GetUsersCount();
         }
 
         public async Task<IEnumerable<User>> GetUsers(int skip, int take)

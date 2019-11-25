@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -23,6 +24,19 @@ namespace UsersService.AspNet.Controllers
         }
 
         /// <summary>
+        /// Get User's count.
+        /// </summary>
+        /// <returns>User</returns>
+        [HttpGet("count")]
+        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<int> GetUsersCount()
+        {
+            return await service.GetCount();
+        }
+        
+        /// <summary>
         /// Get Users.
         /// </summary>
         /// <param name="skip">Pagination skip count</param>
@@ -33,7 +47,11 @@ namespace UsersService.AspNet.Controllers
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<IEnumerable<User>> GetUsers(int skip, int take)
+        public async Task<IEnumerable<User>> GetUsers(
+            [Range(0, int.MaxValue)]
+            int skip,
+            [Range(0, 100)]
+            int take)
         {
             return await service.GetUsers(skip, take);
         }

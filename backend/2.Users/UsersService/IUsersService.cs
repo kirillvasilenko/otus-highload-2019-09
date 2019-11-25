@@ -6,6 +6,8 @@ namespace UsersService
 {
     public interface IUsersService
     {
+        Task<int> GetCount();
+        
         Task<IEnumerable<User>> GetUsers(int skip, int take);
         
         Task<User> GetUser(long id);

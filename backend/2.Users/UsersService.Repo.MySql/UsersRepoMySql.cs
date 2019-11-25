@@ -8,9 +8,13 @@ using UsersService.Model;
 
 namespace UsersService.Repo.MySql
 {
-    
     public class UsersRepoMySql:IUsersRepo
     {
+        static UsersRepoMySql()
+        {
+            SqlMapper.SetTypeMap(typeof(User), UserMapper.GetMapper());
+        }
+        
         private readonly string connectionString;
         private readonly ILogger<UsersRepoMySql> logger;
 
@@ -56,6 +60,17 @@ where email=@email;";
             }
 
             return result;
+        }
+
+        public async Task<int> GetUsersCount()
+        {
+            await using var connection = await CreateAndOpenConnection();
+
+            const string getSql = @"
+select count(*) 
+from users.user;";
+           
+            return await connection.QuerySingleAsync<int>(getSql);
         }
 
         public async Task<IEnumerable<User>> GetUsers(int skip, int take)

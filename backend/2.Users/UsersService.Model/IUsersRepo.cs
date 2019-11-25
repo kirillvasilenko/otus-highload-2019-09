@@ -13,6 +13,8 @@ namespace UsersService.Model
 
         Task<User> Delete(long id);
 
+        Task<int> GetUsersCount();
+        
         Task<IEnumerable<User>> GetUsers(int skip, int take);
     }
 }
