@@ -5,6 +5,7 @@ using DbUp;
 using DbUp.Engine.Output;
 using DbUp.Engine.Transactions;
 using DbUp.ScriptProviders;
+using Microsoft.Extensions.Configuration;
 using MySql.Data.MySqlClient;
 
 namespace UsersService.Repo.MySql.Migrator
@@ -13,17 +14,23 @@ namespace UsersService.Repo.MySql.Migrator
     {
         static int Main(string[] args)
         {
-            if (args.Length < 1)
+            IConfigurationRoot configuration = new ConfigurationBuilder()
+                .AddEnvironmentVariables()
+                .AddCommandLine(args)
+                .Build();
+            
+            var connectionString = configuration.GetConnectionString("UsersDb");
+            if (string.IsNullOrWhiteSpace(connectionString))
             {
                 return ReturnError(
                     "Invalid args. You have to specify connection string and scripts path");
             }
- 
-            var connectionString = args[0];
-            var scriptsPath = args.ElementAtOrDefault(1) ?? string.Empty;
+            
+            var scriptsPath = AppContext.BaseDirectory;
+            var migrationScriptsPath = Path.Combine(scriptsPath, "Migrations");
             
             Console.WriteLine("Start executing migration scripts...");
-            var migrationScriptsPath = Path.Combine(scriptsPath, "Migrations");
+            
             var upgrader =
                 DeployChanges.To
                     .MySqlDatabase(connectionString)

@@ -35,7 +35,7 @@ namespace UsersService.AspNet
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddUsersService();
-            services.AddReposMySql(Config.GetConnectionString("MySql"));
+            services.AddReposMySql(Config.GetConnectionString("UsersDb"));
             
             services.AddControllers();
 
