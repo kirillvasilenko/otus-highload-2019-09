@@ -4,11 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace SocialNetwork.AspNet.Controllers
 {
-    public class TokenResult : ActionResult
+    public class TokenResultDto
     {
-        public static TokenResult FromResponse(TokenResponse response)
+        public static TokenResultDto FromResponse(TokenResponse response)
         {
-            return new TokenResult
+            return new TokenResultDto
             {
                 id_token = response.IdentityToken,
                 access_token = response.AccessToken,

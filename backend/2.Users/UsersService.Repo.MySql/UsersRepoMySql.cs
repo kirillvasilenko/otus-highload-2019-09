@@ -120,9 +120,16 @@ SELECT LAST_INSERT_ID();";
 
         private async Task<MySqlConnection> CreateAndOpenConnection()
         {
-            var connection = new MySqlConnection(connectionString);
-            await connection.OpenAsync();
-            return connection;
+            try
+            {
+                var connection = new MySqlConnection(connectionString);
+                await connection.OpenAsync();
+                return connection;
+            }
+            catch (Exception e)
+            {
+                throw new ConnectionException(e);
+            }
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Amursoft.PasswordHasher;
 using AuthService.Users.Dtos;
 using AutoMapper;
+using MySql.Data.MySqlClient;
 using UsersService.Model;
 
 namespace AuthService.Users.UsersService.Repo
@@ -30,7 +31,7 @@ namespace AuthService.Users.UsersService.Repo
             {
                 user = await repo.Add(user);
             }
-            catch (Exception e)
+            catch (MySqlException e)
             {
                 throw new UserRegistrationException(e.Message, e);
             }

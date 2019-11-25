@@ -38,7 +38,7 @@ namespace SocialNetwork.AspNet.Controllers
         /// <param name="data">Data of new user.</param>
         /// <returns>Access token</returns>
         [HttpPost]
-        [ProducesResponseType(typeof(TokenResult), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(TokenResultDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
@@ -46,7 +46,7 @@ namespace SocialNetwork.AspNet.Controllers
         {
             var newUser = await service.RegisterUser(data);
             var token = await IssueToken(newUser, data.Password);
-            return TokenResult.FromResponse(token);
+            return Ok(TokenResultDto.FromResponse(token));
         }
         
         private async Task<TokenResponse> IssueToken(AuthUser newUser, string password)
