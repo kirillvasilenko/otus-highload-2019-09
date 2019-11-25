@@ -106,8 +106,9 @@ namespace UsersService.AspNet
             app.UseSwagger()
                 .UseSwaggerUI(c =>
                     {
-                        c.SwaggerEndpoint($"/swagger/{Version}/swagger.json",
+                        c.SwaggerEndpoint($"../swagger/{Version}/swagger.json",
                             $"{Program.AppName} API");
+                        c.RoutePrefix = "swagger";
                     }
                 );
 

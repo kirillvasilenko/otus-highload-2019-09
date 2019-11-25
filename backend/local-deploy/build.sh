@@ -19,6 +19,8 @@ buildService "auth" "../1.Auth/AuthService.AspNet"
 buildService "users" "../2.Users/UsersService.AspNet"
 buildService "users-db-migrator" "../2.Users/UsersService.Repo.MySql.Migrator"
 
+docker build -t social/nginx -f nginx/Dockerfile nginx
+
 
 
 

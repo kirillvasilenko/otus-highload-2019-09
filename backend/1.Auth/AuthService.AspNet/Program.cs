@@ -19,8 +19,6 @@ namespace SocialNetwork.AspNet
         
         public static void Main(string[] args)
         {
-            Environment.CurrentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-
             string currentEnv = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? Environments.Production;
 
             IConfigurationRoot configuration = new ConfigurationBuilder()
