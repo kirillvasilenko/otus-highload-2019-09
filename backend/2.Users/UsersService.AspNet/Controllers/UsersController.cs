@@ -16,11 +16,11 @@ namespace UsersService.AspNet.Controllers
     [Route("api/[controller]")]
     public class UsersController : ControllerBase
     {
-        private readonly IUsersService service;
+        private readonly IUsersRepo repo;
 
-        public UsersController(IUsersService service)
+        public UsersController(IUsersRepo repo)
         {
-            this.service = service;
+            this.repo = repo;
         }
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace UsersService.AspNet.Controllers
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<int> GetUsersCount()
         {
-            return await service.GetCount();
+            return await repo.GetUsersCount();
         }
         
         /// <summary>
@@ -53,7 +53,7 @@ namespace UsersService.AspNet.Controllers
             [Range(0, 100)]
             int take)
         {
-            return await service.GetUsers(skip, take);
+            return await repo.GetUsers(skip, take);
         }
         
         /// <summary>
@@ -68,7 +68,7 @@ namespace UsersService.AspNet.Controllers
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<User>> GetUser(long userId)
         {
-            return await service.GetUser(userId);
+            return await repo.GetUser(userId);
         }
     }
 }

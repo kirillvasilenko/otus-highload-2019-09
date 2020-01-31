@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using AuthService.Users;
 using Hellang.Middleware.ProblemDetails;
@@ -67,13 +68,22 @@ namespace SocialNetwork.AspNet
             app.UseProblemDetails();
             app.UsePhantomAmmoCollector();
             
-            app.UseSwagger()
+            app.UseSwagger(c =>
+                {
+                    c.RouteTemplate = "swagger/{documentName}/swagger.json";
+                    c.PreSerializeFilters.Add((swaggerDoc, httpReq) =>
+                    {
+                        swaggerDoc.Servers = new List<OpenApiServer> { new OpenApiServer { Url = $"{httpReq.Scheme}://{httpReq.Host.Value}" } };
+                    });
+                })
                 .UseSwaggerUI(c =>
                     {
                         c.SwaggerEndpoint($"../swagger/{Version}/swagger.json",
                             $"{Program.AppName} API");
                         c.RoutePrefix = "swagger";
+                        
                     }
+                    
                 );
             
             app.UseRouting();

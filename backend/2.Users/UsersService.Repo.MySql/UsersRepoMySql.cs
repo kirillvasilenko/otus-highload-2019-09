@@ -24,7 +24,7 @@ namespace UsersService.Repo.MySql
             this.logger = logger;
         }
         
-        public async Task<User> Get(long id)
+        public async Task<User> GetUser(long id)
         {
             await using var connection = await CreateAndOpenConnection();
 
@@ -43,7 +43,7 @@ where id=@id;";
             return result;
         }
 
-        public async Task<User> GetByEmail(string email)
+        public async Task<User> GetUserByEmail(string email)
         {
             await using var connection = await CreateAndOpenConnection();
 
@@ -86,7 +86,7 @@ limit @skip,@take;";
         }
         
         
-        public async Task<User> Add(User user)
+        public async Task<User> AddUser(User user)
         {
             await using var connection = await CreateAndOpenConnection();
 
@@ -113,7 +113,7 @@ SELECT LAST_INSERT_ID();";
             return user;
         }
 
-        public Task<User> Delete(long id)
+        public Task<User> DeleteUser(long id)
         {
             throw new NotImplementedException();
         }

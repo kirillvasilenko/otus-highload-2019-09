@@ -1,6 +1,5 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
-using System.IO;
 using System.Linq;
 using Amursoft.AspNetCore.TestAuthentication;
 using Hellang.Middleware.ProblemDetails;
@@ -11,7 +10,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
+using Microsoft.IdentityModel.Logging;
+using NSwag.Generation.Processors;
 using UsersService.Model;
 using UsersService.Repo.MySql;
 using YadnexTank.PhantomAmmo.AspNetCore;
@@ -34,28 +34,27 @@ namespace UsersService.AspNet
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddUsersService();
-            services.AddReposMySql(Config.GetConnectionString("UsersDb"));
+            IdentityModelEventSource.ShowPII = Config.GetSection("Logging").GetValue("ShowPII", false);
             
             services.AddControllers();
-
             ConfigureAuthentication(services);
             
-            services.AddSwaggerGen(c =>
+            services.AddOpenApiDocument(config =>
             {
-                c.SwaggerDoc(Version, new OpenApiInfo
+                config.PostProcess = document =>
                 {
-                    Title = Program.AppName,
-                    Version = Version
-                });
-
-                //Set the comments path for the swagger json and ui.
-                foreach (var docFile in Directory.GetFiles(AppContext.BaseDirectory, "*.xml"))
+                    document.Info.Version = Version;
+                    document.Info.Title = $"{Program.AppName} API";	
+                };
+                config.OperationProcessors.Add(new OperationProcessor(ctx =>
                 {
-                    c.IncludeXmlComments(docFile, true);
-                }
+                    ctx.OperationDescription.Operation.OperationId = ctx.MethodInfo.Name;
+                    return true;
+                }));
             });
-
+            
+            services.AddReposMySql(Config.GetConnectionString("UsersDb"));
+            
             services.AddPhantomAmmoCollector(Config.GetSection("PhantomAmmoCollector"));
             services.AddProblemDetails(opts =>
             {
@@ -103,21 +102,15 @@ namespace UsersService.AspNet
             app.UseProblemDetails();
             app.UsePhantomAmmoCollector();
             
-            app.UseSwagger()
-                .UseSwaggerUI(c =>
-                    {
-                        c.SwaggerEndpoint($"../swagger/{Version}/swagger.json",
-                            $"{Program.AppName} API");
-                        c.RoutePrefix = "swagger";
-                    }
-                );
-
             app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
             
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
         }
     }
 }

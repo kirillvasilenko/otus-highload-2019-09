@@ -13,35 +13,12 @@ namespace UsersService.AspNet
     public class Program
     {
         public const string AppName = "UsersService";
-        
+
         public static void Main(string[] args)
         {
             Console.Title = AppName;
 
-            string currentEnv = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? Environments.Production;
-
-            IConfigurationRoot configuration = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json")
-                .AddJsonFile($"appsettings.{currentEnv}.json", optional: true, reloadOnChange: true)
-                .AddEnvironmentVariables()
-                .AddCommandLine(args)
-                .Build();
-
-            Log.Logger = new LoggerConfiguration()
-                .ReadFrom.Configuration(configuration)
-                .Enrich.WithProperty("Application", AppName)
-                .Enrich.WithProperty("Environment", currentEnv)
-                .CreateLogger();
-
-            IHostBuilder host = Host
-                .CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder
-                        .UseConfiguration(configuration)
-                        .UseSerilog()
-                        .UseStartup<Startup>();
-                });
+            IHostBuilder host = CreateHostBuilder(args);
 
             try
             {
@@ -57,6 +34,39 @@ namespace UsersService.AspNet
                 Log.Logger.Information("Finally web host");
                 Log.CloseAndFlush();
             }
+        }
+        
+        
+        /// <summary>
+        /// This method is needed for NSwag client generation during building.
+        /// If signature is different it will be error.
+        /// </summary>
+        public static IHostBuilder CreateHostBuilder(string[] args)
+        {
+            string currentEnv = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ??
+                                Environments.Production;
+
+            IConfigurationRoot configuration = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json")
+                .AddJsonFile($"appsettings.{currentEnv}.json", optional: true, reloadOnChange: true)
+                .AddEnvironmentVariables()
+                .AddCommandLine(args)
+                .Build();
+            
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(configuration)
+                .Enrich.WithProperty("Application", AppName)
+                .Enrich.WithProperty("Environment", currentEnv)
+                .CreateLogger();
+            
+            return Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder
+                        .UseConfiguration(configuration)
+                        .UseSerilog()
+                        .UseStartup<Startup>();
+                });
         }
     }
 }

@@ -29,7 +29,7 @@ namespace AuthService.Users.UsersService.Repo
             user.Password = passwordHasher.HashPassword(newUser.Password);
             try
             {
-                user = await repo.Add(user);
+                user = await repo.AddUser(user);
             }
             catch (MySqlException e)
             {

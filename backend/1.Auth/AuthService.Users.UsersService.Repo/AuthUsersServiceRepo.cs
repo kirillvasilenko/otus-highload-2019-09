@@ -38,7 +38,7 @@ namespace AuthService.Users.UsersService.Repo
             var authUser = usersCache.FirstOrDefault(x => x.Email == username);
             if (authUser == null)
             {
-                var user = await repo.GetByEmail(username);
+                var user = await repo.GetUserByEmail(username);
                 authUser = mapper.Map<AuthUser>(user);
                 usersCache.Add(authUser);
             }
@@ -50,7 +50,7 @@ namespace AuthService.Users.UsersService.Repo
             var authUser = usersCache.FirstOrDefault(x => x.Id == id);
             if (authUser == null)
             {
-                var user = await repo.Get(id);
+                var user = await repo.GetUser(id);
                 authUser = mapper.Map<AuthUser>(user);
                 usersCache.Add(authUser);
             }

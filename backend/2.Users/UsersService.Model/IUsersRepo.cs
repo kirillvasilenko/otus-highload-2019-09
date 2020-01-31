@@ -5,13 +5,13 @@ namespace UsersService.Model
 {
     public interface IUsersRepo
     {
-        Task<User> Get(long id);
+        Task<User> GetUser(long id);
         
-        Task<User> GetByEmail(string email);
+        Task<User> GetUserByEmail(string email);
 
-        Task<User> Add(User user);
+        Task<User> AddUser(User user);
 
-        Task<User> Delete(long id);
+        Task<User> DeleteUser(long id);
 
         Task<int> GetUsersCount();
         
