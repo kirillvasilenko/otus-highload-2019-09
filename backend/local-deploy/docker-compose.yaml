@@ -8,51 +8,51 @@ services:
 #      - 5000:80
 #    networks:
 #      - mydotnetnetwork
-  nginx:
-    image: social/nginx
-    container_name: nginx
+# nginx:
+#   image: social/nginx
+#   container_name: nginx
+#   restart: unless-stopped
+#   depends_on:
+#     - auth
+#     - users
+#   ports:
+#     - 5002:80
+#   networks:
+#     - socialnetwork
+  
+
+        
+  socialnetwork:
+    image: hl/socialnetwork
+    container_name: socialnetwork
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Auth__UseTestAuth=false
+      - ConnectionStrings__SocialNetworkDb=server=${SocialNetworkServer};port=${SocialNetworkPort};database=${SocialNetworkDb};user=${SocialNetworkUser};password=${SocialNetworkUserPassword};
     restart: unless-stopped
-    depends_on:
-      - auth
-      - users
     ports:
-      - 5002:80
-    networks:
-      - socialnetwork
-  
-  auth:
-    image: social/auth
-    container_name: auth
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__UsersDb=${USERS_DB}
-    restart: unless-stopped
- #   ports:
- #     - 5000:80
+      - 5010:80
     depends_on:
-      - users_db_migrator
+      - socialnetwork_db_migrator
     networks:
       - socialnetwork
-  
-  users:
-    image: social/users
-    container_name: users
+
+  socialnetwork_db_migrator:
+    image: hl/socialnetwork-db-migrator
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__UsersDb=${USERS_DB}
-    restart: unless-stopped
- #   ports:
- #     - 5001:80
-    depends_on:
-      - users_db_migrator
+      - SocialNetwork__Server=${SocialNetworkServer}
+      - SocialNetwork__Port=${SocialNetworkPort}
+      - SocialNetwork__Creator=${SocialNetworkCreator}
+      - SocialNetwork__CreatorPassword=${SocialNetworkCreatorPassword}
+      - SocialNetwork__CreatorDb=${SocialNetworkCreatorDb}
+      - SocialNetwork__Migrator=${SocialNetworkMigrator}
+      - SocialNetwork__MigratorPassword=${SocialNetworkMigratorPassword}
+      - SocialNetwork__MigratorDb=${SocialNetworkDb}
+      - SocialNetwork__CreateDb=true
+      - SocialNetwork__ShowPII=true
     networks:
       - socialnetwork
-  
-  users_db_migrator:
-    image: social/users-db-migrator
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__UsersDb=${USERS_DB}
   
 networks:
   socialnetwork:

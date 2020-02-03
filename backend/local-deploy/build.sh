@@ -11,16 +11,15 @@ buildService () {
   rm -r "$PRJ_ROOT/obj"
   dotnet publish -c Release "$PRJ_ROOT"
   
-  docker build  -t "social/$SVC_NAME" -f "$PRJ_ROOT/Dockerfile" "$PRJ_ROOT"
+  docker build  -t "hl/$SVC_NAME" -f "$PRJ_ROOT/Dockerfile" "$PRJ_ROOT"
 }
 
 dotnet restore ..
 
-buildService "auth" "../1.Auth/AuthService.AspNet"
-buildService "users" "../2.Users/UsersService.AspNet"
-buildService "users-db-migrator" "../2.Users/UsersService.Migrator.MySql"
+buildService "socialnetwork" "../1.SocialNetwork/SocialNetwork.AspNet"
+buildService "socialnetwork-db-migrator" "../1.SocialNetwork/SocialNetwork.Migrator.MySql"
 
-docker build -t social/nginx -f nginx/Dockerfile nginx
+docker build -t hl/nginx -f nginx/Dockerfile nginx
 
 
 

@@ -1,0 +1,27 @@
+﻿{
+  "$schema": "http://json.schemastore.org/launchsettings.json",
+
+  "profiles": {
+
+    "SocialNetwork.Migrator.MySql": {
+      "commandName": "Project",
+      "environmentVariables": {
+
+        "SocialNetwork__Server": "localhost",
+        "SocialNetwork__Port": "3306",
+
+        "SocialNetwork__Creator": "root",
+        "SocialNetwork__CreatorPassword": "admin",
+        "SocialNetwork__CreatorDb": "mysql",
+
+        "SocialNetwork__Migrator": "socialnetwork_migrator",
+        "SocialNetwork__MigratorPassword": "socialnetwork_migrator",
+        "SocialNetwork__MigratorDb": "socialnetwork",
+
+        "SocialNetwork__CreateDb": "true",
+        "SocialNetwork__ShowPII": "true"
+
+      }
+    }
+  }
+}
