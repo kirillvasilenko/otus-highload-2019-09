@@ -5,9 +5,9 @@ namespace SocialNetwork.Model
 {
     public interface IUsersRepo
     {
-        Task<User> GetUser(long id);
+        Task<User> GetUser(long id, bool throwExceptionIfNotFound = true);
         
-        Task<User> GetUserByEmail(string email);
+        Task<User> GetUserByEmail(string email, bool throwExceptionIfNotFound = true);
 
         Task<User> AddUser(User user);
 

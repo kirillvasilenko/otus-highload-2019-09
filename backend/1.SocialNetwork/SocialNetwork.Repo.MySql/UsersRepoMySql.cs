@@ -24,7 +24,7 @@ namespace SocialNetwork.Repo.MySql
             this.logger = logger;
         }
         
-        public async Task<User> GetUser(long id)
+        public async Task<User> GetUser(long id, bool throwExceptionIfNotFound = true)
         {
             await using var connection = await CreateAndOpenConnection();
 
@@ -35,7 +35,7 @@ where id=@id;";
             
             var result = await connection.QuerySingleOrDefaultAsync<User>(getSql, new {id});
 
-            if (result == null)
+            if (result == null && throwExceptionIfNotFound)
             {
                 throw new ItemNotFoundException(id, nameof(User));
             }
@@ -43,7 +43,7 @@ where id=@id;";
             return result;
         }
 
-        public async Task<User> GetUserByEmail(string email)
+        public async Task<User> GetUserByEmail(string email, bool throwExceptionIfNotFound = true)
         {
             await using var connection = await CreateAndOpenConnection();
 
@@ -54,7 +54,7 @@ where email=@email;";
             
             var result = await connection.QuerySingleOrDefaultAsync<User>(getSql, new {email});
 
-            if (result == null)
+            if (result == null && throwExceptionIfNotFound)
             {
                 throw new ItemNotFoundException(email, nameof(User));
             }

@@ -10,8 +10,8 @@ namespace SocialNetwork.App
         {
             return services
                 .AddAutoMapper(typeof(DiExtensions).Assembly)
-                .AddScoped<IAuthUsersService, AuthUsersService>()
-                .AddTransient<IRegistrationUsersService, RegistrationUsersService>()
+                .AddScoped<IAuthService, AuthService>()
+                .AddTransient<IRegistrationService, RegistrationService>()
                 .AddPbkdf2PasswordHasher();
         }
     }

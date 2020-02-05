@@ -9,18 +9,19 @@ namespace SocialNetwork.AspNet.Controllers
 {
     
     /// <summary>
-    /// Users service
+    /// Auth service
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
-        private readonly IRegistrationUsersService service;
-        
+        private readonly IRegistrationService service;
+        private readonly IAuthService authService;
 
-        public AuthController(IRegistrationUsersService service)
+        public AuthController(IRegistrationService service, IAuthService authService)
         {
             this.service = service;
+            this.authService = authService;
         }
         
         /// <summary>
@@ -29,14 +30,14 @@ namespace SocialNetwork.AspNet.Controllers
         /// <param name="data">Data of new user.</param>
         /// <returns>Access token</returns>
         [HttpPost("register")]
-        [ProducesResponseType(typeof(TokenResultDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(TokenDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<TokenResultDto>> RegisterUser(RegisterUserData data)
+        public async Task<ActionResult<TokenDto>> RegisterUser(RegisterUserData data)
         {
             var newUser = await service.RegisterUser(data);
-            //var token = await IssueToken(newUser, data.Password);
-            return Ok(TokenResultDto.FromResponse(null));
+            var token = await authService.AuthenticateUser(newUser);
+            return Ok(token);
         }
     }
 }

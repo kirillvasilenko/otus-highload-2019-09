@@ -7,13 +7,13 @@ using SocialNetwork.Model;
 
 namespace SocialNetwork.App
 {
-    public class RegistrationUsersService : IRegistrationUsersService
+    public class RegistrationService : IRegistrationService
     {
         private readonly IUsersRepo repo;
         private readonly IPasswordHasher passwordHasher;
         private readonly IMapper mapper;
 
-        public RegistrationUsersService(IUsersRepo repo, IPasswordHasher passwordHasher, IMapper mapper)
+        public RegistrationService(IUsersRepo repo, IPasswordHasher passwordHasher, IMapper mapper)
         {
             this.repo = repo;
             this.passwordHasher = passwordHasher;
