@@ -27,6 +27,7 @@ namespace SocialNetwork.App
     
     public class RegistrationService : IRegistrationService
     {
+        private readonly IDbConnectionController connectionController;
         private readonly IUsersRepo usersRepo;
         private readonly ITokenRepo tokenRepo;
         private readonly IPasswordHasher passwordHasher;
@@ -34,12 +35,14 @@ namespace SocialNetwork.App
         private readonly IMapper mapper;
 
         public RegistrationService(
+            IDbConnectionController connectionController,
             IUsersRepo usersRepo,
             ITokenRepo tokenRepo,
             IPasswordHasher passwordHasher,
             ITokenMaker tokenMaker,
             IMapper mapper)
         {
+            this.connectionController = connectionController;
             this.usersRepo = usersRepo;
             this.tokenRepo = tokenRepo;
             this.passwordHasher = passwordHasher;
@@ -53,6 +56,8 @@ namespace SocialNetwork.App
 
             var user = newUser.ToModel(mapper);
             user.Password = passwordHasher.HashPassword(newUser.Password);
+
+            await using var tmp = await connectionController.OpenConnectionAsync();
             try
             {
                 user = await usersRepo.AddUser(user);

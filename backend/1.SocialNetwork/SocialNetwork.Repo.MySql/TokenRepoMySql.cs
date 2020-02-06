@@ -1,8 +1,8 @@
 using System;
+using System.Data.Common;
 using System.Threading.Tasks;
 using Dapper;
 using Microsoft.Extensions.Logging;
-using MySql.Data.MySqlClient;
 using SocialNetwork.Model;
 
 namespace SocialNetwork.Repo.MySql
@@ -13,22 +13,21 @@ namespace SocialNetwork.Repo.MySql
         {
             SqlMapper.SetTypeMap(typeof(RefreshToken), RefreshTokenMapper.GetMapper());
         }
-        
-        private readonly string connectionString;
+
+
+        private readonly IDbConnectionProvider connectionProvider;
         private readonly ILogger<UsersRepoMySql> logger;
 
         
-        public TokenRepoMySql(string connectionString, ILogger<UsersRepoMySql> logger)
+        public TokenRepoMySql(IDbConnectionProvider connectionProvider, ILogger<UsersRepoMySql> logger)
         {
-            this.connectionString = connectionString;
+            this.connectionProvider = connectionProvider;
             this.logger = logger;
         }
-        
-        
 
         public async Task<RefreshToken> AddRefreshToken(RefreshToken token)
         {
-            await using var connection = await CreateAndOpenConnection();
+            var connection = connectionProvider.GetOpenedConnection();
             
             const string insertSql = @"
 insert into refresh_token
@@ -62,18 +61,5 @@ SELECT LAST_INSERT_ID();";
             throw new NotImplementedException();
         }
         
-        private async Task<MySqlConnection> CreateAndOpenConnection()
-        {
-            try
-            {
-                var connection = new MySqlConnection(connectionString);
-                await connection.OpenAsync();
-                return connection;
-            }
-            catch (Exception e)
-            {
-                throw new ConnectionException(e);
-            }
-        }
     }
 }

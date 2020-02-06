@@ -9,10 +9,11 @@ namespace SocialNetwork.Repo.MySql
         public static IServiceCollection AddSocialNetworkRepoMySql(this IServiceCollection services, string connectionString)
         {
             return services
-                .AddTransient<IUsersRepo>(p =>
-                    new UsersRepoMySql(connectionString, p.GetService<ILogger<UsersRepoMySql>>()))
-                .AddTransient<ITokenRepo>(p =>
-                    new TokenRepoMySql(connectionString, p.GetService<ILogger<UsersRepoMySql>>()));
+                .AddScoped(p => new DbConnectionControllerMySql(connectionString))
+                .AddScoped<IDbConnectionController>(p => p.GetService<DbConnectionControllerMySql>())
+                .AddScoped<IDbConnectionProvider>(p => p.GetService<DbConnectionControllerMySql>())
+                .AddScoped<IUsersRepo, UsersRepoMySql>()
+                .AddScoped<ITokenRepo, TokenRepoMySql>();
 
         }
     }

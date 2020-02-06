@@ -15,18 +15,18 @@ namespace SocialNetwork.Repo.MySql
             SqlMapper.SetTypeMap(typeof(User), UserMapper.GetMapper());
         }
         
-        private readonly string connectionString;
+        private readonly IDbConnectionProvider connectionProvider;
         private readonly ILogger<UsersRepoMySql> logger;
 
-        public UsersRepoMySql(string connectionString, ILogger<UsersRepoMySql> logger)
+        public UsersRepoMySql(IDbConnectionProvider connectionProvider, ILogger<UsersRepoMySql> logger)
         {
-            this.connectionString = connectionString;
+            this.connectionProvider = connectionProvider;
             this.logger = logger;
         }
         
         public async Task<User> GetUser(long id, bool throwExceptionIfNotFound = true)
         {
-            await using var connection = await CreateAndOpenConnection();
+            var connection = connectionProvider.GetOpenedConnection();
 
             const string getSql = @"
 select id, email, email_verified, password, given_name, family_name, age, city, interests, is_active 
@@ -45,7 +45,7 @@ where id=@id;";
 
         public async Task<User> GetUserByEmail(string email, bool throwExceptionIfNotFound = true)
         {
-            await using var connection = await CreateAndOpenConnection();
+            var connection = connectionProvider.GetOpenedConnection();
 
             const string getSql = @"
 select id, email, email_verified, password, given_name, family_name, age, city, interests, is_active 
@@ -64,7 +64,7 @@ where email=@email;";
 
         public async Task<int> GetUsersCount()
         {
-            await using var connection = await CreateAndOpenConnection();
+            var connection = connectionProvider.GetOpenedConnection();
 
             const string getSql = @"
 select count(*) 
@@ -75,7 +75,7 @@ from user;";
 
         public async Task<IEnumerable<User>> GetUsers(int skip, int take)
         {
-            await using var connection = await CreateAndOpenConnection();
+            var connection = connectionProvider.GetOpenedConnection();
 
             const string getSql = @"
 select id, email, email_verified, password, given_name, family_name, age, city, interests, is_active 
@@ -88,7 +88,7 @@ limit @skip,@take;";
         
         public async Task<User> AddUser(User user)
         {
-            await using var connection = await CreateAndOpenConnection();
+            var connection = connectionProvider.GetOpenedConnection();
 
             const string insertSql = @"
 insert into user
@@ -118,18 +118,5 @@ SELECT LAST_INSERT_ID();";
             throw new NotImplementedException();
         }
 
-        private async Task<MySqlConnection> CreateAndOpenConnection()
-        {
-            try
-            {
-                var connection = new MySqlConnection(connectionString);
-                await connection.OpenAsync();
-                return connection;
-            }
-            catch (Exception e)
-            {
-                throw new ConnectionException(e);
-            }
-        }
     }
 }

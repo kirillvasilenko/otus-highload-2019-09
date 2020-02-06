@@ -18,7 +18,7 @@ namespace SocialNetwork.AspNet.Controllers
         private readonly IRegistrationService service;
         private readonly IAuthService authService;
 
-        public AuthController(IRegistrationService service, IAuthService authService)
+        public AuthController(IRegistrationService service)
         {
             this.service = service;
             this.authService = authService;
