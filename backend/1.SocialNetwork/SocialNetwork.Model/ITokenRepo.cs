@@ -9,8 +9,10 @@ namespace SocialNetwork.Model
         
         Task<RefreshToken> GetRefreshToken(string refreshToken);
 
-        Task ResetRefreshToken(string refreshToken);
+        Task DeleteRefreshToken(long tokenId);
+        
+        Task DeleteRefreshToken(string refreshToken);
 
-        Task ResetAllRefreshTokens(long userId);
+        Task DeleteAllRefreshTokens(long userId);
     }
 }

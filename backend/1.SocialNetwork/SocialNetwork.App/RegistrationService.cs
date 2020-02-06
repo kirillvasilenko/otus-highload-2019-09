@@ -69,7 +69,7 @@ namespace SocialNetwork.App
         private async Task<TokenDto> AuthenticateUser(long userId)
         {
             var token = tokenMaker.MakeToken(userId);
-            token.RefreshToken = await tokenRepo.AddRefreshToken(token.RefreshToken);
+            await tokenRepo.AddRefreshToken(token.RefreshToken);
             return token.ToDto(mapper);
         }
 

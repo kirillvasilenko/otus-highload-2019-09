@@ -1,5 +1,3 @@
-using System;
-using System.Data.Common;
 using System.Threading.Tasks;
 using Dapper;
 using Microsoft.Extensions.Logging;
@@ -16,13 +14,11 @@ namespace SocialNetwork.Repo.MySql
 
 
         private readonly IDbConnectionProvider connectionProvider;
-        private readonly ILogger<UsersRepoMySql> logger;
-
         
-        public TokenRepoMySql(IDbConnectionProvider connectionProvider, ILogger<UsersRepoMySql> logger)
+        
+        public TokenRepoMySql(IDbConnectionProvider connectionProvider)
         {
             this.connectionProvider = connectionProvider;
-            this.logger = logger;
         }
 
         public async Task<RefreshToken> AddRefreshToken(RefreshToken token)
@@ -46,20 +42,57 @@ SELECT LAST_INSERT_ID();";
             return token;
         }
 
-        public Task<RefreshToken> GetRefreshToken(string refreshToken)
+        public async Task<RefreshToken> GetRefreshToken(string refreshToken)
         {
-            throw new NotImplementedException();
+            var connection = connectionProvider.GetOpenedConnection();
+
+            const string getSql = @"
+select id, user_id, token, expiration_time 
+from refresh_token
+where token=@refreshToken;";
+            
+            var result = await connection.QuerySingleOrDefaultAsync<RefreshToken>(getSql, new {refreshToken});
+
+            if (result == null)
+            {
+                throw new ItemNotFoundException(refreshToken, nameof(RefreshToken));
+            }
+
+            return result;
         }
 
-        public Task ResetRefreshToken(string refreshToken)
+        public async Task DeleteRefreshToken(long tokenId)
         {
-            throw new NotImplementedException();
+            var connection = connectionProvider.GetOpenedConnection();
+
+            const string deleteSql = @"
+delete from refresh_token 
+where id=@tokenId;";
+            
+            await connection.ExecuteAsync(deleteSql, new {tokenId});
         }
 
-        public Task ResetAllRefreshTokens(long userId)
+        public async Task DeleteRefreshToken(string refreshToken)
         {
-            throw new NotImplementedException();
+            var connection = connectionProvider.GetOpenedConnection();
+
+            const string deleteSql = @"
+delete from refresh_token 
+where token=@refreshToken;";
+            
+            await connection.ExecuteAsync(deleteSql, new {refreshToken});
         }
-        
+
+        public async Task DeleteAllRefreshTokens(long userId)
+        {
+            var connection = connectionProvider.GetOpenedConnection();
+
+            const string deleteSql = @"
+delete from refresh_token 
+where user_id=@userId;";
+            
+            await connection.ExecuteAsync(deleteSql, new {userId});
+        }
+
     }
 }

@@ -6,15 +6,13 @@ namespace SocialNetwork.App
 {
     public interface IAuthService
     {
-        Task<TokenDto> AuthenticateUser(string email, string password);
+        Task<TokenDto> IssueToken(string email, string password);
 
-        Task<TokenDto> AuthenticateUser(UserDto user);
-        
-        Task<bool> ValidateCredentials(string username, string password);
+        Task<TokenDto> RefreshToken(string refreshToken);
 
-        Task<UserDto> FindByUsername(string username);
-        
-        Task<UserDto> FindById(long id);
+        Task ResetToken(string refreshToken);
+
+        Task ResetAllTokens(long userId);
 
     }
 }

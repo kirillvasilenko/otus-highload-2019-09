@@ -2,7 +2,7 @@ POST http://localhost:5010/api/auth/register
 Content-Type: application/json
 
 {
-  "email": "user4@example.com",
+  "email": "user6@example.com",
   "password": "string",
   "repeatedPassword": "string",
   "givenName": "Dich",
@@ -11,5 +11,21 @@ Content-Type: application/json
   "city": "Vzdrochniy",
   "interests": "Drinking"
 }
+
+###
+
+POST http://localhost:5010/api/auth/login?email=user6@example.com&password=string
+
+###
+
+POST http://localhost:5010/api/auth/token/refresh?refreshToken=Qda6ByhhB4UVbh/6VU8oDVUz9tnRLQrhPyINrgOnlPE=
+
+###
+
+DELETE http://localhost:5010/api/auth/token?refreshToken=O3i94gCiwgD5cujFfJoHdbfaQhbqQ45fY7b1Lxh4cTE=
+
+###
+
+DELETE http://localhost:5010/api/auth/token?userId=21
 
 ###
