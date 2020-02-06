@@ -2,7 +2,7 @@ POST http://localhost:5010/api/auth/register
 Content-Type: application/json
 
 {
-  "email": "user7@example.com",
+  "email": "user4@example.com",
   "password": "string",
   "repeatedPassword": "string",
   "givenName": "Dich",

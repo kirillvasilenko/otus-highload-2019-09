@@ -12,6 +12,7 @@ namespace SocialNetwork.Repo.MySql
                 .AddScoped(p => new DbConnectionControllerMySql(connectionString))
                 .AddScoped<IDbConnectionController>(p => p.GetService<DbConnectionControllerMySql>())
                 .AddScoped<IDbConnectionProvider>(p => p.GetService<DbConnectionControllerMySql>())
+                .AddScoped<ITransaction, Transaction>()
                 .AddScoped<IUsersRepo, UsersRepoMySql>()
                 .AddScoped<ITokenRepo, TokenRepoMySql>();
 

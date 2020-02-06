@@ -1,9 +1,9 @@
-using System.Data;
+using System.Data.Common;
 
 namespace SocialNetwork.Model
 {
     public interface IDbConnectionProvider
     {
-        IDbConnection GetOpenedConnection();
+        DbConnection GetOpenedConnection();
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Data;
+using System.Data.Common;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using SocialNetwork.Model;
@@ -53,7 +54,7 @@ namespace SocialNetwork.Repo.MySql
             if(disposed) throw new ObjectDisposedException(nameof(DbConnectionControllerMySql));
         }
 
-        public IDbConnection GetOpenedConnection()
+        public DbConnection GetOpenedConnection()
         {
             return connection;
         }

@@ -7,27 +7,10 @@ using SocialNetwork.Model;
 
 namespace SocialNetwork.App
 {
-    public static class DtoExtensions
-    {
-        public static UserDto ToDto(this User user, IMapper mapper)
-        {
-            return mapper.Map<UserDto>(user);
-        }
-        
-        public static TokenDto ToDto(this TokenBound token, IMapper mapper)
-        {
-            return mapper.Map<TokenDto>(token);
-        }
-        
-        public static User ToModel(this RegisterUserData userData, IMapper mapper)
-        {
-            return mapper.Map<User>(userData);
-        }
-    }
-    
     public class RegistrationService : IRegistrationService
     {
         private readonly IDbConnectionController connectionController;
+        private readonly ITransaction transaction;
         private readonly IUsersRepo usersRepo;
         private readonly ITokenRepo tokenRepo;
         private readonly IPasswordHasher passwordHasher;
@@ -36,6 +19,7 @@ namespace SocialNetwork.App
 
         public RegistrationService(
             IDbConnectionController connectionController,
+            ITransaction transaction,
             IUsersRepo usersRepo,
             ITokenRepo tokenRepo,
             IPasswordHasher passwordHasher,
@@ -43,6 +27,7 @@ namespace SocialNetwork.App
             IMapper mapper)
         {
             this.connectionController = connectionController;
+            this.transaction = transaction;
             this.usersRepo = usersRepo;
             this.tokenRepo = tokenRepo;
             this.passwordHasher = passwordHasher;
@@ -53,31 +38,32 @@ namespace SocialNetwork.App
         public async Task<RegistrationUserResult> RegisterUser(RegisterUserData newUser)
         {
             ValidatePassword(newUser);
-
-            var user = newUser.ToModel(mapper);
-            user.Password = passwordHasher.HashPassword(newUser.Password);
-
-            await using var tmp = await connectionController.OpenConnectionAsync();
-            try
-            {
-                user = await usersRepo.AddUser(user);
-            }
-            catch (ConnectionException)
-            {
-                throw;
-            }
-            catch (Exception e)
-            {
-                throw new UserRegistrationException(e.Message, e);
-            }
-
-            var token = await AuthenticateUser(user.Id);
+            var user = newUser.ToModel(mapper, passwordHasher);
             
-            return new RegistrationUserResult
+            await using var tmp = await connectionController.OpenConnectionAsync();
+            return await transaction.Run(async () =>
             {
-                User = user.ToDto(mapper),
-                Token = token
-            };
+                try
+                {
+                    user = await usersRepo.AddUser(user);
+                }
+                catch (ConnectionException)
+                {
+                    throw;
+                }
+                catch (Exception e)
+                {
+                    throw new UserRegistrationException(e.Message, e);
+                }
+
+                var token = await AuthenticateUser(user.Id);
+                
+                return new RegistrationUserResult
+                {
+                    User = user.ToDto(mapper),
+                    Token = token
+                };
+            });
         }
         
         private async Task<TokenDto> AuthenticateUser(long userId)
