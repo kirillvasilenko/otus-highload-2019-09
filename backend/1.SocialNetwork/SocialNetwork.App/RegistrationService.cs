@@ -7,28 +7,55 @@ using SocialNetwork.Model;
 
 namespace SocialNetwork.App
 {
+    public static class DtoExtensions
+    {
+        public static UserDto ToDto(this User user, IMapper mapper)
+        {
+            return mapper.Map<UserDto>(user);
+        }
+        
+        public static TokenDto ToDto(this TokenBound token, IMapper mapper)
+        {
+            return mapper.Map<TokenDto>(token);
+        }
+        
+        public static User ToModel(this RegisterUserData userData, IMapper mapper)
+        {
+            return mapper.Map<User>(userData);
+        }
+    }
+    
     public class RegistrationService : IRegistrationService
     {
-        private readonly IUsersRepo repo;
+        private readonly IUsersRepo usersRepo;
+        private readonly ITokenRepo tokenRepo;
         private readonly IPasswordHasher passwordHasher;
+        private readonly ITokenMaker tokenMaker;
         private readonly IMapper mapper;
 
-        public RegistrationService(IUsersRepo repo, IPasswordHasher passwordHasher, IMapper mapper)
+        public RegistrationService(
+            IUsersRepo usersRepo,
+            ITokenRepo tokenRepo,
+            IPasswordHasher passwordHasher,
+            ITokenMaker tokenMaker,
+            IMapper mapper)
         {
-            this.repo = repo;
+            this.usersRepo = usersRepo;
+            this.tokenRepo = tokenRepo;
             this.passwordHasher = passwordHasher;
+            this.tokenMaker = tokenMaker;
             this.mapper = mapper;
         }
         
-        public async Task<UserDto> RegisterUser(RegisterUserData newUser)
+        public async Task<RegistrationUserResult> RegisterUser(RegisterUserData newUser)
         {
             ValidatePassword(newUser);
 
-            var user = mapper.Map<User>(newUser);
+            var user = newUser.ToModel(mapper);
             user.Password = passwordHasher.HashPassword(newUser.Password);
             try
             {
-                user = await repo.AddUser(user);
+                user = await usersRepo.AddUser(user);
             }
             catch (ConnectionException)
             {
@@ -38,7 +65,21 @@ namespace SocialNetwork.App
             {
                 throw new UserRegistrationException(e.Message, e);
             }
-            return mapper.Map<UserDto>(user);
+
+            var token = await AuthenticateUser(user.Id);
+            
+            return new RegistrationUserResult
+            {
+                User = user.ToDto(mapper),
+                Token = token
+            };
+        }
+        
+        private async Task<TokenDto> AuthenticateUser(long userId)
+        {
+            var token = tokenMaker.MakeToken(userId);
+            token.RefreshToken = await tokenRepo.AddRefreshToken(token.RefreshToken);
+            return token.ToDto(mapper);
         }
 
         private void ValidatePassword(RegisterUserData newUser)

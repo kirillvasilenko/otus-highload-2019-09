@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Amursoft.PasswordHasher;
 using AutoMapper;
+using Microsoft.Extensions.Internal;
+using Microsoft.Extensions.Options;
 using SocialNetwork.App.Dtos;
 using SocialNetwork.Model;
 
@@ -16,37 +18,51 @@ namespace SocialNetwork.App
     
     public class AuthService:IAuthService
     {
-        private readonly IUsersRepo repo;
+        private readonly IUsersRepo usersRepo;
+        private readonly ITokenRepo tokenRepo;
         private readonly IPasswordHasher passwordHasher;
         private readonly IMapper mapper;
 
+        private readonly ITokenMaker tokenMaker;
+
         private readonly List<UserDto> usersCache = new List<UserDto>();
         
-        public AuthService(IUsersRepo repo, IPasswordHasher passwordHasher, IMapper mapper)
+        public AuthService(
+            IUsersRepo usersRepo,
+            ITokenRepo tokenRepo,
+            ITokenMaker tokenMaker,
+            IPasswordHasher passwordHasher,
+            IMapper mapper)
         {
-            this.repo = repo;
+            this.usersRepo = usersRepo;
+            this.tokenRepo = tokenRepo;
             this.passwordHasher = passwordHasher;
             this.mapper = mapper;
+
+            this.tokenMaker = tokenMaker;
         }
 
         public async Task<TokenDto> AuthenticateUser(string email, string password)
         {
-            var user = await repo.GetUserByEmail(email, throwExceptionIfNotFound:false);
+            var user = await usersRepo.GetUserByEmail(email, throwExceptionIfNotFound:false);
             if (user == null
                 || passwordHasher.VerifyHashedPassword(user.Password, password) != PasswordVerificationResult.Success)
             {
                 throw new AuthenticationException("Wrong email or password.");
             }
-            
-            
-            
-            
-            
+
+            return null;
+
+
+
+
         }
 
-        public Task<TokenDto> AuthenticateUser(UserDto user)
+        public async Task<TokenDto> AuthenticateUser(UserDto user)
         {
-            
+            var token = tokenMaker.MakeToken(user.Id);
+            token.RefreshToken = await tokenRepo.AddRefreshToken(token.RefreshToken);
+            return mapper.Map<TokenDto>(token);
         }
         
 
@@ -66,7 +82,7 @@ namespace SocialNetwork.App
             var authUser = usersCache.FirstOrDefault(x => x.Email == username);
             if (authUser == null)
             {
-                var user = await repo.GetUserByEmail(username);
+                var user = await usersRepo.GetUserByEmail(username);
                 authUser = mapper.Map<UserDto>(user);
                 usersCache.Add(authUser);
             }
@@ -78,7 +94,7 @@ namespace SocialNetwork.App
             var authUser = usersCache.FirstOrDefault(x => x.Id == id);
             if (authUser == null)
             {
-                var user = await repo.GetUser(id);
+                var user = await usersRepo.GetUser(id);
                 authUser = mapper.Map<UserDto>(user);
                 usersCache.Add(authUser);
             }

@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Security.Claims;
-using IdentityModel;
-
-namespace SocialNetwork.App.Dtos
+﻿namespace SocialNetwork.App.Dtos
 {
     /// <summary>
     /// User
@@ -58,17 +54,6 @@ namespace SocialNetwork.App.Dtos
         /// Gets or sets if the user is active.
         /// </summary>
         public bool IsActive { get; set; } = true;
-        
-        public ICollection<Claim> GetClaims()
-                {
-                    return new[]
-                    {
-                        new Claim(JwtClaimTypes.GivenName, GivenName ?? string.Empty),
-                        new Claim(JwtClaimTypes.FamilyName, FamilyName ?? string.Empty),
-                        new Claim(JwtClaimTypes.Email, Email ?? string.Empty),
-                        new Claim(JwtClaimTypes.EmailVerified, EmailVerified.ToString(), ClaimValueTypes.Boolean),
-                    };
-                }
-        
+
     }
 }

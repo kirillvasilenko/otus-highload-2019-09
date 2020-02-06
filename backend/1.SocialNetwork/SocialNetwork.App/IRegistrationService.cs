@@ -5,6 +5,6 @@ namespace SocialNetwork.App
 {
     public interface IRegistrationService
     {
-        Task<UserDto> RegisterUser(RegisterUserData newUser);        
+        Task<RegistrationUserResult> RegisterUser(RegisterUserData newUser);        
     }
 }

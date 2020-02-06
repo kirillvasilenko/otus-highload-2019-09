@@ -30,14 +30,13 @@ namespace SocialNetwork.AspNet.Controllers
         /// <param name="data">Data of new user.</param>
         /// <returns>Access token</returns>
         [HttpPost("register")]
-        [ProducesResponseType(typeof(TokenDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(RegistrationUserResult), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<TokenDto>> RegisterUser(RegisterUserData data)
+        public async Task<ActionResult<RegistrationUserResult>> RegisterUser(RegisterUserData data)
         {
-            var newUser = await service.RegisterUser(data);
-            var token = await authService.AuthenticateUser(newUser);
-            return Ok(token);
+            var result = await service.RegisterUser(data);
+            return Ok(result);
         }
     }
 }

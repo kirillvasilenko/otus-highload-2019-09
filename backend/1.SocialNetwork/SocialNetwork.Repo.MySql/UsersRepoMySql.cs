@@ -30,7 +30,7 @@ namespace SocialNetwork.Repo.MySql
 
             const string getSql = @"
 select id, email, email_verified, password, given_name, family_name, age, city, interests, is_active 
-from users.user
+from user
 where id=@id;";
             
             var result = await connection.QuerySingleOrDefaultAsync<User>(getSql, new {id});
@@ -49,7 +49,7 @@ where id=@id;";
 
             const string getSql = @"
 select id, email, email_verified, password, given_name, family_name, age, city, interests, is_active 
-from users.user
+from user
 where email=@email;";
             
             var result = await connection.QuerySingleOrDefaultAsync<User>(getSql, new {email});
@@ -68,7 +68,7 @@ where email=@email;";
 
             const string getSql = @"
 select count(*) 
-from users.user;";
+from user;";
            
             return await connection.QuerySingleAsync<int>(getSql);
         }
@@ -79,7 +79,7 @@ from users.user;";
 
             const string getSql = @"
 select id, email, email_verified, password, given_name, family_name, age, city, interests, is_active 
-from users.user
+from user
 limit @skip,@take;";
            
             return await connection.QueryAsync<User>(getSql, new { skip, take });
@@ -91,7 +91,7 @@ limit @skip,@take;";
             await using var connection = await CreateAndOpenConnection();
 
             const string insertSql = @"
-insert into users.user
+insert into user
 (email, email_verified, password, given_name, family_name, age, city, interests, is_active)
 values (@email, @email_verified, @password, @given_name, @family_name, @age, @city, @interests, @is_active);
 

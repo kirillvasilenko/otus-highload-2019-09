@@ -4,9 +4,8 @@ namespace SocialNetwork.Model
 {
     public interface ITokenRepo
     {
-        Task<TokenBound> IssueToken();
         
-        Task<RefreshToken> AddRefreshToken(RefreshToken refreshToken);
+        Task<RefreshToken> AddRefreshToken(RefreshToken token);
         
         Task<RefreshToken> GetRefreshToken(string refreshToken);
 

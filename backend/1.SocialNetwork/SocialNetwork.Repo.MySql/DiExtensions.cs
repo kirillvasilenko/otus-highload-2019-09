@@ -8,8 +8,11 @@ namespace SocialNetwork.Repo.MySql
     {
         public static IServiceCollection AddSocialNetworkRepoMySql(this IServiceCollection services, string connectionString)
         {
-            return services.AddTransient<IUsersRepo>(p =>
-                new UsersRepoMySql(connectionString, p.GetService<ILogger<UsersRepoMySql>>()));
+            return services
+                .AddTransient<IUsersRepo>(p =>
+                    new UsersRepoMySql(connectionString, p.GetService<ILogger<UsersRepoMySql>>()))
+                .AddTransient<ITokenRepo>(p =>
+                    new TokenRepoMySql(connectionString, p.GetService<ILogger<UsersRepoMySql>>()));
 
         }
     }
