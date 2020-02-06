@@ -11,7 +11,7 @@ namespace SocialNetwork.Model
 
         Task DeleteRefreshToken(long tokenId);
         
-        Task DeleteRefreshToken(string refreshToken);
+        Task DeleteRefreshToken(long userId, string refreshToken);
 
         Task DeleteAllRefreshTokens(long userId);
     }

@@ -72,15 +72,15 @@ where id=@tokenId;";
             await connection.ExecuteAsync(deleteSql, new {tokenId});
         }
 
-        public async Task DeleteRefreshToken(string refreshToken)
+        public async Task DeleteRefreshToken(long userId, string refreshToken)
         {
             var connection = connectionProvider.GetOpenedConnection();
 
             const string deleteSql = @"
 delete from refresh_token 
-where token=@refreshToken;";
+where token=@refreshToken and user_id=@userId;";
             
-            await connection.ExecuteAsync(deleteSql, new {refreshToken});
+            await connection.ExecuteAsync(deleteSql, new {refreshToken, userId});
         }
 
         public async Task DeleteAllRefreshTokens(long userId)

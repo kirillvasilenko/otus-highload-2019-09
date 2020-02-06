@@ -2,6 +2,7 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using IdentityModel;
 using Microsoft.Extensions.Internal;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -28,7 +29,7 @@ namespace SocialNetwork.Model
             
             var claims = new[]
             {
-                new Claim(JwtRegisteredClaimNames.Sub, userId.ToString())
+                new Claim(JwtClaimTypes.Subject, userId.ToString())
             };
 
             var signingKey = opts.GetSymmetricSecurityKey();

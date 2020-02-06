@@ -1,6 +1,7 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Text;
 using Amursoft.AspNetCore.TestAuthentication;
 using SocialNetwork.App;
 using Hellang.Middleware.ProblemDetails;
@@ -11,6 +12,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Logging;
+using Microsoft.IdentityModel.Tokens;
 using NSwag.Generation.Processors;
 using SocialNetwork.Model;
 using SocialNetwork.Repo.MySql;
@@ -32,13 +34,44 @@ namespace SocialNetwork.AspNet
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            
             IdentityModelEventSource.ShowPII = Config.GetSection("Logging").GetValue("ShowPII", false);
             
             services.AddControllers();
             
             ConfigureAuthentication(services);
             
+            ConfigureSwagger(services);
+            
+            services.AddSocialNetworkApp(Config.GetSection("Auth"));
+            services.AddSocialNetworkRepoMySql(Config.GetConnectionString("SocialNetworkDb"));
+
+            services.AddPhantomAmmoCollector(Config.GetSection("PhantomAmmoCollector"));
+            services.AddProblemDetails(opts =>
+            {
+                opts.Map<UserRegistrationException>(ex => new ExceptionProblemDetails(ex, StatusCodes.Status400BadRequest));
+                opts.Map<Exception>(ex => new ExceptionProblemDetails(ex, StatusCodes.Status500InternalServerError));
+            });
+        }
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app)
+        {
+            app.UseProblemDetails();
+            app.UsePhantomAmmoCollector();
+            
+            app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
+        }
+
+        private void ConfigureSwagger(IServiceCollection services)
+        {
             services.AddOpenApiDocument(config =>
             {
                 config.PostProcess = document =>
@@ -52,18 +85,8 @@ namespace SocialNetwork.AspNet
                     return true;
                 }));
             });
-            
-            services.AddSocialNetworkApp();
-            services.AddSocialNetworkRepoMySql(Config.GetConnectionString("SocialNetworkDb"));
-
-            services.AddPhantomAmmoCollector(Config.GetSection("PhantomAmmoCollector"));
-            services.AddProblemDetails(opts =>
-            {
-                opts.Map<UserRegistrationException>(ex => new ExceptionProblemDetails(ex, StatusCodes.Status400BadRequest));
-                opts.Map<Exception>(ex => new ExceptionProblemDetails(ex, StatusCodes.Status500InternalServerError));
-            });
         }
-
+        
         private void ConfigureAuthentication(IServiceCollection services)
         {
             if (Config.GetSection("Auth").GetValue("UseTestAuth", false))
@@ -83,35 +106,25 @@ namespace SocialNetwork.AspNet
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(options =>
             {
-                options.Authority = Config["Auth:AuthorityUrl"];
-                options.RequireHttpsMetadata = Config.GetSection("Auth").GetValue("RequireHttpsMetadata", true);
-
-                options.Audience = "webapp";
-
-                options.TokenValidationParameters.NameClaimType = JwtClaimTypes.Subject;
-                options.TokenValidationParameters.RoleClaimType = JwtClaimTypes.Role;
-
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidIssuer = Config[$"Auth:{nameof(TokenMakerOptions.Issuer)}"],
+                        
+                    ValidAudience = Config[$"Auth:{nameof(TokenMakerOptions.Audience)}"],
+                        
+                    ClockSkew = TimeSpan.FromSeconds(0),
+ 
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(
+                        Encoding.ASCII.GetBytes(
+                            Config[$"Auth:{nameof(TokenMakerOptions.Secret)}"])),
+                                
+                    NameClaimType = JwtClaimTypes.Subject,
+                    RoleClaimType = JwtClaimTypes.Role,
+                };
                 var tokenValidator = options.SecurityTokenValidators.OfType<JwtSecurityTokenHandler>().First();
                 tokenValidator.MapInboundClaims = false;
             });
-
-        }
-        
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app)
-        {
-            app.UseProblemDetails();
-            app.UsePhantomAmmoCollector();
-            
-            app.UseRouting();
-
-            app.UseAuthentication();
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
-            
-            app.UseOpenApi();
-            app.UseSwaggerUi3();
         }
     }
 }

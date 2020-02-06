@@ -5,11 +5,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using SocialNetwork.App;
 using SocialNetwork.App.Dtos;
+using SocialNetwork.AspNet.Utils;
 
 
 namespace SocialNetwork.AspNet.Controllers
 {
-    
     /// <summary>
     /// Auth service
     /// </summary>
@@ -77,27 +77,26 @@ namespace SocialNetwork.AspNet.Controllers
         }
 
         /// <summary>
-        /// Reset either an refresh token or all refresh tokens by userId.
+        /// Reset either specified refresh token or all refresh tokens for current user.
         /// </summary>
-        /// <param name="userId"></param>
         /// <param name="refreshToken"></param>
         /// <returns>Nothing</returns>
         [HttpDelete("token")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> ResetToken(
-            long? userId,
             string refreshToken)
         {
-            if (userId.HasValue)
+            if (!string.IsNullOrEmpty(refreshToken))
             {
-                await authSvc.ResetAllTokens(userId.Value);    
+                await authSvc.ResetToken(User.GetId(), refreshToken);
             }
-            else if (!string.IsNullOrEmpty(refreshToken))
+            else
             {
-                await authSvc.ResetToken(refreshToken);
+                await authSvc.ResetAllTokens(User.GetId());
             }
             
             return Ok();

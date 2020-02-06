@@ -18,14 +18,7 @@ POST http://localhost:5010/api/auth/login?email=user6@example.com&password=strin
 
 ###
 
-POST http://localhost:5010/api/auth/token/refresh?refreshToken=Qda6ByhhB4UVbh/6VU8oDVUz9tnRLQrhPyINrgOnlPE=
-
-###
-
-DELETE http://localhost:5010/api/auth/token?refreshToken=O3i94gCiwgD5cujFfJoHdbfaQhbqQ45fY7b1Lxh4cTE=
-
-###
-
-DELETE http://localhost:5010/api/auth/token?userId=21
+DELETE http://localhost:5010/api/auth/token
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyMSIsIm5iZiI6MTU4MTAyNjgzOCwiZXhwIjoxNTgxMDMwNDM4LCJpc3MiOiJobC1zb2NpYWxuZXR3b3JrMSIsImF1ZCI6ImhsLXNvY2lhbG5ldHdvcmsifQ.-DvihHSsQsM9IWhVVJ_DnrSewjZwx--iHiQBBdzAuEA
 
 ###

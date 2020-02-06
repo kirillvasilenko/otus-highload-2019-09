@@ -10,7 +10,7 @@ namespace SocialNetwork.App
 
         Task<TokenDto> RefreshToken(string refreshToken);
 
-        Task ResetToken(string refreshToken);
+        Task ResetToken(long userId, string refreshToken);
 
         Task ResetAllTokens(long userId);
 

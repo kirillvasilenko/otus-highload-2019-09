@@ -73,11 +73,11 @@ namespace SocialNetwork.App
             });
         }
 
-        public async Task ResetToken(string refreshToken)
+        public async Task ResetToken(long userId, string refreshToken)
         {
             await using var _ = await connectionController.OpenConnectionAsync();
             
-            await tokenRepo.DeleteRefreshToken(refreshToken);
+            await tokenRepo.DeleteRefreshToken(userId, refreshToken);
         }
 
         public async Task ResetAllTokens(long userId)

@@ -12,6 +12,7 @@
       <PackageReference Include="Amursoft.PasswordHasher" Version="0.1.0" />
       <PackageReference Include="AutoMapper" Version="9.0.0" />
       <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.1.1" />
     </ItemGroup>
 
 </Project>
