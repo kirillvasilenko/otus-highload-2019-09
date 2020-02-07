@@ -12,7 +12,7 @@
 
     <ItemGroup>
       <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
-      <PackageReference Include="Hellang.Middleware.ProblemDetails" Version="4.0.0" />
+      <PackageReference Include="Hellang.Middleware.ProblemDetails" Version="4.1.0" />
         <PackageReference Include="Amursoft.AspNetCore.TestAuth" Version="0.1.0" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.1" />
       <PackageReference Include="Serilog.AspNetCore" Version="3.2.0" />
