@@ -2,6 +2,9 @@ using System.Threading.Tasks;
 using Dapper;
 using Microsoft.Extensions.Logging;
 using SocialNetwork.Model;
+using SqlKata;
+using SqlKata.Compilers;
+using SqlKata.Execution;
 
 namespace SocialNetwork.Repo.MySql
 {
@@ -14,45 +17,33 @@ namespace SocialNetwork.Repo.MySql
 
 
         private readonly IDbConnectionProvider connectionProvider;
-        
-        
-        public TokenRepoMySql(IDbConnectionProvider connectionProvider)
+        private readonly ILogger<TokenRepoMySql> logger;
+
+
+        public TokenRepoMySql(IDbConnectionProvider connectionProvider, ILogger<TokenRepoMySql> logger)
         {
             this.connectionProvider = connectionProvider;
+            this.logger = logger;
         }
 
         public async Task<RefreshToken> AddRefreshToken(RefreshToken token)
         {
-            var connection = connectionProvider.GetOpenedConnection();
-            
-            const string insertSql = @"
-insert into refresh_token
-(user_id, token, expiration_time)
-values (@user_id, @token, @expiration_time);
-
-SELECT LAST_INSERT_ID();";
-            
-            var addedTokenId = await connection.QuerySingleAsync<long>(insertSql, new
+            token.Id = await Query().InsertGetIdAsync<long>(new
             {
                 user_id = token.UserId,
                 token = token.Token,
                 expiration_time = token.ExpirationTime
             });
-            token.Id = addedTokenId;
             return token;
         }
-
+        
         public async Task<RefreshToken> GetRefreshToken(string refreshToken)
         {
-            var connection = connectionProvider.GetOpenedConnection();
-
-            const string getSql = @"
-select id, user_id, token, expiration_time 
-from refresh_token
-where token=@refreshToken;";
+            var result = await Query()
+                .SelectRaw("id, user_id, token, expiration_time")
+                .Where("token", refreshToken)
+                .FirstOrDefaultAsync<RefreshToken>();
             
-            var result = await connection.QuerySingleOrDefaultAsync<RefreshToken>(getSql, new {refreshToken});
-
             if (result == null)
             {
                 throw new ItemNotFoundException(refreshToken, nameof(RefreshToken));
@@ -63,35 +54,37 @@ where token=@refreshToken;";
 
         public async Task DeleteRefreshToken(long tokenId)
         {
-            var connection = connectionProvider.GetOpenedConnection();
-
-            const string deleteSql = @"
-delete from refresh_token 
-where id=@tokenId;";
-            
-            await connection.ExecuteAsync(deleteSql, new {tokenId});
+            await Query().Where("id", tokenId).DeleteAsync();
         }
 
         public async Task DeleteRefreshToken(long userId, string refreshToken)
         {
-            var connection = connectionProvider.GetOpenedConnection();
-
-            const string deleteSql = @"
-delete from refresh_token 
-where token=@refreshToken and user_id=@userId;";
-            
-            await connection.ExecuteAsync(deleteSql, new {refreshToken, userId});
+            await Query()
+                .Where("token", refreshToken)
+                .Where("user_id", userId)
+                .DeleteAsync();
         }
 
         public async Task DeleteAllRefreshTokens(long userId)
         {
+            await Query()
+                .Where("user_id", userId)
+                .DeleteAsync();
+        }
+        
+        private Query Query(string tableName = "refresh_token")
+        {
             var connection = connectionProvider.GetOpenedConnection();
-
-            const string deleteSql = @"
-delete from refresh_token 
-where user_id=@userId;";
-            
-            await connection.ExecuteAsync(deleteSql, new {userId});
+            var db = new QueryFactory(connection, new MySqlCompiler())
+            {
+                Logger = LogQuery
+            };
+            return db.Query(tableName);
+        }
+        
+        private void LogQuery(SqlResult result)
+        {
+            logger.LogDebug(result.Sql);
         }
 
     }

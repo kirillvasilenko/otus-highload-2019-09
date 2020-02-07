@@ -55,6 +55,8 @@ namespace SocialNetwork.AspNet
             {
                 opts.Map<ItemNotFoundException>(ex => new StatusCodeProblemDetails(StatusCodes.Status404NotFound)
                     {Detail = ex.Message});
+                opts.Map<AuthenticationException>(ex => new StatusCodeProblemDetails(StatusCodes.Status400BadRequest)
+                    {Detail = ex.Message});
                 opts.Map<UserRegistrationException>(ex => new ExceptionProblemDetails(ex, StatusCodes.Status400BadRequest));
                 opts.Map<Exception>(ex => new ExceptionProblemDetails(ex, StatusCodes.Status500InternalServerError));
             });
