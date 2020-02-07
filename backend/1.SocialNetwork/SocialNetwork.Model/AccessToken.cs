@@ -1,8 +1,6 @@
-using System.Globalization;
-
 namespace SocialNetwork.Model
 {
-    public class RefreshToken
+    public class AccessToken
     {
         public long Id { get; set; }
         

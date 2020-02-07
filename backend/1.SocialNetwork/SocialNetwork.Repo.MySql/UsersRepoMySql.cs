@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Dapper;
 using Microsoft.Extensions.Logging;
-using MySql.Data.MySqlClient;
 using SocialNetwork.Model;
+using SqlKata;
+using SqlKata.Compilers;
+using SqlKata.Execution;
 
 namespace SocialNetwork.Repo.MySql
 {
@@ -29,8 +30,8 @@ namespace SocialNetwork.Repo.MySql
             var connection = connectionProvider.GetOpenedConnection();
 
             const string getSql = @"
-select id, email, email_verified, password, given_name, family_name, age, city, interests, is_active 
-from user
+select id, email, email_verified, password, given_name, family_name, age, city, interests, is_active
+from user 
 where id=@id;";
             
             var result = await connection.QuerySingleOrDefaultAsync<User>(getSql, new {id});
@@ -62,16 +63,59 @@ where email=@email;";
             return result;
         }
 
-        public async Task<int> GetUsersCount()
+        public async Task<int> GetUsersCount(GetUsersQuery queryParams)
+        {
+            var query = MakeGetUsersQuery(queryParams).AsCount();
+            
+            return await query.FirstAsync<int>();
+        }
+
+        private Query MakeGetUsersQuery(GetUsersQuery queryParams)
+        {
+            var query = Query("user");
+            if (queryParams.City.HasValue())
+            {
+                query.WhereRaw("lower(city)=?", queryParams.City.ToLower());
+            }
+            if (queryParams.FamilyName.HasValue())
+            {
+                query.WhereRaw("lower(family_name)=?", queryParams.FamilyName.ToLower());
+            }
+            if (queryParams.GivenName.HasValue())
+            {
+                query.WhereRaw("lower(given_name)=?", queryParams.GivenName.ToLower());
+            }
+            if (queryParams.Interests.HasValue())
+            {
+                query.WhereContains("interests", queryParams.Interests);
+            }
+            if (queryParams.MinAge.HasValue)
+            {
+                query.Where("age", ">=", queryParams.MinAge.Value);
+            }
+            if (queryParams.MaxAge.HasValue)
+            {
+                query.Where("age", "<=", queryParams.MaxAge.Value);
+            }
+
+            return query;
+        }
+
+        private Query Query(string tableName)
         {
             var connection = connectionProvider.GetOpenedConnection();
-
-            const string getSql = @"
-select count(*) 
-from user;";
-           
-            return await connection.QuerySingleAsync<int>(getSql);
+            var db = new QueryFactory(connection, new MySqlCompiler())
+            {
+                Logger = LogQuery
+            };
+            return db.Query(tableName);
         }
+
+        private void LogQuery(SqlResult result)
+        {
+            logger.LogDebug(result.Sql);
+        }
+        
 
         public async Task<IEnumerable<User>> GetUsers(int skip, int take)
         {
@@ -113,9 +157,15 @@ SELECT LAST_INSERT_ID();";
             return user;
         }
 
-        public Task<User> DeleteUser(long id)
+        public async Task DeleteUser(long userId)
         {
-            throw new NotImplementedException();
+            var connection = connectionProvider.GetOpenedConnection();
+
+            const string deleteSql = @"
+delete from user 
+where id=@userId;";
+            
+            await connection.ExecuteAsync(deleteSql, new {userId});
         }
 
     }

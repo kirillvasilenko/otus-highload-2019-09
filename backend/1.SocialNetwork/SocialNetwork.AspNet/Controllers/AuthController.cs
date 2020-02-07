@@ -68,6 +68,7 @@ namespace SocialNetwork.AspNet.Controllers
         [HttpPost("token/refresh")]
         [ProducesResponseType(typeof(TokenDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<TokenDto>> RefreshToken(
             [BindRequired]

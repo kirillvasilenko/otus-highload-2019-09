@@ -17,6 +17,7 @@ namespace SocialNetwork.App
                 .Configure<TokenMakerOptions>(authSection)
                 .AddScoped<ITokenMaker, TokenMaker>()
                 .AddScoped<IAuthService, AuthService>()
+                .AddScoped<IUsersService, UsersService>()
                 .AddScoped<IRegistrationService, RegistrationService>()
                 .AddPbkdf2PasswordHasher();
         }
