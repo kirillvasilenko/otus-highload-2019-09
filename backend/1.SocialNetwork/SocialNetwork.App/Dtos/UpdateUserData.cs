@@ -1,24 +1,11 @@
-﻿namespace SocialNetwork.App.Dtos
+namespace SocialNetwork.App.Dtos
 {
-    /// <summary>
-    /// User
-    /// </summary>
-    public class UserDto
+    public class UpdateUserData
     {
-        /// <summary>
-        /// Id
-        /// </summary>
-        public long Id { get; set; }
-        
         /// <summary>
         /// Email
         /// </summary>
         public string Email { get; set; }
-        
-        /// <summary>
-        /// True, if email was verified
-        /// </summary>
-        public bool EmailVerified{get;set;}
         
         /// <summary>
         /// Name
@@ -45,10 +32,5 @@
         /// </summary>
         public string Interests { get; set; }
         
-        /// <summary>
-        /// Gets or sets if the user is active.
-        /// </summary>
-        public bool IsActive { get; set; } = true;
-
     }
 }

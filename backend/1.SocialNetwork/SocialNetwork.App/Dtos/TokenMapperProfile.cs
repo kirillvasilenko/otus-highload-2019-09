@@ -3,9 +3,9 @@ using SocialNetwork.Model;
 
 namespace SocialNetwork.App.Dtos
 {
-    public class TokenDtoProfile : Profile
+    public class TokenMapperProfile : Profile
     {
-        public TokenDtoProfile()
+        public TokenMapperProfile()
         {
             CreateMap<TokenBound, TokenDto>()
                 .ForMember(x => x.AccessToken, opts => opts.MapFrom(m => m.AccessToken.Token))

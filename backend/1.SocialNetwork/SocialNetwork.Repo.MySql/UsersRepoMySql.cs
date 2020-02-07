@@ -27,15 +27,11 @@ namespace SocialNetwork.Repo.MySql
         
         public async Task<User> GetUser(long id, bool throwExceptionIfNotFound = true)
         {
-            var connection = connectionProvider.GetOpenedConnection();
-
-            const string getSql = @"
-select id, email, email_verified, password, given_name, family_name, age, city, interests, is_active
-from user 
-where id=@id;";
+            var result = await Query()
+                .SelectRaw("id, email, email_verified, password, given_name, family_name, age, city, interests, is_active")
+                .Where("id", id)
+                .FirstOrDefaultAsync<User>();
             
-            var result = await connection.QuerySingleOrDefaultAsync<User>(getSql, new {id});
-
             if (result == null && throwExceptionIfNotFound)
             {
                 throw new ItemNotFoundException(id, nameof(User));
@@ -46,15 +42,11 @@ where id=@id;";
 
         public async Task<User> GetUserByEmail(string email, bool throwExceptionIfNotFound = true)
         {
-            var connection = connectionProvider.GetOpenedConnection();
-
-            const string getSql = @"
-select id, email, email_verified, password, given_name, family_name, age, city, interests, is_active 
-from user
-where email=@email;";
+            var result = await Query()
+                .SelectRaw("id, email, email_verified, password, given_name, family_name, age, city, interests, is_active")
+                .Where("email", email)
+                .FirstOrDefaultAsync<User>();
             
-            var result = await connection.QuerySingleOrDefaultAsync<User>(getSql, new {email});
-
             if (result == null && throwExceptionIfNotFound)
             {
                 throw new ItemNotFoundException(email, nameof(User));
@@ -65,11 +57,58 @@ where email=@email;";
 
         public async Task<int> GetUsersCount(GetUsersQuery queryParams)
         {
-            var query = MakeGetUsersQuery(queryParams).AsCount();
-            
-            return await query.FirstAsync<int>();
+            return await MakeGetUsersQuery(queryParams)
+                .AsCount()
+                .FirstAsync<int>();
         }
 
+        public async Task<IEnumerable<User>> GetUsers(GetUsersQuery queryParams, int skip, int take)
+        {
+            return await MakeGetUsersQuery(queryParams)
+                .Skip(skip)
+                .Take(take)
+                .GetAsync<User>();
+        }
+        
+        
+        public async Task<User> AddUser(User user)
+        {
+            user.Id = await Query().InsertGetIdAsync<long>(new
+            {
+                email = user.Email,
+                email_verified = user.EmailVerified,
+                password = user.Password,
+                given_name = user.GivenName,
+                family_name = user.FamilyName,
+                age = user.Age,
+                city = user.City,
+                interests = user.Interests,
+                is_active = user.IsActive
+            });
+            return user;
+        }
+
+        public async Task<User> UpdateUser(User user)
+        {
+            await Query().Where("id", user.Id).UpdateAsync(new
+            {
+                email = user.Email,
+                given_name = user.GivenName,
+                family_name = user.FamilyName,
+                age = user.Age,
+                city = user.City,
+                interests = user.Interests
+            });
+            return user;
+        }
+
+        public async Task DeleteUser(long userId)
+        {
+            await Query().Where("id", userId).DeleteAsync();
+        }
+        
+        #region Private
+        
         private Query MakeGetUsersQuery(GetUsersQuery queryParams)
         {
             var query = Query("user");
@@ -101,7 +140,7 @@ where email=@email;";
             return query;
         }
 
-        private Query Query(string tableName)
+        private Query Query(string tableName = "user")
         {
             var connection = connectionProvider.GetOpenedConnection();
             var db = new QueryFactory(connection, new MySqlCompiler())
@@ -116,57 +155,7 @@ where email=@email;";
             logger.LogDebug(result.Sql);
         }
         
-
-        public async Task<IEnumerable<User>> GetUsers(int skip, int take)
-        {
-            var connection = connectionProvider.GetOpenedConnection();
-
-            const string getSql = @"
-select id, email, email_verified, password, given_name, family_name, age, city, interests, is_active 
-from user
-limit @skip,@take;";
-           
-            return await connection.QueryAsync<User>(getSql, new { skip, take });
-        }
-        
-        
-        public async Task<User> AddUser(User user)
-        {
-            var connection = connectionProvider.GetOpenedConnection();
-
-            const string insertSql = @"
-insert into user
-(email, email_verified, password, given_name, family_name, age, city, interests, is_active)
-values (@email, @email_verified, @password, @given_name, @family_name, @age, @city, @interests, @is_active);
-
-SELECT LAST_INSERT_ID();";
-            
-            var addedUserId = await connection.QuerySingleAsync<long>(insertSql, new
-            {
-                email = user.Email,
-                email_verified = user.EmailVerified,
-                password = user.Password,
-                given_name = user.GivenName,
-                family_name = user.FamilyName,
-                age = user.Age,
-                city = user.City,
-                interests = user.Interests,
-                is_active = user.IsActive
-            });
-            user.Id = addedUserId;
-            return user;
-        }
-
-        public async Task DeleteUser(long userId)
-        {
-            var connection = connectionProvider.GetOpenedConnection();
-
-            const string deleteSql = @"
-delete from user 
-where id=@userId;";
-            
-            await connection.ExecuteAsync(deleteSql, new {userId});
-        }
+        #endregion 
 
     }
 }

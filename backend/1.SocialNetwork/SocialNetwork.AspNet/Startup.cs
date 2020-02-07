@@ -9,8 +9,11 @@ using IdentityModel;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using NSwag.Generation.Processors;
@@ -35,8 +38,10 @@ namespace SocialNetwork.AspNet
         public void ConfigureServices(IServiceCollection services)
         {
             IdentityModelEventSource.ShowPII = Config.GetSection("Logging").GetValue("ShowPII", false);
+
             
             services.AddControllers();
+                //.AddNewtonsoftJson();
             
             ConfigureAuthentication(services);
             

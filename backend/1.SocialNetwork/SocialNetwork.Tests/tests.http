@@ -2,7 +2,7 @@ POST http://localhost:5010/api/auth/register
 Content-Type: application/json
 
 {
-  "email": "user6@example.com",
+  "email": "user7@example.com",
   "password": "string",
   "repeatedPassword": "string",
   "givenName": "Dich",
@@ -38,4 +38,33 @@ Content-Type: application/json
   "maxAge": 25,
   "minAge": 25
 }
+###
+
+GET http://localhost:5010/api/users?skip=0&take=10
+Content-Type: application/json
+
+{
+  "city": "vzdrochniy",
+  "givenName": "dich",
+  "familyName": "tristov",
+  "interests": "drinking",
+  "maxAge": 25,
+  "minAge": 25
+}
+
+###
+
+PUT http://localhost:5010/api/users/2
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwibmJmIjoxNTgxMDkyMjc0LCJleHAiOjE1ODEwOTU4NzQsImlzcyI6ImhsLXNvY2lhbG5ldHdvcmsxIiwiYXVkIjoiaGwtc29jaWFsbmV0d29yayJ9.5pt59AfP7c90uItzdqItDLpo3STwqc_fIkFVQcGo32Q
+
+{
+  "email": "user6@example.com",
+  "city": "Vzdrochniy1",
+  "givenName": "Dich",
+  "familyName": "Tristov",
+  "interests": "Drinking",
+  "Age": 26
+}
+
 ###

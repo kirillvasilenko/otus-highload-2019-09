@@ -22,5 +22,11 @@ namespace SocialNetwork.App.Dtos
             user.Password = passwordHasher.HashPassword(userData.Password);
             return user;
         }
+        
+        public static User MapTo(this UpdateUserData source, User target, IMapper mapper)
+        {
+            mapper.Map(source, target);
+            return target;
+        }
     }
 }
