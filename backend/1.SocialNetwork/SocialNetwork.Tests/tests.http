@@ -64,11 +64,15 @@ GET http://localhost:5010/api/users/test
 
 ###
 
-GET http://localhost:5010/api/users/test
+GET http://localhost:5010/api/backend/api/users/test
 
 ###
 
-GET http://localhost:5011/api/users/test
+GET http://localhost:5010/api/backend/api/users/test
+
+###
+
+GET http://localhost:5010/api/users/test
 
 ###
 
