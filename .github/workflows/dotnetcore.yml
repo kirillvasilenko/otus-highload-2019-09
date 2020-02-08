@@ -34,9 +34,9 @@ jobs:
       run: docker login -u ${GITHUB_ACTOR} -p ${{secrets.GITHUB_TOKEN}} docker.pkg.github.com
     - name: tag docker images
       run: |
-        docker tag "${SERVICE_NAME}" docker.pkg.github.com/${GITHUB_REPOSITORY}/${SERVICE_NAME}:latest
-        docker tag "${DBMIGRATOR_NAME}" docker.pkg.github.com/${GITHUB_REPOSITORY}/${DBMIGRATOR_NAME}:latest
+        docker tag "${SERVICE_NAME}" docker.pkg.github.com/${GITHUB_REPOSITORY,,}/${SERVICE_NAME}:latest
+        docker tag "${DBMIGRATOR_NAME}" docker.pkg.github.com/${GITHUB_REPOSITORY,,}/${DBMIGRATOR_NAME}:latest
     - name: publish to docker.pkg.github.com
       run: |
-        docker push docker.pkg.github.com/${GITHUB_REPOSITORY}/${SERVICE_NAME}:latest
-        docker push docker.pkg.github.com/${GITHUB_REPOSITORY}/${DBMIGRATOR_NAME}:latest
+        docker push docker.pkg.github.com/${GITHUB_REPOSITORY,,}/${SERVICE_NAME}:latest
+        docker push docker.pkg.github.com/${GITHUB_REPOSITORY,,}/${DBMIGRATOR_NAME}:latest
