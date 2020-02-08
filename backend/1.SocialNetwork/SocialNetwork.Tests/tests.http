@@ -58,8 +58,13 @@ GET http://localhost:5010/auth/api/users/1
 
 ###
 
-GET http://localhost:5010/auth/api/users/test
+GET http://localhost:5010/api/users/test
 
+
+
+###
+
+GET http://localhost:5010/api/users/test
 
 ###
 
