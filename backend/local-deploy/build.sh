@@ -19,8 +19,6 @@ dotnet restore ..
 buildService "socialnetwork" "../1.SocialNetwork/SocialNetwork.AspNet"
 buildService "socialnetwork-db-migrator" "../1.SocialNetwork/SocialNetwork.Migrator.MySql"
 
-docker build -t hl/nginx -f nginx/Dockerfile nginx
-
 
 
 

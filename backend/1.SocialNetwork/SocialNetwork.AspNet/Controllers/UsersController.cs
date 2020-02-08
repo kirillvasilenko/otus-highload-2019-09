@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -106,6 +107,12 @@ namespace SocialNetwork.AspNet.Controllers
                 return Forbid();
             }
             return await usersSvc.UpdateUser(userId, updateData);
+        }
+        
+        [HttpGet("test")]
+        public async Task<ActionResult> Dich()
+        {
+            return Ok(HttpContext.Request.Headers.Select(x => $"{x.Key}:{x.Value}").ToList());
         }
         
     }

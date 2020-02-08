@@ -44,13 +44,26 @@ Content-Type: application/json
 }
 ###
 
-GET http://localhost:5010/api/users?skip=0&take=10
+GET http://localhost:5011/auth/api/users?skip=0&take=10
 Content-Type: application/json
 
 {
   "maxAge": 30,
   "minAge": 20
 }
+
+###
+
+GET http://localhost:5010/auth/api/users/1
+
+###
+
+GET http://localhost:5010/auth/api/users/test
+
+
+###
+
+GET http://localhost:5011/api/users/test
 
 ###
 
