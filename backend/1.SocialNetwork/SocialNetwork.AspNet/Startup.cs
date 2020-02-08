@@ -42,7 +42,10 @@ namespace SocialNetwork.AspNet
 
             
             services.AddControllers();
-                //.AddNewtonsoftJson();
+            services.AddRouting(option =>
+            {
+                option.LowercaseUrls = true;
+            });
             
             ConfigureAuthentication(services);
             
@@ -75,6 +78,7 @@ namespace SocialNetwork.AspNet
             });
             
             app.UseRouting();
+            
 
             app.UseAuthentication();
             app.UseAuthorization();

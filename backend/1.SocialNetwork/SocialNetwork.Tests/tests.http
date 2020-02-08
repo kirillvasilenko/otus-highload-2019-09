@@ -76,6 +76,10 @@ GET http://localhost:5010/api/users/test
 
 ###
 
+GET http://ec2-13-48-105-127.eu-north-1.compute.amazonaws.com/api/users/1
+
+###
+
 PUT http://localhost:5010/api/users/2
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwibmJmIjoxNTgxMDkyMjc0LCJleHAiOjE1ODEwOTU4NzQsImlzcyI6ImhsLXNvY2lhbG5ldHdvcmsxIiwiYXVkIjoiaGwtc29jaWFsbmV0d29yayJ9.5pt59AfP7c90uItzdqItDLpo3STwqc_fIkFVQcGo32Q
