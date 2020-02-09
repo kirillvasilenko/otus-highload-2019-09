@@ -3,18 +3,23 @@ import MainLayout from "../components/mainLayout/mainLayout";
 import BaselineGrid from "../components/baselineGrid/baselineGrid";
 import {NextPage} from "next";
 
-const Index: NextPage<{ number: number }> = ({ number }) => {
+const Index: NextPage<{ number: number, api?: string }> = ({ number , api= "хуй"}) => {
   return (
     <MainLayout>
-      <h1>Index page: {number}</h1>
+      <h1>Index page: {api}</h1>
       <BaselineGrid />
     </MainLayout>
   );
 };
 
-Index.getInitialProps = async () => {
+Index.getInitialProps = async (ctx) => {
+  let api;
+  if (ctx.res) {
+    //@ts-ignore
+    api = process.apiUrl;
+  }
   const number = Math.random();
-  return { number };
+  return { number, api };
 };
 
 export default Index;

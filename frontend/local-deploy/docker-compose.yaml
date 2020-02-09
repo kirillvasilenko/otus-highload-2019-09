@@ -4,6 +4,9 @@ services:
     image: hl/frontend
     container_name: frontend
     restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      API_URL: huj
     ports:
       - 5020:3000
     networks:
