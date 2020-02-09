@@ -1,0 +1,14 @@
+version: "3"
+services:
+  socialnetwork:
+    image: hl/frontend
+    container_name: frontend
+    restart: unless-stopped
+    ports:
+      - 5020:3000
+    networks:
+      - socialnetwork
+
+networks:
+  socialnetwork:
+    driver: bridge

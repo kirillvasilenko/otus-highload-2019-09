@@ -3,7 +3,7 @@ import {
   AUTH_ROUTE,
   INDEX_ROUTE,
   REGISTRATION_ROUTE
-} from "../../pages/routes.constants";
+} from "../../routes.constants";
 import Link from "next/link";
 
 function Navigation(props: React.PropsWithChildren<any>) {
