@@ -1,23 +1,23 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import {
   AUTH_ROUTE,
   INDEX_ROUTE,
   REGISTRATION_ROUTE
-} from "pages/routes.constants";
+} from "../../pages/routes.constants";
+import Link from "next/link";
 
 function Navigation(props: React.PropsWithChildren<any>) {
   return (
     <nav>
       <ul>
         <li>
-          <Link to={INDEX_ROUTE}>Home</Link>
+          <Link href={INDEX_ROUTE}>Home</Link>
         </li>
         <li>
-          <Link to={AUTH_ROUTE}>Auth</Link>
+          <Link href={AUTH_ROUTE}>Auth</Link>
         </li>
         <li>
-          <Link to={REGISTRATION_ROUTE}>Registration</Link>
+          <Link href={REGISTRATION_ROUTE}>Registration</Link>
         </li>
       </ul>
     </nav>
