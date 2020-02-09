@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -111,10 +113,19 @@ namespace SocialNetwork.AspNet.Controllers
             return await usersSvc.UpdateUser(userId, updateData);
         }
         
-        [HttpGet("test")]
-        public async Task<ActionResult> Dich()
+        [HttpGet("headers")]
+        public ActionResult GetHeaders()
         {
-            return Ok(HttpContext.Request.Headers.Select(x => $"{x.Key}:{x.Value}").ToList());
+            // Request method, scheme, and path
+            var result = $"Request Method: {Request.Method}{Environment.NewLine}" +
+                         $"Request Scheme: {Request.Scheme}{Environment.NewLine}" +
+                         $"Request Path: {Request.Path}{Environment.NewLine}" +
+                         $"Request Headers:{Environment.NewLine}" +
+                         string.Join("", Request.Headers.Select(h => $"{h.Key}: {h.Value}{Environment.NewLine}")) +
+                         Environment.NewLine +
+                         $"Request RemoteIp: {HttpContext.Connection.RemoteIpAddress}";
+            
+            return Ok(result);
         }
         
     }

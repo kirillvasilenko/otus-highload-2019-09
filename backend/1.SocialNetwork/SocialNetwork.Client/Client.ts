@@ -385,19 +385,33 @@ export class Client {
 
     /**
      * Get users count.
+     * @param givenName (optional) 
+     * @param familyName (optional) 
+     * @param maxAge (optional) 
+     * @param minAge (optional) 
+     * @param city (optional) 
+     * @param interests (optional) 
      * @return Users count
      */
-    getUsersCount(query: GetUsersQuery): Promise<number> {
-        let url_ = this.baseUrl + "/api/users/count";
+    getUsersCount(givenName: string | null | undefined, familyName: string | null | undefined, maxAge: number | null | undefined, minAge: number | null | undefined, city: string | null | undefined, interests: string | null | undefined): Promise<number> {
+        let url_ = this.baseUrl + "/api/users/count?";
+        if (givenName !== undefined)
+            url_ += "GivenName=" + encodeURIComponent("" + givenName) + "&"; 
+        if (familyName !== undefined)
+            url_ += "FamilyName=" + encodeURIComponent("" + familyName) + "&"; 
+        if (maxAge !== undefined)
+            url_ += "MaxAge=" + encodeURIComponent("" + maxAge) + "&"; 
+        if (minAge !== undefined)
+            url_ += "MinAge=" + encodeURIComponent("" + minAge) + "&"; 
+        if (city !== undefined)
+            url_ += "City=" + encodeURIComponent("" + city) + "&"; 
+        if (interests !== undefined)
+            url_ += "Interests=" + encodeURIComponent("" + interests) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(query);
-
         let options_ = <RequestInit>{
-            body: content_,
             method: "GET",
             headers: {
-                "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
@@ -441,12 +455,30 @@ export class Client {
 
     /**
      * Get users.
+     * @param givenName (optional) 
+     * @param familyName (optional) 
+     * @param maxAge (optional) 
+     * @param minAge (optional) 
+     * @param city (optional) 
+     * @param interests (optional) 
      * @param skip (optional) 
      * @param take (optional) 
      * @return Users count
      */
-    getUsers(skip: number | undefined, take: number | undefined, query: GetUsersQuery): Promise<User[]> {
+    getUsers(givenName: string | null | undefined, familyName: string | null | undefined, maxAge: number | null | undefined, minAge: number | null | undefined, city: string | null | undefined, interests: string | null | undefined, skip: number | undefined, take: number | undefined): Promise<User[]> {
         let url_ = this.baseUrl + "/api/users?";
+        if (givenName !== undefined)
+            url_ += "GivenName=" + encodeURIComponent("" + givenName) + "&"; 
+        if (familyName !== undefined)
+            url_ += "FamilyName=" + encodeURIComponent("" + familyName) + "&"; 
+        if (maxAge !== undefined)
+            url_ += "MaxAge=" + encodeURIComponent("" + maxAge) + "&"; 
+        if (minAge !== undefined)
+            url_ += "MinAge=" + encodeURIComponent("" + minAge) + "&"; 
+        if (city !== undefined)
+            url_ += "City=" + encodeURIComponent("" + city) + "&"; 
+        if (interests !== undefined)
+            url_ += "Interests=" + encodeURIComponent("" + interests) + "&"; 
         if (skip === null)
             throw new Error("The parameter 'skip' cannot be null.");
         else if (skip !== undefined)
@@ -457,13 +489,9 @@ export class Client {
             url_ += "take=" + encodeURIComponent("" + take) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(query);
-
         let options_ = <RequestInit>{
-            body: content_,
             method: "GET",
             headers: {
-                "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
@@ -826,62 +854,6 @@ export interface IRegisterUserData {
     givenName?: string | undefined;
     familyName?: string | undefined;
     age?: number;
-    city?: string | undefined;
-    interests?: string | undefined;
-}
-
-export class GetUsersQuery implements IGetUsersQuery {
-    givenName?: string | undefined;
-    familyName?: string | undefined;
-    maxAge?: number | undefined;
-    minAge?: number | undefined;
-    city?: string | undefined;
-    interests?: string | undefined;
-
-    constructor(data?: IGetUsersQuery) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.givenName = _data["givenName"];
-            this.familyName = _data["familyName"];
-            this.maxAge = _data["maxAge"];
-            this.minAge = _data["minAge"];
-            this.city = _data["city"];
-            this.interests = _data["interests"];
-        }
-    }
-
-    static fromJS(data: any): GetUsersQuery {
-        data = typeof data === 'object' ? data : {};
-        let result = new GetUsersQuery();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["givenName"] = this.givenName;
-        data["familyName"] = this.familyName;
-        data["maxAge"] = this.maxAge;
-        data["minAge"] = this.minAge;
-        data["city"] = this.city;
-        data["interests"] = this.interests;
-        return data; 
-    }
-}
-
-export interface IGetUsersQuery {
-    givenName?: string | undefined;
-    familyName?: string | undefined;
-    maxAge?: number | undefined;
-    minAge?: number | undefined;
     city?: string | undefined;
     interests?: string | undefined;
 }
