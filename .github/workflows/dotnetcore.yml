@@ -1,0 +1,42 @@
+name: Build backend and publish docker images
+
+env:
+  SERVICE_FOLDER: backend/1.SocialNetwork/SocialNetwork.AspNet
+  DBMIGRATOR_FOLDER: backend/1.SocialNetwork/SocialNetwork.Migrator.MySql
+  SERVICE_NAME: socialnetwork
+  DBMIGRATOR_NAME: socialnetwork-db-migrator
+
+on: 
+  push:
+    branches: master
+
+jobs:
+  build:
+    name: publish
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: checkout
+      uses: actions/checkout@v1
+    - name: setup dotnetcore
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.100'
+    - name: local publish
+      run: |
+        dotnet publish -c Release ${SERVICE_FOLDER}
+        dotnet publish -c Release ${DBMIGRATOR_FOLDER}
+    - name: build docker images
+      run: |
+        docker build  -t "${SERVICE_NAME}" -f "${SERVICE_FOLDER}/Dockerfile" "${SERVICE_FOLDER}"
+        docker build  -t "${DBMIGRATOR_NAME}" -f "${DBMIGRATOR_FOLDER}/Dockerfile" "${DBMIGRATOR_FOLDER}"
+    - name: login in docker.pkg.github.com
+      run: docker login -u ${GITHUB_ACTOR} -p ${{secrets.GITHUB_TOKEN}} docker.pkg.github.com
+    - name: tag docker images
+      run: |
+        docker tag "${SERVICE_NAME}" docker.pkg.github.com/${GITHUB_REPOSITORY,,}/${SERVICE_NAME}:latest
+        docker tag "${DBMIGRATOR_NAME}" docker.pkg.github.com/${GITHUB_REPOSITORY,,}/${DBMIGRATOR_NAME}:latest
+    - name: publish to docker.pkg.github.com
+      run: |
+        docker push docker.pkg.github.com/${GITHUB_REPOSITORY,,}/${SERVICE_NAME}:latest
+        docker push docker.pkg.github.com/${GITHUB_REPOSITORY,,}/${DBMIGRATOR_NAME}:latest

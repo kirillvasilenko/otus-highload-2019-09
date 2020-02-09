@@ -16,7 +16,7 @@ services:
       - socialnetwork
   
   socialnetwork:
-    image: hl/socialnetwork
+    image: docker.pkg.github.com/kirillamurskiy/otus-highload-2019-09/socialnetwork:latest
     container_name: socialnetwork
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -31,7 +31,7 @@ services:
       - socialnetwork
 
   socialnetwork_db_migrator:
-    image: hl/socialnetwork-db-migrator
+    image: docker.pkg.github.com/kirillamurskiy/otus-highload-2019-09/socialnetwork-db-migrator:latest
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - SocialNetwork__Server=${SocialNetworkServer}
