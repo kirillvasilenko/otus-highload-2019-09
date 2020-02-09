@@ -17,4 +17,8 @@
       <ProjectReference Include="..\SocialNetwork.AspNet\SocialNetwork.AspNet.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <TypeScriptCompile Include="api.ts" />
+    </ItemGroup>
+
 </Project>

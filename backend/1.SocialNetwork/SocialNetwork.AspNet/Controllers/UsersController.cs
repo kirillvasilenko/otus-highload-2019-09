@@ -55,6 +55,7 @@ namespace SocialNetwork.AspNet.Controllers
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<int>> GetUsersCount(
+            [FromQuery]
             GetUsersQuery query)
         {
             return await usersSvc.GetUsersCount(query);
@@ -72,6 +73,7 @@ namespace SocialNetwork.AspNet.Controllers
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers(
+            [FromQuery]
             GetUsersQuery query,
             [DefaultValue(0)]
             [Range(0, int.MaxValue)]
