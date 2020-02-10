@@ -15,7 +15,6 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 12.x
-    - run: cd frontend
-    - run: yarn
-    - run: yarn build
-    - run: yarn --production
+    - run: yarn install --cwd frontend
+    - run: yarn --cwd frontend build
+    - run: yarn --cwd frontend --production
