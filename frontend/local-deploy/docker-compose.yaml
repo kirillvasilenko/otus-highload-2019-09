@@ -1,6 +1,6 @@
 version: "3"
 services:
-  socialnetwork:
+  frontend:
     image: hl/frontend
     container_name: frontend
     restart: unless-stopped
