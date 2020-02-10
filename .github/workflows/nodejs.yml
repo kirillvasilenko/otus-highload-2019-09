@@ -1,4 +1,4 @@
-name: Node.js CI
+name: Frontend CI
 
 env:
   FRONTEND_FOLDER: frontend
@@ -10,7 +10,7 @@ on:
     
 jobs:
   build:
-
+    name: Build and Publish
     runs-on: ubuntu-latest
 
     steps:
@@ -30,11 +30,11 @@ jobs:
     - name: Build docker image
       run: docker build -t "${IMAGE_NAME}" -f "${FRONTEND_FOLDER}/Dockerfile" "${FRONTEND_FOLDER}"
       
-    - name: login in docker.pkg.github.com
+    - name: Login in docker.pkg.github.com
       run: docker login -u ${GITHUB_ACTOR} -p ${{secrets.GITHUB_TOKEN}} docker.pkg.github.com
       
-    - name: tag docker images
+    - name: Tag docker images
       run: docker tag "${IMAGE_NAME}" docker.pkg.github.com/${GITHUB_REPOSITORY,,}/${IMAGE_NAME}:latest
         
-    - name: publish to docker.pkg.github.com
+    - name: Publish to docker.pkg.github.com
       run: docker push docker.pkg.github.com/${GITHUB_REPOSITORY,,}/${IMAGE_NAME}:latest
