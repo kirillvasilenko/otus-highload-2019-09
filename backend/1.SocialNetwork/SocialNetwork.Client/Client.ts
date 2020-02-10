@@ -465,7 +465,7 @@ export class Client {
      * @param take (optional) 
      * @return Users count
      */
-    getUsers(givenName: string | null | undefined, familyName: string | null | undefined, maxAge: number | null | undefined, minAge: number | null | undefined, city: string | null | undefined, interests: string | null | undefined, skip: number | undefined, take: number | undefined): Promise<User[]> {
+    getUsers(givenName: string | null | undefined, familyName: string | null | undefined, maxAge: number | null | undefined, minAge: number | null | undefined, city: string | null | undefined, interests: string | null | undefined, skip: number | undefined, take: number | undefined): Promise<UserDto[]> {
         let url_ = this.baseUrl + "/api/users?";
         if (givenName !== undefined)
             url_ += "GivenName=" + encodeURIComponent("" + givenName) + "&"; 
@@ -501,7 +501,7 @@ export class Client {
         });
     }
 
-    protected processGetUsers(response: Response): Promise<User[]> {
+    protected processGetUsers(response: Response): Promise<UserDto[]> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
@@ -511,7 +511,7 @@ export class Client {
             if (Array.isArray(resultData200)) {
                 result200 = [] as any;
                 for (let item of resultData200)
-                    result200!.push(User.fromJS(item));
+                    result200!.push(UserDto.fromJS(item));
             }
             return result200;
             });
@@ -534,11 +534,11 @@ export class Client {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<User[]>(<any>null);
+        return Promise.resolve<UserDto[]>(<any>null);
     }
 
-    dich(): Promise<FileResponse> {
-        let url_ = this.baseUrl + "/api/users/test";
+    getHeaders(): Promise<FileResponse> {
+        let url_ = this.baseUrl + "/api/users/headers";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = <RequestInit>{
@@ -549,11 +549,11 @@ export class Client {
         };
 
         return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processDich(_response);
+            return this.processGetHeaders(_response);
         });
     }
 
-    protected processDich(response: Response): Promise<FileResponse> {
+    protected processGetHeaders(response: Response): Promise<FileResponse> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200 || status === 206) {
@@ -856,78 +856,6 @@ export interface IRegisterUserData {
     age?: number;
     city?: string | undefined;
     interests?: string | undefined;
-}
-
-export class User implements IUser {
-    id?: number;
-    email?: string | undefined;
-    emailVerified?: boolean;
-    password?: string | undefined;
-    givenName?: string | undefined;
-    familyName?: string | undefined;
-    age?: number;
-    city?: string | undefined;
-    interests?: string | undefined;
-    isActive?: boolean;
-
-    constructor(data?: IUser) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.email = _data["email"];
-            this.emailVerified = _data["emailVerified"];
-            this.password = _data["password"];
-            this.givenName = _data["givenName"];
-            this.familyName = _data["familyName"];
-            this.age = _data["age"];
-            this.city = _data["city"];
-            this.interests = _data["interests"];
-            this.isActive = _data["isActive"];
-        }
-    }
-
-    static fromJS(data: any): User {
-        data = typeof data === 'object' ? data : {};
-        let result = new User();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["email"] = this.email;
-        data["emailVerified"] = this.emailVerified;
-        data["password"] = this.password;
-        data["givenName"] = this.givenName;
-        data["familyName"] = this.familyName;
-        data["age"] = this.age;
-        data["city"] = this.city;
-        data["interests"] = this.interests;
-        data["isActive"] = this.isActive;
-        return data; 
-    }
-}
-
-export interface IUser {
-    id?: number;
-    email?: string | undefined;
-    emailVerified?: boolean;
-    password?: string | undefined;
-    givenName?: string | undefined;
-    familyName?: string | undefined;
-    age?: number;
-    city?: string | undefined;
-    interests?: string | undefined;
-    isActive?: boolean;
 }
 
 export class UpdateUserData implements IUpdateUserData {
