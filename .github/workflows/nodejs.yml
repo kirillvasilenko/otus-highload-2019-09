@@ -1,5 +1,9 @@
 name: Node.js CI
 
+env:
+  FRONTEND_FOLDER: frontend
+  IMAGE_NAME: frontend
+
 on: 
   push:
     branches: master
@@ -10,11 +14,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout
+      uses: actions/checkout@v2
     - name: Use Node.js 12.x
       uses: actions/setup-node@v1
       with:
         node-version: 12.x
-    - run: yarn install --cwd frontend
-    - run: yarn --cwd frontend build
-    - run: yarn --cwd frontend --production
+    - name: Install dependencies
+      run: yarn install --cwd "${FRONTEND_FOLDER}"
+    - name: Build
+      run: yarn --cwd "${FRONTEND_FOLDER}" build
+    - name: Delete dev dependencies
+      run: yarn --cwd "${FRONTEND_FOLDER}" --production
+      
+    - name: Build docker image
+      run: docker build -t "${IMAGE_NAME}" -f "${FRONTEND_FOLDER}/Dockerfile" "${FRONTEND_FOLDER}"
