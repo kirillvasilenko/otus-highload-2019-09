@@ -13,7 +13,7 @@ namespace SocialNetwork.App
 
         Task<int> GetUsersCount(GetUsersQuery query);
         
-        Task<IEnumerable<User>> GetUsers(GetUsersQuery query, int skip, int take);
+        Task<IEnumerable<UserDto>> GetUsers(GetUsersQuery query, int skip, int take);
 
     }
 }

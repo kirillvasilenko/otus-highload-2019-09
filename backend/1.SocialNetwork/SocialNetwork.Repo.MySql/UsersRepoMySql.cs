@@ -65,6 +65,7 @@ namespace SocialNetwork.Repo.MySql
         public async Task<IEnumerable<User>> GetUsers(GetUsersQuery queryParams, int skip, int take)
         {
             return await MakeGetUsersQuery(queryParams)
+                .OrderBy("id")
                 .Skip(skip)
                 .Take(take)
                 .GetAsync<User>();
@@ -111,7 +112,7 @@ namespace SocialNetwork.Repo.MySql
         
         private Query MakeGetUsersQuery(GetUsersQuery queryParams)
         {
-            var query = Query("user");
+            var query = Query();
             if (queryParams.City.HasValue())
             {
                 query.WhereRaw("lower(city)=?", queryParams.City.ToLower());

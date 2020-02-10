@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using SocialNetwork.App.Dtos;
@@ -48,10 +49,11 @@ namespace SocialNetwork.App
             return await repo.GetUsersCount(query);
         }
 
-        public async Task<IEnumerable<User>> GetUsers(GetUsersQuery query, int skip, int take)
+        public async Task<IEnumerable<UserDto>> GetUsers(GetUsersQuery query, int skip, int take)
         {
             await using var _ = await connectionController.OpenConnectionAsync();
-            return await repo.GetUsers(query, skip, take);
+            return (await repo.GetUsers(query, skip, take))
+                .Select(x => x.ToDto(mapper));
         }
     }
 }

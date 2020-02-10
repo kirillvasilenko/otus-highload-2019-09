@@ -71,10 +71,10 @@ namespace SocialNetwork.AspNet.Controllers
         /// <param name="take"></param>
         /// <returns>Users count</returns>
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<User>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<UserDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers(
+        public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers(
             [FromQuery]
             GetUsersQuery query,
             [DefaultValue(0)]
