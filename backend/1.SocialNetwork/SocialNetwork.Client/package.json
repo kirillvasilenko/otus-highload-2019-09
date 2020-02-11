@@ -13,8 +13,8 @@
   },
   "author": "",
   "license": "ISC",
-  "files": ["Client.js", "Client.d.ts"],
-  "publishConfig": {
-    "registry":"https://npm.pkg.github.com/"
-  }
+  "files": [
+    "Client.js",
+    "Client.d.ts"
+  ]
 }
