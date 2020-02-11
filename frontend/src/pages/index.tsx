@@ -12,7 +12,7 @@ const Index: NextPage = ({  }) => {
 
   useEffect(() => {
     const fetch = async () => {
-      const users = await apiClient.getUsers(null,null,null,null,null,null,0,10);
+      const users = await apiClient.getUsers(undefined,undefined,undefined,undefined,undefined,undefined,0,10);
       setUsers(users);
     };
     fetch();
