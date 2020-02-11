@@ -20,6 +20,7 @@ jobs:
     - name: Use Node.js 12.x
       uses: actions/setup-node@v1
       with:
+        always-auth: true
         node-version: 12.x
         registry-url: 'https://npm.pkg.github.com'
         scope: '@KirillAmurskiy'
@@ -34,7 +35,7 @@ jobs:
       run: yarn --cwd "${CLIENT_FOLDER}" pack
 
     - name: Publish
-      run: yarn --cwd "${CLIENT_FOLDER}" publish
+      run: yarn --cwd "${CLIENT_FOLDER}" publish --access public
       env:
         NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
