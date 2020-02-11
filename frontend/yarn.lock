@@ -2,11 +2,6 @@
 # yarn lockfile v1
 
 
-"@KirillAmurskiy/socialnetwork-client@0.1.1":
-  version "0.1.1"
-  resolved "https://npm.pkg.github.com/download/@KirillAmurskiy/socialnetwork-client/0.1.1/1c3d3f29497fa06ce23092a030c4297d23c285cb98ed8d5cd416cc6266a7c8ad#5bf5dbb176b425dc3cf9d6175968dddd0323c2e6"
-  integrity sha512-CLhzCL3VLbtqVrJz1q/DILdH5lV6rLkcQCiQW0Bs453iRVi+bv7EH2V3S8GjoK27CKxHAdwDtYgrvDNqGpgQJQ==
-
 "@ampproject/toolbox-core@^1.1.1":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@ampproject/toolbox-core/-/toolbox-core-1.1.1.tgz#540c8f3ab0f5d1faa1ba35282cd5f5f3f0e16a76"
@@ -893,6 +888,12 @@
     "@types/istanbul-lib-coverage" "^2.0.0"
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
+
+"@kirillamurskiy/socialnetwork-client@0.1.1":
+  name "@KirillAmurskiy/socialnetwork-client"
+  version "0.1.1"
+  resolved "https://npm.pkg.github.com/download/@kirillamurskiy/socialnetwork-client/0.1.1/1c3d3f29497fa06ce23092a030c4297d23c285cb98ed8d5cd416cc6266a7c8ad#5bf5dbb176b425dc3cf9d6175968dddd0323c2e6"
+  integrity sha512-CLhzCL3VLbtqVrJz1q/DILdH5lV6rLkcQCiQW0Bs453iRVi+bv7EH2V3S8GjoK27CKxHAdwDtYgrvDNqGpgQJQ==
 
 "@types/classnames@^2.2.9":
   version "2.2.9"
