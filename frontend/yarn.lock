@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@KirillAmurskiy/socialnetwork-client@0.1.0":
-  version "0.1.0"
-  resolved "https://npm.pkg.github.com/download/@KirillAmurskiy/socialnetwork-client/0.1.0/ca94d3288edfa388e73a49516c25c1f66f831920f1d5acd10a5dee46df856691#2c58ccbbc025a43e70efb86fc14d7e0eccfeebbb"
-  integrity sha512-9yuf4CjIQYdZC81EYqJClZdLNV14aQwWx5aKgF/jVVPZsNyDxX87abqx5bx9KuHSQTq/xOaBIYmpKxOcuiAAlA==
+"@KirillAmurskiy/socialnetwork-client@0.1.1":
+  version "0.1.1"
+  resolved "https://npm.pkg.github.com/download/@KirillAmurskiy/socialnetwork-client/0.1.1/1c3d3f29497fa06ce23092a030c4297d23c285cb98ed8d5cd416cc6266a7c8ad#5bf5dbb176b425dc3cf9d6175968dddd0323c2e6"
+  integrity sha512-CLhzCL3VLbtqVrJz1q/DILdH5lV6rLkcQCiQW0Bs453iRVi+bv7EH2V3S8GjoK27CKxHAdwDtYgrvDNqGpgQJQ==
 
 "@ampproject/toolbox-core@^1.1.1":
   version "1.1.1"
