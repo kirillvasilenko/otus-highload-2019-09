@@ -11,13 +11,13 @@ function Navigation(props: React.PropsWithChildren<any>) {
     <nav>
       <ul>
         <li>
-          <Link href={INDEX_ROUTE}>Home</Link>
+          <Link href={INDEX_ROUTE}><a>Home</a></Link>
         </li>
         <li>
-          <Link href={AUTH_ROUTE}>Auth</Link>
+          <Link href={AUTH_ROUTE}><a>Auth</a></Link>
         </li>
         <li>
-          <Link href={REGISTRATION_ROUTE}>Registration</Link>
+          <Link href={REGISTRATION_ROUTE}><a>Registration</a></Link>
         </li>
       </ul>
     </nav>
