@@ -48,22 +48,19 @@ export class Client {
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = RegistrationUserResult.fromJS(resultData200);
+            result200 = _responseText === "" ? null : <RegistrationUserResult>JSON.parse(_responseText, this.jsonParseReviver);
             return result200;
             });
         } else if (status === 400) {
             return response.text().then((_responseText) => {
             let result400: any = null;
-            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result400 = ProblemDetails.fromJS(resultData400);
+            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
             return throwException("A server side error occurred.", status, _responseText, _headers, result400);
             });
         } else if (status === 500) {
             return response.text().then((_responseText) => {
             let result500: any = null;
-            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result500 = ProblemDetails.fromJS(resultData500);
+            result500 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
             return throwException("A server side error occurred.", status, _responseText, _headers, result500);
             });
         } else if (status !== 200 && status !== 204) {
@@ -108,22 +105,19 @@ export class Client {
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = TokenDto.fromJS(resultData200);
+            result200 = _responseText === "" ? null : <TokenDto>JSON.parse(_responseText, this.jsonParseReviver);
             return result200;
             });
         } else if (status === 400) {
             return response.text().then((_responseText) => {
             let result400: any = null;
-            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result400 = ProblemDetails.fromJS(resultData400);
+            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
             return throwException("A server side error occurred.", status, _responseText, _headers, result400);
             });
         } else if (status === 500) {
             return response.text().then((_responseText) => {
             let result500: any = null;
-            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result500 = ProblemDetails.fromJS(resultData500);
+            result500 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
             return throwException("A server side error occurred.", status, _responseText, _headers, result500);
             });
         } else if (status !== 200 && status !== 204) {
@@ -164,29 +158,25 @@ export class Client {
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = TokenDto.fromJS(resultData200);
+            result200 = _responseText === "" ? null : <TokenDto>JSON.parse(_responseText, this.jsonParseReviver);
             return result200;
             });
         } else if (status === 400) {
             return response.text().then((_responseText) => {
             let result400: any = null;
-            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result400 = ProblemDetails.fromJS(resultData400);
+            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
             return throwException("A server side error occurred.", status, _responseText, _headers, result400);
             });
         } else if (status === 404) {
             return response.text().then((_responseText) => {
             let result404: any = null;
-            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result404 = ProblemDetails.fromJS(resultData404);
+            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
             return throwException("A server side error occurred.", status, _responseText, _headers, result404);
             });
         } else if (status === 500) {
             return response.text().then((_responseText) => {
             let result500: any = null;
-            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result500 = ProblemDetails.fromJS(resultData500);
+            result500 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
             return throwException("A server side error occurred.", status, _responseText, _headers, result500);
             });
         } else if (status !== 200 && status !== 204) {
@@ -229,22 +219,19 @@ export class Client {
         } else if (status === 400) {
             return response.text().then((_responseText) => {
             let result400: any = null;
-            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result400 = ProblemDetails.fromJS(resultData400);
+            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
             return throwException("A server side error occurred.", status, _responseText, _headers, result400);
             });
         } else if (status === 403) {
             return response.text().then((_responseText) => {
             let result403: any = null;
-            let resultData403 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result403 = ProblemDetails.fromJS(resultData403);
+            result403 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
             return throwException("A server side error occurred.", status, _responseText, _headers, result403);
             });
         } else if (status === 500) {
             return response.text().then((_responseText) => {
             let result500: any = null;
-            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result500 = ProblemDetails.fromJS(resultData500);
+            result500 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
             return throwException("A server side error occurred.", status, _responseText, _headers, result500);
             });
         } else if (status !== 200 && status !== 204) {
@@ -284,29 +271,25 @@ export class Client {
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = UserDto.fromJS(resultData200);
+            result200 = _responseText === "" ? null : <UserDto>JSON.parse(_responseText, this.jsonParseReviver);
             return result200;
             });
         } else if (status === 400) {
             return response.text().then((_responseText) => {
             let result400: any = null;
-            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result400 = ProblemDetails.fromJS(resultData400);
+            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
             return throwException("A server side error occurred.", status, _responseText, _headers, result400);
             });
         } else if (status === 404) {
             return response.text().then((_responseText) => {
             let result404: any = null;
-            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result404 = ProblemDetails.fromJS(resultData404);
+            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
             return throwException("A server side error occurred.", status, _responseText, _headers, result404);
             });
         } else if (status === 500) {
             return response.text().then((_responseText) => {
             let result500: any = null;
-            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result500 = ProblemDetails.fromJS(resultData500);
+            result500 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
             return throwException("A server side error occurred.", status, _responseText, _headers, result500);
             });
         } else if (status !== 200 && status !== 204) {
@@ -350,29 +333,25 @@ export class Client {
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = UserDto.fromJS(resultData200);
+            result200 = _responseText === "" ? null : <UserDto>JSON.parse(_responseText, this.jsonParseReviver);
             return result200;
             });
         } else if (status === 400) {
             return response.text().then((_responseText) => {
             let result400: any = null;
-            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result400 = ProblemDetails.fromJS(resultData400);
+            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
             return throwException("A server side error occurred.", status, _responseText, _headers, result400);
             });
         } else if (status === 403) {
             return response.text().then((_responseText) => {
             let result403: any = null;
-            let resultData403 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result403 = ProblemDetails.fromJS(resultData403);
+            result403 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
             return throwException("A server side error occurred.", status, _responseText, _headers, result403);
             });
         } else if (status === 500) {
             return response.text().then((_responseText) => {
             let result500: any = null;
-            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result500 = ProblemDetails.fromJS(resultData500);
+            result500 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
             return throwException("A server side error occurred.", status, _responseText, _headers, result500);
             });
         } else if (status !== 200 && status !== 204) {
@@ -427,22 +406,19 @@ export class Client {
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            result200 = _responseText === "" ? null : <number>JSON.parse(_responseText, this.jsonParseReviver);
             return result200;
             });
         } else if (status === 400) {
             return response.text().then((_responseText) => {
             let result400: any = null;
-            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result400 = ProblemDetails.fromJS(resultData400);
+            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
             return throwException("A server side error occurred.", status, _responseText, _headers, result400);
             });
         } else if (status === 500) {
             return response.text().then((_responseText) => {
             let result500: any = null;
-            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result500 = ProblemDetails.fromJS(resultData500);
+            result500 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
             return throwException("A server side error occurred.", status, _responseText, _headers, result500);
             });
         } else if (status !== 200 && status !== 204) {
@@ -507,26 +483,19 @@ export class Client {
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(UserDto.fromJS(item));
-            }
+            result200 = _responseText === "" ? null : <UserDto[]>JSON.parse(_responseText, this.jsonParseReviver);
             return result200;
             });
         } else if (status === 400) {
             return response.text().then((_responseText) => {
             let result400: any = null;
-            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result400 = ProblemDetails.fromJS(resultData400);
+            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
             return throwException("A server side error occurred.", status, _responseText, _headers, result400);
             });
         } else if (status === 500) {
             return response.text().then((_responseText) => {
             let result500: any = null;
-            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result500 = ProblemDetails.fromJS(resultData500);
+            result500 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
             return throwException("A server side error occurred.", status, _responseText, _headers, result500);
             });
         } else if (status !== 200 && status !== 204) {
@@ -570,103 +539,12 @@ export class Client {
     }
 }
 
-export class RegistrationUserResult implements IRegistrationUserResult {
-    user?: UserDto | undefined;
-    token?: TokenDto | undefined;
-
-    constructor(data?: IRegistrationUserResult) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.user = _data["user"] ? UserDto.fromJS(_data["user"]) : <any>undefined;
-            this.token = _data["token"] ? TokenDto.fromJS(_data["token"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): RegistrationUserResult {
-        data = typeof data === 'object' ? data : {};
-        let result = new RegistrationUserResult();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["user"] = this.user ? this.user.toJSON() : <any>undefined;
-        data["token"] = this.token ? this.token.toJSON() : <any>undefined;
-        return data; 
-    }
-}
-
-export interface IRegistrationUserResult {
+export interface RegistrationUserResult {
     user?: UserDto | undefined;
     token?: TokenDto | undefined;
 }
 
-export class UserDto implements IUserDto {
-    id?: number;
-    email?: string | undefined;
-    emailVerified?: boolean;
-    givenName?: string | undefined;
-    familyName?: string | undefined;
-    age?: number;
-    city?: string | undefined;
-    interests?: string | undefined;
-    isActive?: boolean;
-
-    constructor(data?: IUserDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.email = _data["email"];
-            this.emailVerified = _data["emailVerified"];
-            this.givenName = _data["givenName"];
-            this.familyName = _data["familyName"];
-            this.age = _data["age"];
-            this.city = _data["city"];
-            this.interests = _data["interests"];
-            this.isActive = _data["isActive"];
-        }
-    }
-
-    static fromJS(data: any): UserDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new UserDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["email"] = this.email;
-        data["emailVerified"] = this.emailVerified;
-        data["givenName"] = this.givenName;
-        data["familyName"] = this.familyName;
-        data["age"] = this.age;
-        data["city"] = this.city;
-        data["interests"] = this.interests;
-        data["isActive"] = this.isActive;
-        return data; 
-    }
-}
-
-export interface IUserDto {
+export interface UserDto {
     id?: number;
     email?: string | undefined;
     emailVerified?: boolean;
@@ -678,114 +556,14 @@ export interface IUserDto {
     isActive?: boolean;
 }
 
-export class TokenDto implements ITokenDto {
-    accessToken?: string | undefined;
-    accessTokenExpiresIn?: number;
-    refreshToken?: string | undefined;
-    refreshTokenExpiresIn?: number;
-
-    constructor(data?: ITokenDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.accessToken = _data["accessToken"];
-            this.accessTokenExpiresIn = _data["accessTokenExpiresIn"];
-            this.refreshToken = _data["refreshToken"];
-            this.refreshTokenExpiresIn = _data["refreshTokenExpiresIn"];
-        }
-    }
-
-    static fromJS(data: any): TokenDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new TokenDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["accessToken"] = this.accessToken;
-        data["accessTokenExpiresIn"] = this.accessTokenExpiresIn;
-        data["refreshToken"] = this.refreshToken;
-        data["refreshTokenExpiresIn"] = this.refreshTokenExpiresIn;
-        return data; 
-    }
-}
-
-export interface ITokenDto {
+export interface TokenDto {
     accessToken?: string | undefined;
     accessTokenExpiresIn?: number;
     refreshToken?: string | undefined;
     refreshTokenExpiresIn?: number;
 }
 
-export class ProblemDetails implements IProblemDetails {
-    type?: string | undefined;
-    title?: string | undefined;
-    status?: number | undefined;
-    detail?: string | undefined;
-    instance?: string | undefined;
-    extensions?: { [key: string]: any; } | undefined;
-
-    constructor(data?: IProblemDetails) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.type = _data["type"];
-            this.title = _data["title"];
-            this.status = _data["status"];
-            this.detail = _data["detail"];
-            this.instance = _data["instance"];
-            if (_data["extensions"]) {
-                this.extensions = {} as any;
-                for (let key in _data["extensions"]) {
-                    if (_data["extensions"].hasOwnProperty(key))
-                        this.extensions![key] = _data["extensions"][key];
-                }
-            }
-        }
-    }
-
-    static fromJS(data: any): ProblemDetails {
-        data = typeof data === 'object' ? data : {};
-        let result = new ProblemDetails();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["type"] = this.type;
-        data["title"] = this.title;
-        data["status"] = this.status;
-        data["detail"] = this.detail;
-        data["instance"] = this.instance;
-        if (this.extensions) {
-            data["extensions"] = {};
-            for (let key in this.extensions) {
-                if (this.extensions.hasOwnProperty(key))
-                    data["extensions"][key] = this.extensions[key];
-            }
-        }
-        return data; 
-    }
-}
-
-export interface IProblemDetails {
+export interface ProblemDetails {
     type?: string | undefined;
     title?: string | undefined;
     status?: number | undefined;
@@ -794,60 +572,7 @@ export interface IProblemDetails {
     extensions?: { [key: string]: any; } | undefined;
 }
 
-export class RegisterUserData implements IRegisterUserData {
-    email!: string;
-    password!: string;
-    repeatedPassword!: string;
-    givenName?: string | undefined;
-    familyName?: string | undefined;
-    age?: number;
-    city?: string | undefined;
-    interests?: string | undefined;
-
-    constructor(data?: IRegisterUserData) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.email = _data["email"];
-            this.password = _data["password"];
-            this.repeatedPassword = _data["repeatedPassword"];
-            this.givenName = _data["givenName"];
-            this.familyName = _data["familyName"];
-            this.age = _data["age"];
-            this.city = _data["city"];
-            this.interests = _data["interests"];
-        }
-    }
-
-    static fromJS(data: any): RegisterUserData {
-        data = typeof data === 'object' ? data : {};
-        let result = new RegisterUserData();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["email"] = this.email;
-        data["password"] = this.password;
-        data["repeatedPassword"] = this.repeatedPassword;
-        data["givenName"] = this.givenName;
-        data["familyName"] = this.familyName;
-        data["age"] = this.age;
-        data["city"] = this.city;
-        data["interests"] = this.interests;
-        return data; 
-    }
-}
-
-export interface IRegisterUserData {
+export interface RegisterUserData {
     email: string;
     password: string;
     repeatedPassword: string;
@@ -858,54 +583,7 @@ export interface IRegisterUserData {
     interests?: string | undefined;
 }
 
-export class UpdateUserData implements IUpdateUserData {
-    email?: string | undefined;
-    givenName?: string | undefined;
-    familyName?: string | undefined;
-    age?: number;
-    city?: string | undefined;
-    interests?: string | undefined;
-
-    constructor(data?: IUpdateUserData) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.email = _data["email"];
-            this.givenName = _data["givenName"];
-            this.familyName = _data["familyName"];
-            this.age = _data["age"];
-            this.city = _data["city"];
-            this.interests = _data["interests"];
-        }
-    }
-
-    static fromJS(data: any): UpdateUserData {
-        data = typeof data === 'object' ? data : {};
-        let result = new UpdateUserData();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["email"] = this.email;
-        data["givenName"] = this.givenName;
-        data["familyName"] = this.familyName;
-        data["age"] = this.age;
-        data["city"] = this.city;
-        data["interests"] = this.interests;
-        return data; 
-    }
-}
-
-export interface IUpdateUserData {
+export interface UpdateUserData {
     email?: string | undefined;
     givenName?: string | undefined;
     familyName?: string | undefined;
