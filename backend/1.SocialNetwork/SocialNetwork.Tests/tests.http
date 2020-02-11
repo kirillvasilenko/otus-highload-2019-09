@@ -31,26 +31,12 @@ GET http://localhost:5010/api/users/1
 
 ###
 
-GET http://localhost:5010/api/users/count
+GET http://localhost:5010/api/users
 Content-Type: application/json
 
-{
-  "city": "vzdrochniy",
-  "givenName": "dich",
-  "familyName": "tristov",
-  "interests": "drinking",
-  "maxAge": 25,
-  "minAge": 25
-}
 ###
 
-GET http://localhost:5011/auth/api/users?skip=0&take=10
-Content-Type: application/json
-
-{
-  "maxAge": 30,
-  "minAge": 20
-}
+GET http://localhost:5011/api/users?MaxAge
 
 ###
 

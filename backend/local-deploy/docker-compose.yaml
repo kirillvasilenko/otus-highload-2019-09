@@ -14,6 +14,17 @@ services:
       - 5010:80
     networks:
       - socialnetwork
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    restart: unless-stopped
+    hostname: rabbitmq
+    ports:
+      - 15672:15672
+      - 5672:5672
+    networks:
+      - socialnetwork
   
   socialnetwork:
     image: hl/socialnetwork
