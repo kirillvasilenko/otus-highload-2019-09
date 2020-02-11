@@ -1,0 +1,38 @@
+name: Build and publish api client
+
+env:
+  CLIENT_FOLDER: backend/1.SocialNetwork/SocialNetwork.Client
+  CLIENT_NAME: socialnetwork.client
+
+on:
+  push:
+    branches: master
+
+jobs:
+  build:
+    name: publish
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Use Node.js 12.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+
+    - name: Install dependencies
+      run: yarn install --cwd "${CLIENT_FOLDER}"
+
+    - name: Build
+      run: yarn --cwd "${CLIENT_FOLDER}" build
+
+    - name: Pack
+      run: yarn --cwd "${CLIENT_FOLDER}" pack
+
+    - name: Publish
+      run: yarn --cwd "${CLIENT_FOLDER}" publish
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
