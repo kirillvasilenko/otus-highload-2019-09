@@ -889,11 +889,11 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
 
-"@kirillamurskiy/socialnetwork-client@0.1.1":
+"@kirillamurskiy/socialnetwork-client@0.1.2":
   name "@KirillAmurskiy/socialnetwork-client"
-  version "0.1.1"
-  resolved "https://npm.pkg.github.com/download/@kirillamurskiy/socialnetwork-client/0.1.1/1c3d3f29497fa06ce23092a030c4297d23c285cb98ed8d5cd416cc6266a7c8ad#5bf5dbb176b425dc3cf9d6175968dddd0323c2e6"
-  integrity sha512-CLhzCL3VLbtqVrJz1q/DILdH5lV6rLkcQCiQW0Bs453iRVi+bv7EH2V3S8GjoK27CKxHAdwDtYgrvDNqGpgQJQ==
+  version "0.1.2"
+  resolved "https://npm.pkg.github.com/download/@kirillamurskiy/socialnetwork-client/0.1.2/e7c3bb0e8dbdd2ee38c78e817a1739533aee509498f5538e4c58c13dac4585fd#586a93e223a0b278c1a7951f83faa8dbfde0ec15"
+  integrity sha512-+appJVXM/nLSDYaljSlLA/2mMX5WpQDSKwYj+yMA/tYvvLyxd7Y45H0OV8YZHfWX5DW+B08uiqrmf3+Wz9kh5A==
 
 "@types/classnames@^2.2.9":
   version "2.2.9"

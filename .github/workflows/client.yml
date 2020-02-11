@@ -24,7 +24,7 @@ jobs:
         registry-url: 'https://npm.pkg.github.com'
 
     - name: Install dependencies
-      run: yarn install --cwd "${CLIENT_FOLDER}"
+      run: yarn install --cwd "${CLIENT_FOLDER}" --frozen-lockfile
 
     - name: Build
       run: yarn --cwd "${CLIENT_FOLDER}" build

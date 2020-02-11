@@ -20,8 +20,6 @@ services:
     image: docker.pkg.github.com/kirillamurskiy/otus-highload-2019-09/frontend:latest
     container_name: frontend
     restart: unless-stopped
-    environment:
-      API_URL: /kirillamurskiy/otus-highload-2019-09
     ports:
       - 5020:3000
     networks:
