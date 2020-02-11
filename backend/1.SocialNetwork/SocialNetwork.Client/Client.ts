@@ -192,7 +192,7 @@ export class Client {
      * @param refreshToken (optional) 
      * @return Nothing
      */
-    resetToken(refreshToken: string | null | undefined): Promise<void> {
+    resetToken(refreshToken?: string | null | undefined): Promise<void> {
         let url_ = this.baseUrl + "/api/auth/token?";
         if (refreshToken !== undefined)
             url_ += "refreshToken=" + encodeURIComponent("" + refreshToken) + "&"; 
@@ -372,7 +372,7 @@ export class Client {
      * @param interests (optional) 
      * @return Users count
      */
-    getUsersCount(givenName: string | null | undefined, familyName: string | null | undefined, maxAge: number | null | undefined, minAge: number | null | undefined, city: string | null | undefined, interests: string | null | undefined): Promise<number> {
+    getUsersCount(givenName?: string | null | undefined, familyName?: string | null | undefined, maxAge?: number | null | undefined, minAge?: number | null | undefined, city?: string | null | undefined, interests?: string | null | undefined): Promise<number> {
         let url_ = this.baseUrl + "/api/users/count?";
         if (givenName !== undefined)
             url_ += "GivenName=" + encodeURIComponent("" + givenName) + "&"; 
@@ -441,7 +441,7 @@ export class Client {
      * @param take (optional) 
      * @return Users count
      */
-    getUsers(givenName: string | null | undefined, familyName: string | null | undefined, maxAge: number | null | undefined, minAge: number | null | undefined, city: string | null | undefined, interests: string | null | undefined, skip: number | undefined, take: number | undefined): Promise<UserDto[]> {
+    getUsers(givenName?: string | null | undefined, familyName?: string | null | undefined, maxAge?: number | null | undefined, minAge?: number | null | undefined, city?: string | null | undefined, interests?: string | null | undefined, skip?: number | undefined, take?: number | undefined): Promise<UserDto[]> {
         let url_ = this.baseUrl + "/api/users?";
         if (givenName !== undefined)
             url_ += "GivenName=" + encodeURIComponent("" + givenName) + "&"; 
