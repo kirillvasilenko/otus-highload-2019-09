@@ -72,6 +72,7 @@ namespace SocialNetwork.App.RabbitMq
 				catch (Exception ex)
 				{
 					logger.LogError(ex, $"Background Service error occured. {ex.Message}" );
+					await Task.Delay(1000);
 				}
 			}
 			logger.LogInformation("NotificationHandlerService is stopped.");

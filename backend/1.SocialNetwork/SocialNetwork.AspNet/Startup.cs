@@ -82,7 +82,7 @@ namespace SocialNetwork.AspNet
             {
                 builder.AllowAnyOrigin()
                     .AllowAnyHeader()
-                    .AllowAnyHeader();
+                    .AllowAnyMethod();
             });
 
             app.UseAuthentication();
