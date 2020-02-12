@@ -1,3 +1,5 @@
+using SocialNetwork.Model;
+
 namespace SocialNetwork.App.Dtos
 {
     public class RegistrationUserResult

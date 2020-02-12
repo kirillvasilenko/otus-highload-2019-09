@@ -1,4 +1,4 @@
-﻿namespace SocialNetwork.App.Dtos
+﻿namespace SocialNetwork.Model
 {
     /// <summary>
     /// User

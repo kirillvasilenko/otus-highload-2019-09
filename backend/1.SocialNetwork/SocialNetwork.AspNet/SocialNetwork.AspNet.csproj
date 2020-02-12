@@ -28,6 +28,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\SocialNetwork.App.RabbitMq\SocialNetwork.App.RabbitMq.csproj" />
       <ProjectReference Include="..\SocialNetwork.App\SocialNetwork.App.csproj" />
       <ProjectReference Include="..\SocialNetwork.Repo.MySql\SocialNetwork.Repo.MySql.csproj" />
     </ItemGroup>

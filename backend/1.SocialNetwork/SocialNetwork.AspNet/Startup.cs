@@ -15,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using NSwag.Generation.Processors;
+using SocialNetwork.App.RabbitMq;
 using SocialNetwork.Model;
 using SocialNetwork.Repo.MySql;
 using YadnexTank.PhantomAmmo.AspNetCore;
@@ -49,6 +50,7 @@ namespace SocialNetwork.AspNet
             ConfigureSwagger(services);
             
             services.AddSocialNetworkApp(Config.GetSection("Auth"));
+            services.AddSocialNetworkAppRabbitMq(Config.GetSection("Notification"));
             services.AddSocialNetworkRepoMySql(Config.GetConnectionString("SocialNetworkDb"));
 
             services.AddPhantomAmmoCollector(Config.GetSection("PhantomAmmoCollector"));
