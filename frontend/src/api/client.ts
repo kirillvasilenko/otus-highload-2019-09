@@ -5,7 +5,10 @@ import unfetch from "isomorphic-unfetch";
 
 const publicConfig = getPublicRuntimeConfig();
 const apiClient = new Client(publicConfig.apiUrl, {
-  fetch: unfetch
+  fetch: (url, init) => {
+    console.info(init);
+    return unfetch(url, init);
+  }
 });
 
 export default apiClient;

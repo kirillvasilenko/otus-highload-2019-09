@@ -8,7 +8,7 @@ import useRequest from "../hooks/useRequest";
 
 const Index: NextPage = ({  }) => {
   const request = useCallback(( ) => {
-    return apiClient.getUsers(undefined,undefined,undefined,undefined,undefined,undefined,0,10)
+    return apiClient.getUsers();
   }, []);
 
   const {data: users, isLoading, error} = useRequest(request, []);

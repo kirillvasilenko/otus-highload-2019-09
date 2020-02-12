@@ -576,19 +576,19 @@ export interface RegisterUserData {
     email: string;
     password: string;
     repeatedPassword: string;
-    givenName: string;
-    familyName: string;
-    age: number;
-    city: string;
+    givenName?: string | undefined;
+    familyName?: string | undefined;
+    age?: number;
+    city?: string | undefined;
     interests?: string | undefined;
 }
 
 export interface UpdateUserData {
-    email: string;
-    givenName: string;
-    familyName: string;
-    age: number;
-    city: string;
+    email?: string | undefined;
+    givenName?: string | undefined;
+    familyName?: string | undefined;
+    age?: number;
+    city?: string | undefined;
     interests?: string | undefined;
 }
 
