@@ -540,56 +540,56 @@ export class Client {
 }
 
 export interface RegistrationUserResult {
-    user?: UserDto | null;
-    token?: TokenDto | null;
+    user?: UserDto | undefined;
+    token?: TokenDto | undefined;
 }
 
 export interface UserDto {
     id?: number;
-    email?: string | null;
+    email?: string | undefined;
     emailVerified?: boolean;
-    givenName?: string | null;
-    familyName?: string | null;
+    givenName?: string | undefined;
+    familyName?: string | undefined;
     age?: number;
-    city?: string | null;
-    interests?: string | null;
+    city?: string | undefined;
+    interests?: string | undefined;
     isActive?: boolean;
 }
 
 export interface TokenDto {
-    accessToken?: string | null;
+    accessToken?: string | undefined;
     accessTokenExpiresIn?: number;
-    refreshToken?: string | null;
+    refreshToken?: string | undefined;
     refreshTokenExpiresIn?: number;
 }
 
 export interface ProblemDetails {
-    type?: string | null;
-    title?: string | null;
-    status?: number | null;
-    detail?: string | null;
-    instance?: string | null;
-    extensions?: { [key: string]: any; } | null;
+    type?: string | undefined;
+    title?: string | undefined;
+    status?: number | undefined;
+    detail?: string | undefined;
+    instance?: string | undefined;
+    extensions?: { [key: string]: any; } | undefined;
 }
 
 export interface RegisterUserData {
     email: string;
     password: string;
     repeatedPassword: string;
-    givenName?: string | null;
-    familyName?: string | null;
+    givenName?: string | undefined;
+    familyName?: string | undefined;
     age?: number;
-    city?: string | null;
-    interests?: string | null;
+    city?: string | undefined;
+    interests?: string | undefined;
 }
 
 export interface UpdateUserData {
-    email?: string | null;
-    givenName?: string | null;
-    familyName?: string | null;
+    email?: string | undefined;
+    givenName?: string | undefined;
+    familyName?: string | undefined;
     age?: number;
-    city?: string | null;
-    interests?: string | null;
+    city?: string | undefined;
+    interests?: string | undefined;
 }
 
 export interface FileResponse {

@@ -1,8 +1,8 @@
 {
   "name": "@kirillamurskiy/socialnetwork-client",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "",
-  "repository": "git://github.com/KirillAmurskiy/otus-highload-2019-09.git",
+  "repository": "git://github.com/kirillamurskiy/otus-highload-2019-09.git",
   "module": "Client.js",
   "types": "Client.d.ts",
   "scripts": {
