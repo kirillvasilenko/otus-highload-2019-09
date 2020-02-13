@@ -15,6 +15,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using NSwag.Generation.Processors;
+using SocialNetwork.App.AwsSqs;
+using SocialNetwork.App.InMemory;
 using SocialNetwork.App.RabbitMq;
 using SocialNetwork.Model;
 using SocialNetwork.Repo.MySql;
@@ -50,9 +52,22 @@ namespace SocialNetwork.AspNet
             ConfigureSwagger(services);
             
             services.AddSocialNetworkApp(Config.GetSection("Auth"));
-            services.AddSocialNetworkAppRabbitMq(Config.GetSection("Notification"));
             services.AddSocialNetworkRepoMySql(Config.GetConnectionString("SocialNetworkDb"));
 
+            var notificationProvider = Config.GetValue("Notification:Provider", "");
+            if (notificationProvider == "RabbitMq")
+            {
+                services.AddSocialNetworkAppRabbitMq(Config.GetSection("Notification:RabbitMq"));
+            }
+            else if (notificationProvider == "Sqs")
+            {
+                services.AddSocialNetworkAppSqs(Config.GetSection("Notification:Sqs"));
+            }
+            else
+            {
+                services.AddSocialNetworkAppInMemory();
+            }
+            
             services.AddPhantomAmmoCollector(Config.GetSection("PhantomAmmoCollector"));
             services.AddProblemDetails(opts =>
             {

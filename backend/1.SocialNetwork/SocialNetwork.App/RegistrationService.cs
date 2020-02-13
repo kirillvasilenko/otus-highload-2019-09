@@ -60,7 +60,7 @@ namespace SocialNetwork.App
                     throw new UserRegistrationException(e.Message, e);
                 }
 
-                notificationSender.OnUserRegistered(user.ToDto(mapper));
+                await notificationSender.OnUserRegistered(user.ToDto(mapper));
                 var token = await AuthenticateUser(user.Id);
                 
                 return new RegistrationUserResult

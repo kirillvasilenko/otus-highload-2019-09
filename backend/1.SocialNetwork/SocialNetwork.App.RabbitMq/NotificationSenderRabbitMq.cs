@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using SocialNetwork.Model;
@@ -14,7 +15,7 @@ namespace SocialNetwork.App.RabbitMq
             this.opts = opts.Value;
         }
         
-        public void OnUserRegistered(UserDto user)
+        public Task OnUserRegistered(UserDto user)
         {
             var factory = new ConnectionFactory
             {
@@ -43,6 +44,8 @@ namespace SocialNetwork.App.RabbitMq
                     basicProperties: properties,
                     body: body);
             }
+
+            return Task.CompletedTask;
         }
 
     }
