@@ -8,7 +8,7 @@ on:
   push:
     branches: master
     paths:
-      - "fronted/**"
+      - "frontend/**"
     
 jobs:
   build:
