@@ -1,11 +1,12 @@
 import React from "react";
 import MainLayout from "../components/mainLayout/mainLayout";
-import { useForm } from "react-hook-form";
+import RegistrationForm from "../modules/registrationForm/registrationForm";
 
-function Registration(props: React.ComponentProps<any>) {
+function Registration() {
   return (
     <MainLayout>
       <h1>Registration page</h1>
+      <RegistrationForm />
     </MainLayout>
   );
 }

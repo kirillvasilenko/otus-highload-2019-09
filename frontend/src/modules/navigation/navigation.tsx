@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  AUTH_ROUTE,
+  LOGIN_PAGE,
   INDEX_ROUTE,
   REGISTRATION_ROUTE
 } from "../../routes.constants";
@@ -14,7 +14,7 @@ function Navigation(props: React.PropsWithChildren<any>) {
           <Link href={INDEX_ROUTE}><a>Home</a></Link>
         </li>
         <li>
-          <Link href={AUTH_ROUTE}><a>Auth</a></Link>
+          <Link href={LOGIN_PAGE}><a>Login</a></Link>
         </li>
         <li>
           <Link href={REGISTRATION_ROUTE}><a>Registration</a></Link>
