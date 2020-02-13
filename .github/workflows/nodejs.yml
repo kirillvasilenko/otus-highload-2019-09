@@ -7,6 +7,8 @@ env:
 on: 
   push:
     branches: master
+    paths:
+      - "${FRONTEND_FOLDER}/**"
     
 jobs:
   build:
@@ -21,14 +23,20 @@ jobs:
       with:
         node-version: 12.x
         registry-url: 'https://npm.pkg.github.com'
+
     - name: Install dependencies
-      run: yarn --cwd "${FRONTEND_FOLDER}" install --frozen-lockfile
+      run: npm ci
+      working-directory: "${FRONTEND_FOLDER}"
       env:
         NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
     - name: Build
-      run: yarn --cwd "${FRONTEND_FOLDER}" build
+      run: npm run build
+      working-directory: "${FRONTEND_FOLDER}"
+
     - name: Delete dev dependencies
-      run: yarn --cwd "${FRONTEND_FOLDER}" --production
+      run: npm prune --production
+      working-directory: "${FRONTEND_FOLDER}"
       
     - name: Build docker image
       run: docker build -t "${IMAGE_NAME}" -f "${FRONTEND_FOLDER}/Dockerfile" "${FRONTEND_FOLDER}"
