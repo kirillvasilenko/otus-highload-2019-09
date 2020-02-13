@@ -16,7 +16,7 @@ jobs:
     name: Build and Publish
     runs-on: ubuntu-latest
     env:
-      working-directory: ./${{FRONTEND_FOLDER}}
+      working-directory: ./frontend
 
     steps:
     - name: Checkout
