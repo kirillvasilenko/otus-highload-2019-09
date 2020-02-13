@@ -21,7 +21,7 @@ function LoginForm () {
   const { register, handleSubmit } = useForm<LoginForm>();
 
   const onSubmit = handleSubmit((data) => {
-    login(data);
+    login(data).then();
   });
 
   return <Form onSubmit={onSubmit}>
