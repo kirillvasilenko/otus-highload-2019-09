@@ -13,6 +13,7 @@ namespace SocialNetwork.App
         private readonly ITransaction transaction;
         private readonly IUsersRepo usersRepo;
         private readonly ITokenRepo tokenRepo;
+        private readonly INotificationSender notificationSender;
         private readonly IPasswordHasher passwordHasher;
         private readonly ITokenMaker tokenMaker;
         private readonly IMapper mapper;
@@ -22,6 +23,7 @@ namespace SocialNetwork.App
             ITransaction transaction,
             IUsersRepo usersRepo,
             ITokenRepo tokenRepo,
+            INotificationSender notificationSender,
             IPasswordHasher passwordHasher,
             ITokenMaker tokenMaker,
             IMapper mapper)
@@ -33,6 +35,8 @@ namespace SocialNetwork.App
             this.passwordHasher = passwordHasher;
             this.tokenMaker = tokenMaker;
             this.mapper = mapper;
+            
+            this.notificationSender = notificationSender;
         }
         
         public async Task<RegistrationUserResult> RegisterUser(RegisterUserData newUser)
@@ -56,6 +60,7 @@ namespace SocialNetwork.App
                     throw new UserRegistrationException(e.Message, e);
                 }
 
+                notificationSender.OnUserRegistered(user.ToDto(mapper));
                 var token = await AuthenticateUser(user.Id);
                 
                 return new RegistrationUserResult

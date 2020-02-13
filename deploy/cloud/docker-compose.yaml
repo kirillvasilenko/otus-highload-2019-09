@@ -25,6 +25,17 @@ services:
     networks:
       - socialnetwork
 
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    restart: unless-stopped
+    hostname: rabbitmq
+    ports:
+      - 15672:15672
+      - 5672:5672
+    networks:
+      - socialnetwork
+
   socialnetwork:
     image: docker.pkg.github.com/kirillamurskiy/otus-highload-2019-09/socialnetwork:latest
     container_name: socialnetwork
@@ -32,6 +43,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - Auth__UseTestAuth=false
       - ConnectionStrings__SocialNetworkDb=server=${SocialNetworkServer};port=${SocialNetworkPort};database=${SocialNetworkDb};user=${SocialNetworkUser};password=${SocialNetworkUserPassword};
+      - Notification__HostName=rabbitmq
     restart: unless-stopped
     ports:
       - 5011:80

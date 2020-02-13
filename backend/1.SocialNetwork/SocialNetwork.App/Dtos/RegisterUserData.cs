@@ -26,21 +26,25 @@ namespace SocialNetwork.App.Dtos
         /// <summary>
         /// Name
         /// </summary>
+        [Required]
         public string GivenName { get; set; }
         
         /// <summary>
         /// Last name
         /// </summary>
+        [Required]
         public string FamilyName { get; set; }
         
         /// <summary>
         /// Age
         /// </summary>
+        [Required]
         public byte Age { get; set; }
-        
+
         /// <summary>
         /// City
         /// </summary>
+        [Required]
         public string City { get; set; }
         
         /// <summary>
