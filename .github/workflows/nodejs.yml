@@ -3,6 +3,7 @@ name: Frontend CI
 env:
   FRONTEND_FOLDER: frontend
   IMAGE_NAME: frontend
+  working-directory: ./frontend
 
 on: 
   push:
@@ -29,7 +30,7 @@ jobs:
 
     - name: Install dependencies
       run: npm ci
-      working-directory: ${{env.working-directory}}
+      working-directory: ${{working-directory}}
       env:
         NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
