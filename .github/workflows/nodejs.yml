@@ -37,7 +37,7 @@ jobs:
 
     - name: Delete dev dependencies
       run: npm prune --production
-      working-directory: "./${FRONTEND_FOLDER}"
+      working-directory: "./frontend"
       
     - name: Build docker image
       run: docker build -t "${IMAGE_NAME}" -f "${FRONTEND_FOLDER}/Dockerfile" "${FRONTEND_FOLDER}"
