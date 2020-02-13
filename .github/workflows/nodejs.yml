@@ -8,7 +8,7 @@ on:
   push:
     branches: master
     paths:
-      - "${FRONTEND_FOLDER}/**"
+      - "fronted/**"
     
 jobs:
   build:
