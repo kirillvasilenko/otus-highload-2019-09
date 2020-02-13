@@ -1,5 +1,9 @@
 name: Frontend CI
 
+env:
+  FRONTEND_FOLDER: frontend
+  IMAGE_NAME: frontend
+
 on: 
   push:
     branches: master
@@ -12,8 +16,7 @@ jobs:
     name: Build and Publish
     runs-on: ubuntu-latest
     env:
-      FRONTEND_FOLDER: frontend
-      IMAGE_NAME: frontend
+      working-directory: ./frontend
 
     steps:
     - name: Checkout
@@ -26,26 +29,26 @@ jobs:
 
     - name: Install dependencies
       run: npm ci
-      working-directory: "./${{FRONTEND_FOLDER}}"
+      working-directory: ${{working-directory}}
       env:
         NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
     - name: Build
       run: npm run build
-      working-directory: "./${{FRONTEND_FOLDER}}"
+      working-directory: ${{working-directory}}
 
     - name: Delete dev dependencies
       run: npm prune --production
-      working-directory: "./${{FRONTEND_FOLDER}}"
+      working-directory: ${{working-directory}}
       
     - name: Build docker image
-      run: docker build -t "${{IMAGE_NAME}}" -f "${{FRONTEND_FOLDER}}/Dockerfile" "${{FRONTEND_FOLDER}}"
+      run: docker build -t "${IMAGE_NAME}" -f "${FRONTEND_FOLDER}/Dockerfile" "${FRONTEND_FOLDER}"
       
     - name: Login in docker.pkg.github.com
       run: docker login -u ${GITHUB_ACTOR} -p ${{secrets.GITHUB_TOKEN}} docker.pkg.github.com
       
     - name: Tag docker images
-      run: docker tag "${{IMAGE_NAME}}" docker.pkg.github.com/${GITHUB_REPOSITORY,,}/${{IMAGE_NAME}}:latest
+      run: docker tag "${IMAGE_NAME}" docker.pkg.github.com/${GITHUB_REPOSITORY,,}/${IMAGE_NAME}:latest
         
     - name: Publish to docker.pkg.github.com
-      run: docker push docker.pkg.github.com/${GITHUB_REPOSITORY,,}/${{IMAGE_NAME}}:latest
+      run: docker push docker.pkg.github.com/${GITHUB_REPOSITORY,,}/${IMAGE_NAME}:latest
