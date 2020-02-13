@@ -1,9 +1,5 @@
 name: Frontend CI
 
-env:
-  FRONTEND_FOLDER: frontend
-  IMAGE_NAME: frontend
-
 on: 
   push:
     branches: master
@@ -15,6 +11,9 @@ jobs:
   build:
     name: Build and Publish
     runs-on: ubuntu-latest
+    env:
+      FRONTEND_FOLDER: frontend
+      IMAGE_NAME: frontend
 
     steps:
     - name: Checkout
@@ -40,13 +39,13 @@ jobs:
       working-directory: "./${{FRONTEND_FOLDER}}"
       
     - name: Build docker image
-      run: docker build -t "${IMAGE_NAME}" -f "${FRONTEND_FOLDER}/Dockerfile" "${FRONTEND_FOLDER}"
+      run: docker build -t "${{IMAGE_NAME}}" -f "${{FRONTEND_FOLDER}}/Dockerfile" "${{FRONTEND_FOLDER}}"
       
     - name: Login in docker.pkg.github.com
       run: docker login -u ${GITHUB_ACTOR} -p ${{secrets.GITHUB_TOKEN}} docker.pkg.github.com
       
     - name: Tag docker images
-      run: docker tag "${IMAGE_NAME}" docker.pkg.github.com/${GITHUB_REPOSITORY,,}/${IMAGE_NAME}:latest
+      run: docker tag "${{IMAGE_NAME}}" docker.pkg.github.com/${GITHUB_REPOSITORY,,}/${{IMAGE_NAME}}:latest
         
     - name: Publish to docker.pkg.github.com
-      run: docker push docker.pkg.github.com/${GITHUB_REPOSITORY,,}/${IMAGE_NAME}:latest
+      run: docker push docker.pkg.github.com/${GITHUB_REPOSITORY,,}/${{IMAGE_NAME}}:latest
