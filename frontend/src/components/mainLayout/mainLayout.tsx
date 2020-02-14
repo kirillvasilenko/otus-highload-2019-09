@@ -1,13 +1,12 @@
 import * as React from "react";
 import Navigation from "../../modules/navigation/navigation";
+import Container from "@material-ui/core/Container";
 
 function MainLayout(props: React.PropsWithChildren<any>) {
   return (
     <>
-      <header className={""}>
-        <Navigation />
-      </header>
-      <main className={""}>{props.children}</main>
+      <Navigation />
+      <main>{props.children}</main>
       <footer className={""}></footer>
     </>
   );

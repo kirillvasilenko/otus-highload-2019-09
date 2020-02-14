@@ -2,8 +2,11 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import apiClient from "../../api/client";
 import { saveToken } from "../../utils/token";
-import Form from "../../components/form/form";
-import Input from "../../components/form/input";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import Paper from "@material-ui/core/Paper";
+import { Grid } from "@material-ui/core";
+import Container from "@material-ui/core/Container";
 
 type RegistrationForm = {
   givenName: string;
@@ -20,25 +23,85 @@ const registration = async (data: RegistrationForm) => {
     if (result.token) {
       saveToken(result.token);
     }
-  } catch (e) {}
+  } catch (e) {
+  }
 };
 
 const RegistrationForm = () => {
-  const { register, handleSubmit } = useForm<RegistrationForm>();
+  const { register, handleSubmit, errors, control } = useForm<RegistrationForm>();
 
   const onSubmit = handleSubmit((data) => {
     registration(data);
   });
 
-  return <Form onSubmit={onSubmit}>
-      <Input placeholder="givenName" name="givenName" type="string" autoComplete={"username"} ref={register({ required: "this is required" })}/>
-      <Input placeholder="familyName" name="familyName" type="string" ref={register({ required: true })}/>
-      <Input placeholder="city" name="city" type="string" ref={register({ required: true })}/>
-      <Input placeholder="email" name="email" type="email" autoComplete={"email"} ref={register({ required: true })}/>
-      <Input placeholder="password" name="password" type={"password"} autoComplete={"new-password"} ref={register({ required: true })}/>
-      <Input placeholder="repeatedPassword" name="repeatedPassword" type={"password"} autoComplete={"new-password"} ref={register({ required: true })}/>
-      <button type="submit">Sign up</button>
-    </Form>
+  return <form onSubmit={onSubmit}>
+    <Grid container spacing={2}>
+      <Grid item xs={12} sm={6}>
+        <TextField
+          fullWidth
+          autoComplete={"given-name"}
+          inputRef={register({ required: true })}
+          label="Given name"
+          name="givenName"
+          error={Boolean(errors.givenName)}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <TextField
+          fullWidth
+          autoComplete={"family-name"}
+          inputRef={register({ required: true })}
+          label="Family name"
+          name="familyName"
+          error={Boolean(errors.familyName)}
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <TextField
+          fullWidth
+          type={"email"}
+          autoComplete={"email"}
+          inputRef={register({ required: true })}
+          label="Email"
+          name="email"
+          error={Boolean(errors.familyName)}
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <TextField
+          fullWidth
+          autoComplete={"address-level2"}
+          inputRef={register({ required: true })}
+          label="City"
+          name="city"
+          error={Boolean(errors.city)}
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <TextField
+          fullWidth
+          autoComplete={"new-password"}
+          type="password"
+          inputRef={register({ required: true })}
+          label="Password"
+          name="password"
+          error={Boolean(errors.password)}
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <TextField
+          fullWidth
+          autoComplete={"new-password"}
+          type="password"
+          inputRef={register({ required: true })}
+          label="Repeat password"
+          name="repeatedPassword"
+          error={Boolean(errors.repeatedPassword)}
+        />
+      </Grid>
+      <Button fullWidth type={"submit"} color={"primary"} variant={"contained"}>Sign up</Button>
+    </Grid>
+  </form>;
 };
 
 export default RegistrationForm;
