@@ -3,15 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using SocialNetwork.App;
-using SocialNetwork.App.Dtos;
-using SocialNetwork.AspNet.Utils;
 using SocialNetwork.Model;
 
 namespace SocialNetwork.AspNet.Controllers
@@ -88,30 +84,6 @@ namespace SocialNetwork.AspNet.Controllers
             return Ok(result);
         }
 
-        /// <summary>
-        /// Update an user.
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="updateData"></param>
-        /// <returns>Users count</returns>
-        [HttpPut("{userId}")]
-        [Authorize]
-        [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status403Forbidden)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<UserDto>> UpdateUser(
-            [BindRequired]
-            long userId,
-            [FromBody]
-            UpdateUserData updateData)
-        {
-            if (User.GetId() != userId)
-            {
-                return Forbid();
-            }
-            return await usersSvc.UpdateUser(userId, updateData);
-        }
         
         [HttpGet("headers")]
         public ActionResult GetHeaders()
