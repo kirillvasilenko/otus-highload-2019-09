@@ -18,37 +18,32 @@ export class Client {
     }
 
     /**
-     * Register new user.
-     * @param data Data of new user.
-     * @return Access token
+     * Get current user's account.
+     * @return User
      */
-    registerUser(data: RegisterUserData): Promise<RegistrationUserResult> {
-        let url_ = this.baseUrl + "/api/auth/register";
+    getAccount(): Promise<UserDto> {
+        let url_ = this.baseUrl + "/api/account";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(data);
-
         let options_ = <RequestInit>{
-            body: content_,
-            method: "POST",
+            method: "GET",
             headers: {
-                "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
         return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processRegisterUser(_response);
+            return this.processGetAccount(_response);
         });
     }
 
-    protected processRegisterUser(response: Response): Promise<RegistrationUserResult> {
+    protected processGetAccount(response: Response): Promise<UserDto> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : <RegistrationUserResult>JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = _responseText === "" ? null : <UserDto>JSON.parse(_responseText, this.jsonParseReviver);
             return result200;
             });
         } else if (status === 400) {
@@ -56,6 +51,12 @@ export class Client {
             let result400: any = null;
             result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
             return throwException("A server side error occurred.", status, _responseText, _headers, result400);
+            });
+        } else if (status === 404) {
+            return response.text().then((_responseText) => {
+            let result404: any = null;
+            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
             });
         } else if (status === 500) {
             return response.text().then((_responseText) => {
@@ -68,7 +69,66 @@ export class Client {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<RegistrationUserResult>(<any>null);
+        return Promise.resolve<UserDto>(<any>null);
+    }
+
+    /**
+     * Update current user's account.
+     * @return Users count
+     */
+    updateAccount(updateData: UpdateUserData): Promise<UserDto> {
+        let url_ = this.baseUrl + "/api/account";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(updateData);
+
+        let options_ = <RequestInit>{
+            body: content_,
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processUpdateAccount(_response);
+        });
+    }
+
+    protected processUpdateAccount(response: Response): Promise<UserDto> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <UserDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status === 400) {
+            return response.text().then((_responseText) => {
+            let result400: any = null;
+            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
+            });
+        } else if (status === 403) {
+            return response.text().then((_responseText) => {
+            let result403: any = null;
+            result403 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result403);
+            });
+        } else if (status === 500) {
+            return response.text().then((_responseText) => {
+            let result500: any = null;
+            result500 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result500);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<UserDto>(<any>null);
     }
 
     /**
@@ -243,6 +303,60 @@ export class Client {
     }
 
     /**
+     * Register new user.
+     * @param data Data of new user.
+     * @return Access token
+     */
+    registerUser(data: RegisterUserData): Promise<RegistrationUserResult> {
+        let url_ = this.baseUrl + "/api/registration";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(data);
+
+        let options_ = <RequestInit>{
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processRegisterUser(_response);
+        });
+    }
+
+    protected processRegisterUser(response: Response): Promise<RegistrationUserResult> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <RegistrationUserResult>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status === 400) {
+            return response.text().then((_responseText) => {
+            let result400: any = null;
+            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
+            });
+        } else if (status === 500) {
+            return response.text().then((_responseText) => {
+            let result500: any = null;
+            result500 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result500);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<RegistrationUserResult>(<any>null);
+    }
+
+    /**
      * Get an user.
      * @return User
      */
@@ -285,68 +399,6 @@ export class Client {
             let result404: any = null;
             result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
             return throwException("A server side error occurred.", status, _responseText, _headers, result404);
-            });
-        } else if (status === 500) {
-            return response.text().then((_responseText) => {
-            let result500: any = null;
-            result500 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result500);
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<UserDto>(<any>null);
-    }
-
-    /**
-     * Update an user.
-     * @return Users count
-     */
-    updateUser(userId: number, updateData: UpdateUserData): Promise<UserDto> {
-        let url_ = this.baseUrl + "/api/users/{userId}";
-        if (userId === undefined || userId === null)
-            throw new Error("The parameter 'userId' must be defined.");
-        url_ = url_.replace("{userId}", encodeURIComponent("" + userId)); 
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(updateData);
-
-        let options_ = <RequestInit>{
-            body: content_,
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            }
-        };
-
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processUpdateUser(_response);
-        });
-    }
-
-    protected processUpdateUser(response: Response): Promise<UserDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : <UserDto>JSON.parse(_responseText, this.jsonParseReviver);
-            return result200;
-            });
-        } else if (status === 400) {
-            return response.text().then((_responseText) => {
-            let result400: any = null;
-            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
-            });
-        } else if (status === 403) {
-            return response.text().then((_responseText) => {
-            let result403: any = null;
-            result403 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result403);
             });
         } else if (status === 500) {
             return response.text().then((_responseText) => {
@@ -539,11 +591,6 @@ export class Client {
     }
 }
 
-export interface RegistrationUserResult {
-    user?: UserDto | undefined;
-    token?: TokenDto | undefined;
-}
-
 export interface UserDto {
     id?: number;
     email?: string | undefined;
@@ -556,13 +603,6 @@ export interface UserDto {
     isActive?: boolean;
 }
 
-export interface TokenDto {
-    accessToken?: string | undefined;
-    accessTokenExpiresIn?: number;
-    refreshToken?: string | undefined;
-    refreshTokenExpiresIn?: number;
-}
-
 export interface ProblemDetails {
     type?: string | undefined;
     title?: string | undefined;
@@ -572,23 +612,35 @@ export interface ProblemDetails {
     extensions?: { [key: string]: any; } | undefined;
 }
 
+export interface UpdateUserData {
+    email: string;
+    givenName: string;
+    familyName: string;
+    age: number;
+    city: string;
+    interests?: string | undefined;
+}
+
+export interface TokenDto {
+    accessToken?: string | undefined;
+    accessTokenExpiresIn?: number;
+    refreshToken?: string | undefined;
+    refreshTokenExpiresIn?: number;
+}
+
+export interface RegistrationUserResult {
+    user?: UserDto | undefined;
+    token?: TokenDto | undefined;
+}
+
 export interface RegisterUserData {
     email: string;
     password: string;
     repeatedPassword: string;
-    givenName?: string | undefined;
-    familyName?: string | undefined;
-    age?: number;
-    city?: string | undefined;
-    interests?: string | undefined;
-}
-
-export interface UpdateUserData {
-    email?: string | undefined;
-    givenName?: string | undefined;
-    familyName?: string | undefined;
-    age?: number;
-    city?: string | undefined;
+    givenName: string;
+    familyName: string;
+    age: number;
+    city: string;
     interests?: string | undefined;
 }
 
