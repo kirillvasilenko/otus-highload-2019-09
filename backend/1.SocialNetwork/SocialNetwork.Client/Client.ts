@@ -18,60 +18,6 @@ export class Client {
     }
 
     /**
-     * Register new user.
-     * @param data Data of new user.
-     * @return Access token
-     */
-    registerUser(data: RegisterUserData): Promise<RegistrationUserResult> {
-        let url_ = this.baseUrl + "/api/auth/register";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(data);
-
-        let options_ = <RequestInit>{
-            body: content_,
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            }
-        };
-
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processRegisterUser(_response);
-        });
-    }
-
-    protected processRegisterUser(response: Response): Promise<RegistrationUserResult> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : <RegistrationUserResult>JSON.parse(_responseText, this.jsonParseReviver);
-            return result200;
-            });
-        } else if (status === 400) {
-            return response.text().then((_responseText) => {
-            let result400: any = null;
-            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
-            });
-        } else if (status === 500) {
-            return response.text().then((_responseText) => {
-            let result500: any = null;
-            result500 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result500);
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<RegistrationUserResult>(<any>null);
-    }
-
-    /**
      * Login an user.
      * @return Access token
      */
@@ -240,6 +186,60 @@ export class Client {
             });
         }
         return Promise.resolve<void>(<any>null);
+    }
+
+    /**
+     * Register new user.
+     * @param data Data of new user.
+     * @return Access token
+     */
+    registerUser(data: RegisterUserData): Promise<RegistrationUserResult> {
+        let url_ = this.baseUrl + "/api/registration";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(data);
+
+        let options_ = <RequestInit>{
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processRegisterUser(_response);
+        });
+    }
+
+    protected processRegisterUser(response: Response): Promise<RegistrationUserResult> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <RegistrationUserResult>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status === 400) {
+            return response.text().then((_responseText) => {
+            let result400: any = null;
+            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
+            });
+        } else if (status === 500) {
+            return response.text().then((_responseText) => {
+            let result500: any = null;
+            result500 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result500);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<RegistrationUserResult>(<any>null);
     }
 
     /**
@@ -539,6 +539,22 @@ export class Client {
     }
 }
 
+export interface TokenDto {
+    accessToken?: string | undefined;
+    accessTokenExpiresIn?: number;
+    refreshToken?: string | undefined;
+    refreshTokenExpiresIn?: number;
+}
+
+export interface ProblemDetails {
+    type?: string | undefined;
+    title?: string | undefined;
+    status?: number | undefined;
+    detail?: string | undefined;
+    instance?: string | undefined;
+    extensions?: { [key: string]: any; } | undefined;
+}
+
 export interface RegistrationUserResult {
     user?: UserDto | undefined;
     token?: TokenDto | undefined;
@@ -556,39 +572,23 @@ export interface UserDto {
     isActive?: boolean;
 }
 
-export interface TokenDto {
-    accessToken?: string | undefined;
-    accessTokenExpiresIn?: number;
-    refreshToken?: string | undefined;
-    refreshTokenExpiresIn?: number;
-}
-
-export interface ProblemDetails {
-    type?: string | undefined;
-    title?: string | undefined;
-    status?: number | undefined;
-    detail?: string | undefined;
-    instance?: string | undefined;
-    extensions?: { [key: string]: any; } | undefined;
-}
-
 export interface RegisterUserData {
     email: string;
     password: string;
     repeatedPassword: string;
-    givenName?: string | undefined;
-    familyName?: string | undefined;
-    age?: number;
-    city?: string | undefined;
+    givenName: string;
+    familyName: string;
+    age: number;
+    city: string;
     interests?: string | undefined;
 }
 
 export interface UpdateUserData {
-    email?: string | undefined;
-    givenName?: string | undefined;
-    familyName?: string | undefined;
-    age?: number;
-    city?: string | undefined;
+    email: string;
+    givenName: string;
+    familyName: string;
+    age: number;
+    city: string;
     interests?: string | undefined;
 }
 

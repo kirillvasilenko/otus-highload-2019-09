@@ -17,30 +17,13 @@ namespace SocialNetwork.AspNet.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
-        private readonly IRegistrationService registrationSvc;
         private readonly IAuthService authSvc;
 
-        public AuthController(IRegistrationService registrationSvc, IAuthService authSvc)
+        public AuthController(IAuthService authSvc)
         {
-            this.registrationSvc = registrationSvc;
             this.authSvc = authSvc;
         }
         
-        /// <summary>
-        /// Register new user.
-        /// </summary>
-        /// <param name="data">Data of new user.</param>
-        /// <returns>Access token</returns>
-        [HttpPost("register")]
-        [ProducesResponseType(typeof(RegistrationUserResult), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<RegistrationUserResult>> RegisterUser(RegisterUserData data)
-        {
-            var result = await registrationSvc.RegisterUser(data);
-            return Ok(result);
-        }
-
         /// <summary>
         /// Login an user.
         /// </summary>
