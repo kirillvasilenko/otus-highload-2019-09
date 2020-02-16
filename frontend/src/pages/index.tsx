@@ -1,13 +1,14 @@
 import React from "react";
 import MainLayout from "../components/mainLayout/mainLayout";
 import LoginForm from "../modules/loginForm/loginForm";
+import Container from "@material-ui/core/Container";
 
 const Index = () => {
   return (
     <MainLayout>
-      <h1>Main page</h1>
-
-      <LoginForm />
+      <Container maxWidth={"xs"}>
+        <LoginForm/>
+      </Container>
     </MainLayout>
   );
 };

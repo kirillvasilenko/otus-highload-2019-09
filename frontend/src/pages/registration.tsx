@@ -7,7 +7,6 @@ function Registration() {
   return (
     <MainLayout>
       <Container maxWidth={"xs"}>
-        <h1>Registration page</h1>
         <RegistrationForm/>
       </Container>
     </MainLayout>

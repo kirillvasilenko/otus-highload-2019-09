@@ -4,9 +4,7 @@ import apiClient from "../../api/client";
 import { saveToken } from "../../utils/token";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import Paper from "@material-ui/core/Paper";
 import { Grid } from "@material-ui/core";
-import Container from "@material-ui/core/Container";
 
 type RegistrationForm = {
   givenName: string;
