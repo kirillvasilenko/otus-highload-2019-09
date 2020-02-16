@@ -1,8 +1,24 @@
-POST http://localhost:5011/api/auth/register
+POST http://ec2-13-53-35-142.eu-north-1.compute.amazonaws.com/api/registration
 Content-Type: application/json
 
 {
-  "email": "user32@example.com",
+  "email": "user48@example.com",
+  "password": "string",
+  "repeatedPassword": "string",
+  "givenName": "Dich",
+  "familyName": "Tristov",
+  "age": 25,
+  "city": "Vzdrochniy",
+  "interests": "Drinking"
+}
+
+###
+
+POST http://localhost:5011/api/registration
+Content-Type: application/json
+
+{
+  "email": "user50@example.com",
   "password": "string",
   "repeatedPassword": "string",
   "givenName": "Dich",

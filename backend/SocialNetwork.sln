@@ -22,6 +22,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialNetwork.App.AwsSqs", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialNetwork.App.InMemory", "1.SocialNetwork\SocialNetwork.App.InMemory\SocialNetwork.App.InMemory.csproj", "{72FC24CD-24BA-4267-AB5E-813165592BB8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialNetwork.App.LambdaSqs", "1.SocialNetwork\SocialNetwork.App.LambdaSqs\src\SocialNetwork.App.LambdaSqs\SocialNetwork.App.LambdaSqs.csproj", "{94FFC14F-7FB5-47E4-B3F3-03958A4137FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialNetwork.App.LambdaSqs.Tests", "1.SocialNetwork\SocialNetwork.App.LambdaSqs\test\SocialNetwork.App.LambdaSqs.Tests\SocialNetwork.App.LambdaSqs.Tests.csproj", "{D4013765-6EB8-4326-B207-40979888CF7B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +42,8 @@ Global
 		{8A496A76-E90E-491F-BDCF-766DE0B42101} = {579A614A-9385-46F7-BECE-5B387784BEF7}
 		{58990987-52EC-4311-93E4-874FF1F26DD5} = {579A614A-9385-46F7-BECE-5B387784BEF7}
 		{72FC24CD-24BA-4267-AB5E-813165592BB8} = {579A614A-9385-46F7-BECE-5B387784BEF7}
+		{94FFC14F-7FB5-47E4-B3F3-03958A4137FF} = {579A614A-9385-46F7-BECE-5B387784BEF7}
+		{D4013765-6EB8-4326-B207-40979888CF7B} = {579A614A-9385-46F7-BECE-5B387784BEF7}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{DC3BC14E-4A32-4F25-BDCF-C35FA74C3F86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -80,5 +86,13 @@ Global
 		{72FC24CD-24BA-4267-AB5E-813165592BB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72FC24CD-24BA-4267-AB5E-813165592BB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{72FC24CD-24BA-4267-AB5E-813165592BB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94FFC14F-7FB5-47E4-B3F3-03958A4137FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94FFC14F-7FB5-47E4-B3F3-03958A4137FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94FFC14F-7FB5-47E4-B3F3-03958A4137FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94FFC14F-7FB5-47E4-B3F3-03958A4137FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4013765-6EB8-4326-B207-40979888CF7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4013765-6EB8-4326-B207-40979888CF7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4013765-6EB8-4326-B207-40979888CF7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4013765-6EB8-4326-B207-40979888CF7B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
