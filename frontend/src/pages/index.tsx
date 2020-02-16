@@ -1,16 +1,25 @@
 import React from "react";
 import MainLayout from "../components/mainLayout/mainLayout";
-import LoginForm from "../modules/loginForm/loginForm";
-import Container from "@material-ui/core/Container";
+import { privateRoute } from "../components/privateRoute/privateRoute";
+import { NextPage } from "next";
+import Token from "../utils/token";
+import apiClient from "../api/client";
+import { UserDto } from "@kirillamurskiy/socialnetwork-client";
 
-const Index = () => {
+const Index: NextPage<{ user: UserDto }> = ({ user }) => {
   return (
     <MainLayout>
-      <Container maxWidth={"xs"}>
-        <LoginForm/>
-      </Container>
+      <h1>{user.email}</h1>
     </MainLayout>
   );
 };
 
-export default Index;
+Index.getInitialProps = async (ctx) => {
+  console.info("Index ctx", ctx);
+
+  apiClient.setCtx(ctx);
+  const user = await apiClient.getAccount();
+  return { user };
+};
+
+export default privateRoute(Index);

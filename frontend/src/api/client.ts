@@ -2,50 +2,42 @@ import { Client, RegistrationUserResult } from "@kirillamurskiy/socialnetwork-cl
 
 import { getPublicRuntimeConfig } from "../utils/runtimeConfig";
 import unfetch from "isomorphic-unfetch";
+import { NextPageContext } from "next";
+import Token from "../utils/token";
 
 const publicConfig = getPublicRuntimeConfig();
 
-const getToken = () => {
-  const dataString = localStorage.getItem("token");
-  if (dataString) {
-    const data = JSON.parse(dataString) as RegistrationUserResult;
-    return data.token?.accessToken;
-  }
-  return undefined;
-};
+class MyClient extends Client {
+  ctx: { ctx?: NextPageContext } = {};
 
-const refreshToken = async () => {
-  const dataString = localStorage.getItem("token");
-  if (dataString) {
-    const data = JSON.parse(dataString) as RegistrationUserResult;
+  constructor(baseUrl?: string) {
+    super(baseUrl, {
+      fetch: async (url: RequestInfo, init?: RequestInit) => {
+        const ctx = this.getCtx();
 
-    try {
-      const request = await apiClient.refreshToken(data.token?.refreshToken || null);
-      data.token = request;
-      localStorage.setItem("token", JSON.stringify(data));
-    } catch (e) {
-      console.error(e);
-    }
-  }
-};
+        console.info(this.ctx, "fetch ctx");
 
-const apiClient = new Client(publicConfig.apiUrl, {
-  fetch: async (url, init) => {
+        const token = Token.get(ctx);
 
-    if (false) {
-      await refreshToken();
-    }
-
-    const token = getToken();
-
-    return unfetch(url, {
-      ...init,
-      headers: {
-        ...init?.headers,
-        "Authorization": `Bearer ${token}`
+        return unfetch(url, {
+          ...init,
+          headers: {
+            ...init?.headers,
+            "Authorization": token.authorisationString
+          }
+        });
       }
-    });
+    })
   }
-});
+
+  getCtx = (): NextPageContext | undefined => this.ctx.ctx;
+
+  setCtx = (ctx: NextPageContext) => {
+    console.info("set ctx", ctx);
+    this.ctx = { ctx };
+  };
+}
+
+const apiClient = new MyClient(publicConfig.apiUrl);
 
 export default apiClient;

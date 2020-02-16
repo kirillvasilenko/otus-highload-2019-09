@@ -58,7 +58,7 @@ function LoginForm() {
         name="password"
         error={Boolean(errors.password)}
       />
-      <Button className={classes.submit} fullWidth type={"submit"} color={"primary"} variant={"contained"}>Sign up</Button>
+      <Button className={classes.submit} fullWidth type={"submit"} color={"primary"} variant={"contained"}>Sign In</Button>
       <Grid container>
         <Grid item xs>
           <Link href="#" variant="body2" component={NextComposed}>

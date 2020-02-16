@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import apiClient from "../../api/client";
-import { saveToken } from "../../utils/token";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import { Grid } from "@material-ui/core";
+import { getToken, saveToken } from "../../utils/token";
+import { Grid, TextField, Button } from "@material-ui/core";
+
+import decode from "jwt-decode";
 
 type RegistrationForm = {
   givenName: string;
@@ -13,11 +13,12 @@ type RegistrationForm = {
   repeatedPassword: string;
   city: string;
   familyName: string;
+  age: string;
 };
 
 const registration = async (data: RegistrationForm) => {
   try {
-    const result = await apiClient.registerUser(data);
+    const result = await apiClient.registerUser({...data, age: parseInt(data.age)});
     if (result.token) {
       saveToken(result.token);
     }
@@ -31,6 +32,13 @@ const RegistrationForm = () => {
   const onSubmit = handleSubmit((data) => {
     registration(data);
   });
+
+  useEffect(() => {
+    const token = getToken();
+    if (token?.accessToken) {
+      console.info(decode(token.accessToken));
+    }
+  },[]);
 
   return <form onSubmit={onSubmit}>
     <Grid container spacing={2}>
@@ -62,6 +70,17 @@ const RegistrationForm = () => {
           inputRef={register({ required: true })}
           label="Email"
           name="email"
+          error={Boolean(errors.familyName)}
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <TextField
+          fullWidth
+          type={"number"}
+          autoComplete={"age"}
+          inputRef={register({ required: true })}
+          label="Age"
+          name="age"
           error={Boolean(errors.familyName)}
         />
       </Grid>
