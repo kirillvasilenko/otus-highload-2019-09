@@ -118,11 +118,11 @@ namespace SocialNetwork.AspNet
                     document.Info.Version = Version;
                     document.Info.Title = $"{Program.AppName} API";	
                 };
-                config.OperationProcessors.Add(new OperationProcessor(ctx =>
+                /*config.OperationProcessors.Add(new OperationProcessor(ctx =>
                 {
                     ctx.OperationDescription.Operation.OperationId = ctx.MethodInfo.Name;
                     return true;
-                }));
+                }));*/
             });
         }
         
