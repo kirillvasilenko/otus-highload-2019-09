@@ -1,16 +1,15 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import apiClient from "../../api/client";
-import { saveToken } from "../../utils/token";
+import authClient from "../../api/authClient";
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import { Link } from "@material-ui/core";
 import { NextComposed } from "../../components/link/links";
-import { REGISTRATION_ROUTE } from "../../routes.constants";
-
-// import Link from "../../components/link/links";
+import { INDEX_ROUTE, REGISTRATION_ROUTE } from "../../routes.constants";
+import Router from "next/router";
+import { TokenStorageBrowser } from "../../utils/tokenStorage";
 
 type LoginForm = {
   email: string;
@@ -19,8 +18,9 @@ type LoginForm = {
 
 const login = async ({ email, password }: LoginForm) => {
   try {
-    const result = await apiClient.login(email, password);
-    saveToken(result);
+    const result = await authClient.login(email, password);
+    new TokenStorageBrowser().set(result);
+    await Router.push(INDEX_ROUTE);
   } catch (e) {
   }
 };

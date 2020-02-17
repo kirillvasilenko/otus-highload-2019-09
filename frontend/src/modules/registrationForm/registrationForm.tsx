@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import apiClient from "../../api/client";
-import { getToken, saveToken } from "../../utils/token";
+import registrationClient from "../../api/registrationClient";
 import { Grid, TextField, Button } from "@material-ui/core";
-
-import decode from "jwt-decode";
+import Router from "next/router";
+import { INDEX_ROUTE } from "../../routes.constants";
+import { TokenStorageBrowser } from "../../utils/tokenStorage";
 
 type RegistrationForm = {
   givenName: string;
@@ -18,27 +18,21 @@ type RegistrationForm = {
 
 const registration = async (data: RegistrationForm) => {
   try {
-    const result = await apiClient.registerUser({...data, age: parseInt(data.age)});
+    const result = await registrationClient.registerUser({...data, age: parseInt(data.age)});
     if (result.token) {
-      saveToken(result.token);
+      new TokenStorageBrowser().set(result.token);
+      await Router.push(INDEX_ROUTE);
     }
   } catch (e) {
   }
 };
 
 const RegistrationForm = () => {
-  const { register, handleSubmit, errors, control } = useForm<RegistrationForm>();
+  const { register, handleSubmit, errors } = useForm<RegistrationForm>();
 
   const onSubmit = handleSubmit((data) => {
     registration(data);
   });
-
-  useEffect(() => {
-    const token = getToken();
-    if (token?.accessToken) {
-      console.info(decode(token.accessToken));
-    }
-  },[]);
 
   return <form onSubmit={onSubmit}>
     <Grid container spacing={2}>

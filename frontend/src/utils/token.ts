@@ -1,67 +1,51 @@
 import { TokenDto } from "@kirillamurskiy/socialnetwork-client";
 import fromUnixTime from "date-fns/fromUnixTime";
 import isAfter from "date-fns/isAfter";
-import serverCookie from "next-cookies";
 import { NextPageContext } from "next";
-import jsCookie from "js-cookie";
-import apiClient from "../api/client";
-
-export const TOKEN = "token";
-
-export const saveToken = (token: TokenDto) => {
-  jsCookie.set(TOKEN, JSON.stringify(token));
-};
-
-export const getToken = (): TokenDto | undefined=> {
-  const tokenString = localStorage.getItem(TOKEN);
-  if (tokenString) {
-    return JSON.parse(tokenString) as TokenDto;
-  }
-};
+import { TokenStorage, TokenStorageBrowser, TokenStorageServer } from "./tokenStorage";
 
 export default class Token {
-  token?: TokenDto;
+  private storage: TokenStorage;
 
-  constructor(token?: TokenDto) {
-    this.token = {...token};
+  constructor(storage: TokenStorage) {
+    this.storage = storage;
   }
 
-  get authorisationString() {
-    console.info(this.token);
-    return `Bearer ${this.token?.accessToken}`
+  static makeTokenServer = (ctx: NextPageContext) => {
+    return new Token(new TokenStorageServer(ctx));
   };
 
-  get isExpired() {
-    if (this.token?.accessTokenExpiresIn) {
-      const expireDate = fromUnixTime(this.token.accessTokenExpiresIn);
+  // window нужен для того чтобы случайно не вызвать метод на сервере
+  static makeTokenBrowser = (window: Window) => {
+    return new Token(new TokenStorageBrowser());
+  };
+
+  get authorisationString() {
+    return this.storage.get().accessToken || "";
+  };
+
+  static checkToken = (token?: number) => {
+    if (token) {
+      const expireDate = fromUnixTime(token);
       return isAfter(new Date(), expireDate);
     }
 
     return true;
-  }
-
-  refreshToken = async () => {
-    if (this.token?.refreshTokenExpiresIn && this.token?.refreshToken) {
-      const expireDate = fromUnixTime(this.token.refreshTokenExpiresIn);
-      if (!isAfter(new Date(), expireDate)) {
-        const token = await apiClient.refreshToken(this.token?.refreshToken);
-        this.token = token;
-      }
-    }
   };
 
-  static fromCtx = (ctx: NextPageContext): Token => {
-    const token = serverCookie(ctx)[TOKEN] as TokenDto;
-    return new Token(token);
+  isAccessTokenExpired = () => {
+    return Token.checkToken(this.storage.get().accessTokenExpiresIn);
   };
 
-  static fromBrowser = () => {
-    const token = jsCookie.getJSON(TOKEN);
-    return new Token(token);
+  isRefreshTokenExpired = () => {
+    return Token.checkToken(this.storage.get().refreshTokenExpiresIn);
   };
 
-  static get = (ctx?: NextPageContext): Token => {
-    if (ctx) return Token.fromCtx(ctx);
-    return Token.fromBrowser();
-  }
+  get refreshToken(): string {
+    return this.storage.get().refreshToken || "";
+  };
+
+  update = (token: TokenDto) => {
+    this.storage.set(token);
+  };
 }

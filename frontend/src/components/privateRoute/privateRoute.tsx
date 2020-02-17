@@ -1,21 +1,28 @@
-import ServerCookie from "next-cookies";
 import Router from "next/router";
 import React, { Component } from "react";
-import Token, { TOKEN } from "../../utils/token";
 import { NextPageContext } from "next";
-
+import { LOGIN_ROUTE } from "../../routes.constants";
+import { isServer } from "../../utils/isBrowser";
 
 export function privateRoute(WrappedComponent: any) {
   return class extends Component {
     static async getInitialProps(ctx: NextPageContext) {
-      const token = Token.fromCtx(ctx);
-      if (token.isExpired) {
-        ctx.res?.writeHead(302, {
-          Location: "/login",
-        });
-        ctx.res?.end();
+      if (WrappedComponent.getInitialProps) {
+        try {
+          return await WrappedComponent.getInitialProps(ctx);
+        } catch (e) {
+          console.info(e);
+          if (isServer()) {
+            ctx.res?.writeHead(302, {
+              Location: LOGIN_ROUTE
+            });
+            ctx.res?.end();
+          } else {
+            await Router.push(LOGIN_ROUTE);
+          }
+          return {};
+        }
       }
-      if (WrappedComponent.getInitialProps) return WrappedComponent.getInitialProps(ctx);
       return {};
     }
 
