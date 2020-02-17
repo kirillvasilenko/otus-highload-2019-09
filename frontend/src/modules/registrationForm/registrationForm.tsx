@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
-import registrationClient from "../../api/registrationClient";
 import { Grid, TextField, Button } from "@material-ui/core";
 import Router from "next/router";
 import { INDEX_ROUTE } from "../../routes.constants";
 import { TokenStorageBrowser } from "../../utils/tokenStorage";
+import clientFactory from "../../api/clientFactory";
 
 type RegistrationForm = {
   givenName: string;
@@ -18,7 +18,7 @@ type RegistrationForm = {
 
 const registration = async (data: RegistrationForm) => {
   try {
-    const result = await registrationClient.registerUser({...data, age: parseInt(data.age)});
+    const result = await clientFactory.registration().registerUser({...data, age: parseInt(data.age)});
     if (result.token) {
       new TokenStorageBrowser().set(result.token);
       await Router.push(INDEX_ROUTE);

@@ -14,17 +14,23 @@ export interface TokenStorage {
 export class TokenStorageServer implements TokenStorage {
   _ctx: NextPageContext;
 
+  token?: TokenDto;
+
   constructor(ctx: NextPageContext) {
     this._ctx = ctx;
   }
 
   set = (token: TokenDto) => {
+    this.token = token;
     setCookie(this._ctx, TOKEN, JSON.stringify(token), { path: "/" });
   };
 
   get = () => {
-    const tokenString = parseCookies(this._ctx)[TOKEN];
-    return JSON.parse(tokenString);
+    if (this.token === undefined) {
+      const tokenString = parseCookies(this._ctx)[TOKEN];
+      this.token = JSON.parse(tokenString) as TokenDto;
+    }
+    return this.token;
   };
 
   delete = () => {
