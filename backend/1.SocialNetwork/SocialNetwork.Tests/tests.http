@@ -2,7 +2,7 @@ POST http://ec2-13-53-35-142.eu-north-1.compute.amazonaws.com/api/registration
 Content-Type: application/json
 
 {
-  "email": "user48@example.com",
+  "email": "user65@example.com",
   "password": "string",
   "repeatedPassword": "string",
   "givenName": "Dich",
