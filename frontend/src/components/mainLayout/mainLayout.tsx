@@ -6,7 +6,7 @@ function MainLayout(props: React.PropsWithChildren<any>) {
     <>
       <Navigation />
       <main>{props.children}</main>
-      <footer className={""}></footer>
+      <footer></footer>
     </>
   );
 }

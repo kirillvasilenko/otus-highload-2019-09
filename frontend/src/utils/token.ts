@@ -21,7 +21,7 @@ export default class Token {
   };
 
   get authorisationString() {
-    return this.storage.get().accessToken || "";
+    return this.storage.get()?.accessToken || "";
   };
 
   static checkToken = (token?: number) => {
@@ -33,19 +33,27 @@ export default class Token {
     return true;
   };
 
+  isExist = () => {
+    return this.storage.get() !== undefined;
+  };
+
   isAccessTokenExpired = () => {
-    return Token.checkToken(this.storage.get().accessTokenExpiresIn);
+    return Token.checkToken(this.storage.get()?.accessTokenExpiresIn);
   };
 
   isRefreshTokenExpired = () => {
-    return Token.checkToken(this.storage.get().refreshTokenExpiresIn);
+    return Token.checkToken(this.storage.get()?.refreshTokenExpiresIn);
   };
 
   get refreshToken(): string {
-    return this.storage.get().refreshToken || "";
+    return this.storage.get()?.refreshToken || "";
   };
 
   update = (token: TokenDto) => {
     this.storage.set(token);
   };
+
+  delete = () => {
+    this.storage.delete();
+  }
 }

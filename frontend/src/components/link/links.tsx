@@ -1,9 +1,6 @@
 import React from "react";
 import NextLink from "next/link";
-import MuiLink from "@material-ui/core/Link";
 import { LinkProps as NextLinkProps } from "next/dist/client/link";
-import { LinkBaseProps } from "@material-ui/core/Link/Link";
-
 type NextComposedLink = NextLinkProps & {
   className?: string;
 }
@@ -13,13 +10,7 @@ export const NextComposed = React.forwardRef<HTMLAnchorElement, NextComposedLink
 
   return (
     <NextLink href={href} prefetch={prefetch} as={as}>
-      <a className={className}>{children}</a>
+      <a className={className} ref={ref}>{children}</a>
     </NextLink>
   );
 });
-
-// const Link: React.FC<LinkBaseProps> = ({children, ...other}: React.PropsWithChildren<LinkBaseProps>) => {
-//   return <MuiLink {...other} component={NextComposed}>{children}</MuiLink>;
-// };
-
-// export default Link;

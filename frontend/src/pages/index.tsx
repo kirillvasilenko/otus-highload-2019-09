@@ -1,10 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import MainLayout from "../components/mainLayout/mainLayout";
 import { privateRoute } from "../components/privateRoute/privateRoute";
 import { NextPage } from "next";
 import { UserDto } from "@kirillamurskiy/socialnetwork-client";
-import Link from "next/link";
-import { LOGIN_ROUTE } from "../routes.constants";
 import Token from "../utils/token";
 import clientFactory from "../api/clientFactory";
 
@@ -18,7 +16,6 @@ const Index: NextPage<{ user?: UserDto }> = ({ user }) => {
       <p>{user?.age}</p>
       <p>{user?.city}</p>
       <p>{user?.interests}</p>
-      <Link href={LOGIN_ROUTE}><a>Login page</a></Link>
     </MainLayout>
   );
 };

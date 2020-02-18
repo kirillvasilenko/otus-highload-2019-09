@@ -6,7 +6,7 @@ import { destroyCookie, parseCookies, setCookie } from "nookies";
 export const TOKEN = "token";
 
 export interface TokenStorage {
-  get: () => TokenDto;
+  get: () => TokenDto | undefined;
   set: (token: TokenDto) => void;
   delete: () => void;
 }
@@ -28,7 +28,9 @@ export class TokenStorageServer implements TokenStorage {
   get = () => {
     if (this.token === undefined) {
       const tokenString = parseCookies(this._ctx)[TOKEN];
-      this.token = JSON.parse(tokenString) as TokenDto;
+      if (tokenString) {
+        this.token = JSON.parse(tokenString) as TokenDto;
+      }
     }
     return this.token;
   };
