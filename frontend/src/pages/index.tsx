@@ -13,7 +13,11 @@ const Index: NextPage<{ user?: UserDto }> = ({ user }) => {
 
   return (
     <MainLayout>
-      <h1>{user.email}</h1>
+      <h1>{user?.givenName} {user?.familyName}</h1>
+      <p>{user?.email}</p>
+      <p>{user?.age}</p>
+      <p>{user?.city}</p>
+      <p>{user?.interests}</p>
       <Link href={LOGIN_ROUTE}><a>Login page</a></Link>
     </MainLayout>
   );

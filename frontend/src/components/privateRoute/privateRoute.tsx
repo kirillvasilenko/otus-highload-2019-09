@@ -11,7 +11,6 @@ export function privateRoute(WrappedComponent: any) {
         try {
           return await WrappedComponent.getInitialProps(ctx);
         } catch (e) {
-          console.info(e);
           if (isServer()) {
             ctx.res?.writeHead(302, {
               Location: LOGIN_ROUTE
