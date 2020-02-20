@@ -27,6 +27,7 @@ namespace SocialNetwork.UsersGenerator
 
             var step = 500;
             var count = config.GetValue("Count", 1000);
+            var onlyIfDbEmpty = config.GetValue("OnlyIfDbIsEmpty", true);
             var connectionString = config["ConnectionString"];
 
             var logger = CreateLogger();
@@ -35,6 +36,15 @@ namespace SocialNetwork.UsersGenerator
             await using var connectionController = new DbConnectionControllerMySql(connectionString);
             var repo = new UsersRepoMySql(connectionController, new NullLogger<UsersRepoMySql>());
             await OpenConnection(connectionController);
+
+            if (onlyIfDbEmpty)
+            {
+                var totalCount = await repo.GetUsersCount(new GetUsersQuery());
+                if (totalCount > 0)
+                {
+                    return;
+                }
+            }
             
             for (var idxFrom = 0; idxFrom < count; idxFrom+=step)
             {
