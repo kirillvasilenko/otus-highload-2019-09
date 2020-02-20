@@ -45,7 +45,6 @@ services:
     image: hl/socialnetwork-users-generator
     container_name: socialnetwork-users-generator
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
       - Count=10000
       - ConnectionString=server=${SocialNetworkServer};port=${SocialNetworkPort};database=${SocialNetworkDb};user=${SocialNetworkUser};password=${SocialNetworkUserPassword};
     depends_on:
