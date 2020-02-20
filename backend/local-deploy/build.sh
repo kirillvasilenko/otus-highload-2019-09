@@ -18,6 +18,7 @@ dotnet restore ..
 
 buildService "socialnetwork" "../1.SocialNetwork/SocialNetwork.AspNet"
 buildService "socialnetwork-db-migrator" "../1.SocialNetwork/SocialNetwork.Migrator.MySql"
+buildService "socialnetwork-users-generator" "../1.SocialNetwork/SocialNetwork.UsersGenerator"
 
 
 

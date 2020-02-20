@@ -1,0 +1,16 @@
+﻿{
+  "$schema": "http://json.schemastore.org/launchsettings.json",
+
+  "profiles": {
+
+    "SocialNetwork.UsersGenerator": {
+      "commandName": "Project",
+      "environmentVariables": {
+
+        "Count": "10000",
+        "ConnectionString": "server=localhost;port=3306;database=socialnetwork;user=socialnetwork_app;password=socialnetwork_app" 
+
+      }
+    }
+  }
+}

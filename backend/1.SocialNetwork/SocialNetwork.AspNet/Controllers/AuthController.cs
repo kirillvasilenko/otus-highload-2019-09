@@ -22,6 +22,7 @@ namespace SocialNetwork.AspNet.Controllers
         public AuthController(IAuthService authSvc)
         {
             this.authSvc = authSvc;
+            
         }
         
         /// <summary>

@@ -43,7 +43,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - Auth__UseTestAuth=false
       - ConnectionStrings__SocialNetworkDb=server=${SocialNetworkServer};port=${SocialNetworkPort};database=${SocialNetworkDb};user=${SocialNetworkUser};password=${SocialNetworkUserPassword};
-      - Notification__HostName=rabbitmq
+      - Notification__Provider=InMemory
     restart: unless-stopped
     ports:
       - 5011:80

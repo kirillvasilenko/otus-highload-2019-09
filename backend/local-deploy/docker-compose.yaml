@@ -1,45 +1,57 @@
 version: "3"
 services:
 
-  #nginx:
-  #  image: nginx
-  #  container_name: nginx
-  #  restart: unless-stopped
-  #  volumes:
-  #    - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-  #    - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
-  #  depends_on:
-  #    - socialnetwork
-  #  ports:
-  #    - 5010:80
-  #  networks:
-  #    - socialnetwork
-
-  rabbitmq:
-    image: rabbitmq:3-management
-    container_name: rabbitmq
+  nginx:
+    image: nginx
+    container_name: nginx
     restart: unless-stopped
-    hostname: rabbitmq
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - socialnetwork
     ports:
-      - 15672:15672
-      - 5672:5672
+      - 5010:80
     networks:
       - socialnetwork
-  
-  #socialnetwork:
-  #  image: hl/socialnetwork
-  #  container_name: socialnetwork
-  #  environment:
-  #    - ASPNETCORE_ENVIRONMENT=Development
-  #    - Auth__UseTestAuth=false
-  #    - ConnectionStrings__SocialNetworkDb=server=${SocialNetworkServer};port=${SocialNetworkPort};database=${SocialNetworkDb};user=${SocialNetworkUser};password=${SocialNetworkUserPassword};
+
+  #rabbitmq:
+  #  image: rabbitmq:3-management
+  #  container_name: rabbitmq
   #  restart: unless-stopped
+  #  hostname: rabbitmq
   #  ports:
-  #    - 5011:80
-  #  depends_on:
-  #    - socialnetwork_db_migrator
+  #    - 15672:15672
+  #    - 5672:5672
   #  networks:
   #    - socialnetwork
+  
+  socialnetwork:
+    image: hl/socialnetwork
+    container_name: socialnetwork
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Auth__UseTestAuth=false
+      - ConnectionStrings__SocialNetworkDb=server=${SocialNetworkServer};port=${SocialNetworkPort};database=${SocialNetworkDb};user=${SocialNetworkUser};password=${SocialNetworkUserPassword};
+    restart: unless-stopped
+    ports:
+      - 5011:80
+    depends_on:
+      - socialnetwork_db_migrator
+    networks:
+      - socialnetwork
+
+  socialnetwork_users_generator:
+    image: hl/socialnetwork-users-generator
+    container_name: socialnetwork-users-generator
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Count=10000
+      - ConnectionString=server=${SocialNetworkServer};port=${SocialNetworkPort};database=${SocialNetworkDb};user=${SocialNetworkUser};password=${SocialNetworkUserPassword};
+    depends_on:
+      - socialnetwork_db_migrator
+    networks:
+      - socialnetwork
 
   socialnetwork_db_migrator:
     image: hl/socialnetwork-db-migrator
