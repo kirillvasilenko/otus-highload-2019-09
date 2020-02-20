@@ -7,9 +7,10 @@ import Typography from "@material-ui/core/Typography";
 import Menu from "@material-ui/core/Menu";
 import { IconButton, Link, MenuItem } from "@material-ui/core";
 import { NextComposed } from "../../components/link/links";
-import { LOGOUT_ROUTE } from "../../routes.constants";
+import { LOGIN_ROUTE, LOGOUT_ROUTE, PROFILE_ROUTE } from "../../routes.constants";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import Token from "../../utils/token";
+import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles(theme => ({
   title: {
@@ -17,7 +18,11 @@ const useStyles = makeStyles(theme => ({
   },
   avatar: {
     color: theme.palette.primary.contrastText
-  }
+  },
+  link: {
+    margin: theme.spacing(1, 1.5),
+    color: theme.palette.primary.contrastText
+  },
 }));
 
 function Navigation() {
@@ -54,11 +59,16 @@ function Navigation() {
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
+              <Link component={NextComposed} href={PROFILE_ROUTE}>
+                <MenuItem onClick={handleClose}>Profile</MenuItem>
+              </Link>
               <Link component={NextComposed} href={LOGOUT_ROUTE}>
                 <MenuItem onClick={handleClose}>Logout</MenuItem>
               </Link>
             </Menu>
-          </> : null}
+          </> : <Button href={LOGIN_ROUTE} color="primary" variant="outlined" className={classes.link}>
+            Login
+          </Button>}
       </Toolbar>
     </AppBar>
   );

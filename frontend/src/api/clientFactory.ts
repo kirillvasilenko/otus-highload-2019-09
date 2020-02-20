@@ -1,4 +1,4 @@
-import { AccountClient, AuthClient, RegistrationClient } from "@kirillamurskiy/socialnetwork-client";
+import { AccountClient, AuthClient, RegistrationClient, UsersClient } from "@kirillamurskiy/socialnetwork-client";
 import { getPublicRuntimeConfig } from "../utils/runtimeConfig";
 import unfetch from "isomorphic-unfetch";
 import Token from "../utils/token";
@@ -46,6 +46,12 @@ class ClientFactory {
 
   registration = () => {
     return new RegistrationClient(this.baseUrl, {
+      fetch: unfetch
+    })
+  };
+
+  users = () => {
+    return new UsersClient(this.baseUrl, {
       fetch: unfetch
     })
   };

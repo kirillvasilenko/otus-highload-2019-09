@@ -1,30 +1,80 @@
-import React from "react";
+import React, { FormEvent, useCallback, useState } from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
+import InputBase from "@material-ui/core/InputBase";
+import IconButton from "@material-ui/core/IconButton";
+import SearchIcon from "@material-ui/icons/Search";
 import MainLayout from "../components/mainLayout/mainLayout";
-import { privateRoute } from "../components/privateRoute/privateRoute";
 import { NextPage } from "next";
-import { UserDto } from "@kirillamurskiy/socialnetwork-client";
-import Token from "../utils/token";
 import clientFactory from "../api/clientFactory";
+import { UserDto } from "@kirillamurskiy/socialnetwork-client";
 
-const Index: NextPage<{ user?: UserDto }> = ({ user }) => {
-  if (!user) return null;
+const useStyles = makeStyles(theme => ({
+  root: {
+    padding: "2px 4px",
+    display: "flex",
+    alignItems: "center",
+    width: 400
+  },
+  input: {
+    marginLeft: theme.spacing(1),
+    flex: 1
+  },
+  iconButton: {
+    padding: 10
+  },
+  divider: {
+    height: 28,
+    margin: 4
+  }
+}));
+
+const Index: NextPage = () => {
+  const classes = useStyles();
+  const [value, setValue] = useState<string>("");
+  const [users, setUsers] = useState<UserDto[]>([]);
+  const [pending, setPending] = useState<boolean>(false);
+
+  const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(event.target.value);
+  }, []);
+
+  const handleSearch = useCallback((e) => {
+    e.preventDefault();
+    const fetch = async () => {
+      try {
+        setPending(true);
+        const users = await clientFactory.users().getUsers(value);
+        setUsers(users);
+        setPending(false);
+      } catch (e) {
+        setPending(false);
+        setUsers([]);
+      }
+
+    };
+
+    fetch();
+  }, [value]);
 
   return (
     <MainLayout>
-      <h1>{user?.givenName} {user?.familyName}</h1>
-      <p>{user?.email}</p>
-      <p>{user?.age}</p>
-      <p>{user?.city}</p>
-      <p>{user?.interests}</p>
+      <Paper component="form" className={classes.root}>
+        <InputBase
+          onChange={handleChange}
+          className={classes.input}
+          placeholder="Search users"
+          inputProps={{ "aria-label": "search users" }}
+        />
+        <IconButton type="submit" className={classes.iconButton} aria-label="search" onClick={handleSearch} disabled={pending}>
+          <SearchIcon/>
+        </IconButton>
+      </Paper>
+      {users.map(user => {
+        return <p key={user.id}>{user.givenName} {user.familyName}</p>;
+      })}
     </MainLayout>
   );
 };
 
-Index.getInitialProps = async (ctx) => {
-  const token = Token.makeTokenServer(ctx);
-  const accountClient = clientFactory.makeAccountClient(token);
-  const user = await accountClient.getAccount();
-  return { user };
-};
-
-export default privateRoute(Index);
+export default Index;
