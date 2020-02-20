@@ -11,6 +11,9 @@ env:
 on: 
   push:
     branches: master
+    paths:
+      - "backend/**"
+      - ".github/workflows/backend-ci.yml"
 
 jobs:
   build:
