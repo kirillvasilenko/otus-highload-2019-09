@@ -14,7 +14,7 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:5011/api/users?name=Виктор&city=Москва&minage=20&maxage=40&take=8
+GET http://localhost:5011/api/users?name=Mann+Delia&city=South%20Kaden&take=96
 
 
 

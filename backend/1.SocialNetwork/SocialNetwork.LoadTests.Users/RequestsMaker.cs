@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Encodings.Web;
 using Bogus;
 using Bogus.DataSets;
 using YandexTank.PhantomAmmo;
@@ -21,12 +22,13 @@ namespace SocialNetwork.LoadTests.Users
                 () =>
                 {
                     GetCount++;
-                    var args = new List<string>();
+                    var args = new Dictionary<string,string>();
                     
                     var gender = faker.PickRandom<Name.Gender>();
                     var firstName = faker.Name.FirstName(gender);
                     var lastName = faker.Name.LastName(gender);
                     var city = faker.Address.City();
+                    
                     var minage = r.Next(10, 80);
                     var maxage = r.Next(minage, 81);
                     var (skip, take) = GenerateSkipAndTake();
@@ -34,42 +36,41 @@ namespace SocialNetwork.LoadTests.Users
                     var condition = r.Next(0, 4);
                     if (condition == 0)
                     {
-                        args.Add($"name={lastName}+{firstName}");
+                        args["name"] = $"{lastName} {firstName}";
                     }else if (condition == 1)
                     {
-                        args.Add($"name={lastName}");
+                        args["name"] = $"{lastName}";
                     }
                     else if (condition == 2)
                     {
-                        args.Add($"name={firstName}");
+                        args["name"] = $"{firstName}";
                     }
 
                     condition = r.Next(0, 5);
                     if (condition == 0)
                     {
-                        args.Add($"city={city}");
+                        args["city"] = $"{city}";
                     }
 
                     condition = r.Next(0, 20);
                     if (condition == 0)
                     {
-                        args.Add($"minage={minage}");
+                        args["minage"] = $"{minage}";
                     }
                     else if (condition == 1)
                     {
-                        args.Add($"maxage={maxage}");
+                        args["maxage"] = $"{maxage}";
                     }
                     else if (condition == 2)
                     {
-                        args.Add($"minage={minage}");
-                        args.Add($"maxage={maxage}");
+                        args["minage"] = $"{minage}";
+                        args["maxage"] = $"{maxage}";
                     }
 
-                    args.Add($"take={take}");
-                    
-                    var query = "/api/users?" + string.Join("&", args);
-                    query = query.Replace(" ", "+");
-                    return PhantomAmmoInfo.MakeGet(query);
+                    args["take"] = $"{take}";
+
+                    var url = "/api/users";
+                    return PhantomAmmoInfo.MakeGet(url, args);
                 }
             };
         }
