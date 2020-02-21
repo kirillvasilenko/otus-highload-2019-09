@@ -8,6 +8,8 @@ import MainLayout from "../components/mainLayout/mainLayout";
 import { NextPage } from "next";
 import clientFactory from "../api/clientFactory";
 import { UserDto } from "@kirillamurskiy/socialnetwork-client";
+import Link from "next/link";
+import { createUserAsRoute, USERS_ROUTE } from "../routes.constants";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -66,12 +68,14 @@ const Index: NextPage = () => {
           placeholder="Search users"
           inputProps={{ "aria-label": "search users" }}
         />
-        <IconButton type="submit" className={classes.iconButton} aria-label="search" onClick={handleSearch} disabled={pending}>
+        <IconButton type="submit" className={classes.iconButton} aria-label="search" onClick={handleSearch}
+                    disabled={pending}>
           <SearchIcon/>
         </IconButton>
       </Paper>
       {users.map(user => {
-        return <p key={user.id}>{user.givenName} {user.familyName}</p>;
+        return <Link key={user.id} href={USERS_ROUTE}
+                     as={createUserAsRoute(user.id!.toString())}><a>{user.givenName} {user.familyName}</a></Link>;
       })}
     </MainLayout>
   );
