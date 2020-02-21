@@ -449,28 +449,22 @@ export class UsersClient {
 
     /**
      * Get users count.
-     * @param givenName (optional) 
-     * @param familyName (optional) 
+     * @param name (optional) 
      * @param maxAge (optional) 
      * @param minAge (optional) 
      * @param city (optional) 
-     * @param interests (optional) 
      * @return Users count
      */
-    getUsersCount(givenName?: string | null | undefined, familyName?: string | null | undefined, maxAge?: number | null | undefined, minAge?: number | null | undefined, city?: string | null | undefined, interests?: string | null | undefined): Promise<number> {
+    getUsersCount(name?: string | null | undefined, maxAge?: number | null | undefined, minAge?: number | null | undefined, city?: string | null | undefined): Promise<number> {
         let url_ = this.baseUrl + "/api/users/count?";
-        if (givenName !== undefined)
-            url_ += "GivenName=" + encodeURIComponent("" + givenName) + "&"; 
-        if (familyName !== undefined)
-            url_ += "FamilyName=" + encodeURIComponent("" + familyName) + "&"; 
+        if (name !== undefined)
+            url_ += "Name=" + encodeURIComponent("" + name) + "&"; 
         if (maxAge !== undefined)
             url_ += "MaxAge=" + encodeURIComponent("" + maxAge) + "&"; 
         if (minAge !== undefined)
             url_ += "MinAge=" + encodeURIComponent("" + minAge) + "&"; 
         if (city !== undefined)
             url_ += "City=" + encodeURIComponent("" + city) + "&"; 
-        if (interests !== undefined)
-            url_ += "Interests=" + encodeURIComponent("" + interests) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = <RequestInit>{
@@ -516,30 +510,24 @@ export class UsersClient {
 
     /**
      * Get users.
-     * @param givenName (optional) 
-     * @param familyName (optional) 
+     * @param name (optional) 
      * @param maxAge (optional) 
      * @param minAge (optional) 
      * @param city (optional) 
-     * @param interests (optional) 
      * @param skip (optional) 
      * @param take (optional) 
      * @return Users count
      */
-    getUsers(givenName?: string | null | undefined, familyName?: string | null | undefined, maxAge?: number | null | undefined, minAge?: number | null | undefined, city?: string | null | undefined, interests?: string | null | undefined, skip?: number | undefined, take?: number | undefined): Promise<UserDto[]> {
+    getUsers(name?: string | null | undefined, maxAge?: number | null | undefined, minAge?: number | null | undefined, city?: string | null | undefined, skip?: number | undefined, take?: number | undefined): Promise<UserDto[]> {
         let url_ = this.baseUrl + "/api/users?";
-        if (givenName !== undefined)
-            url_ += "GivenName=" + encodeURIComponent("" + givenName) + "&"; 
-        if (familyName !== undefined)
-            url_ += "FamilyName=" + encodeURIComponent("" + familyName) + "&"; 
+        if (name !== undefined)
+            url_ += "Name=" + encodeURIComponent("" + name) + "&"; 
         if (maxAge !== undefined)
             url_ += "MaxAge=" + encodeURIComponent("" + maxAge) + "&"; 
         if (minAge !== undefined)
             url_ += "MinAge=" + encodeURIComponent("" + minAge) + "&"; 
         if (city !== undefined)
             url_ += "City=" + encodeURIComponent("" + city) + "&"; 
-        if (interests !== undefined)
-            url_ += "Interests=" + encodeURIComponent("" + interests) + "&"; 
         if (skip === null)
             throw new Error("The parameter 'skip' cannot be null.");
         else if (skip !== undefined)

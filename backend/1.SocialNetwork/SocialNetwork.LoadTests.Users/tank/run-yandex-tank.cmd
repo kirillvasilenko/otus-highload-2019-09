@@ -1,0 +1,1 @@
+docker run --name yandex-tank -v %cd%:/var/loadtest -v %userprofile%/.ssh:/root/.ssh -it direvius/yandex-tank

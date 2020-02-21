@@ -6,8 +6,9 @@
     "SocialNetwork.UsersGenerator": {
       "commandName": "Project",
       "environmentVariables": {
-        "OnlyIfDbIsEmpty": "true",
+        "OnlyIfDbIsEmpty": "false",
         "Count": "10000",
+        
         "ConnectionString": "server=localhost;port=3306;database=socialnetwork;user=socialnetwork_app;password=socialnetwork_app" 
 
       }
