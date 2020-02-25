@@ -19,6 +19,9 @@ class MyApp extends App<{ e?: ApiException }> {
       const appProps = await App.getInitialProps(appContext);
       return { ...appProps };
     } catch (e) {
+      if (appContext.ctx.res) {
+        appContext.ctx.res.statusCode = e.status;
+      }
       return { e, pageProps: undefined };
     }
   };
@@ -29,7 +32,7 @@ class MyApp extends App<{ e?: ApiException }> {
     return (
       <ThemeProvider theme={theme}>
         <CssBaseline/>
-        {e ? <Error statusCode={e?.status} /> : <Component {...pageProps} />}
+        {e ? <Error statusCode={e?.status}/> : <Component {...pageProps} />}
       </ThemeProvider>
     );
   }
