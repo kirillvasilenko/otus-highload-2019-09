@@ -64,7 +64,12 @@ namespace SocialNetwork.Repo.MySql
 
         public async Task<IEnumerable<User>> GetUsers(GetUsersQuery queryParams, int skip, int take)
         {
-            return await MakeGetUsersQuery(queryParams)
+            var query = MakeGetUsersQuery(queryParams);
+            if (!string.IsNullOrEmpty(queryParams.Name))
+            {
+                query.OrderByDesc("score");
+            }
+            return await query    
                 .OrderBy("id")
                 .Skip(skip)
                 .Take(take)
@@ -112,22 +117,17 @@ namespace SocialNetwork.Repo.MySql
         
         private Query MakeGetUsersQuery(GetUsersQuery queryParams)
         {
-            var query = Query();
+            var query = Query().Select("*");
             if (queryParams.City.HasValue())
             {
                 query.WhereRaw("lower(city)=?", queryParams.City.ToLower());
             }
-            if (queryParams.FamilyName.HasValue())
+            if (queryParams.Name.HasValue())
             {
-                query.WhereRaw("lower(family_name)=?", queryParams.FamilyName.ToLower());
-            }
-            if (queryParams.GivenName.HasValue())
-            {
-                query.WhereRaw("lower(given_name)=?", queryParams.GivenName.ToLower());
-            }
-            if (queryParams.Interests.HasValue())
-            {
-                query.WhereContains("interests", queryParams.Interests);
+                var name = queryParams.Name.Trim();
+                query.WhereRaw("MATCH(family_name,given_name) AGAINST (?)", name);
+                query.SelectRaw("MATCH (family_name,given_name) AGAINST(?) AS score", name);
+                
             }
             if (queryParams.MinAge.HasValue)
             {

@@ -70,7 +70,7 @@ namespace SocialNetwork.UsersGenerator
                 logger.LogInformation($"{idxTo} have been generated.");
             }
             
-            var admin = new User
+            /*var admin = new User
             {
                 Age = 20,
                 City = "Муха",
@@ -81,7 +81,7 @@ namespace SocialNetwork.UsersGenerator
                 Password = hasher.HashPassword("123"),
                 Interests = "администрирование"
             };
-            await repo.AddUser(admin);
+            await repo.AddUser(admin);*/
         }
 
         private static async Task OpenConnection(IDbConnectionController controller)

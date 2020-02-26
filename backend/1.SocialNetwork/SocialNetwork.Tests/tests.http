@@ -1,19 +1,3 @@
-POST http://ec2-13-53-35-142.eu-north-1.compute.amazonaws.com/api/registration
-Content-Type: application/json
-
-{
-  "email": "user65@example.com",
-  "password": "string",
-  "repeatedPassword": "string",
-  "givenName": "Dich",
-  "familyName": "Tristov",
-  "age": 25,
-  "city": "Vzdrochniy",
-  "interests": "Drinking"
-}
-
-###
-
 POST http://localhost:5011/api/registration
 Content-Type: application/json
 
@@ -30,81 +14,9 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:5010/api/auth/login?email=user8@example.com&password=string
-
-###
-
-POST http://localhost:5010/api/auth/token/refresh?refreshToken=Qm0BIFhOJJzbrmudW1i3XsRSsFEAFALLfyPlnPjX2jg=
-
-###
-
-DELETE http://localhost:5010/api/auth/token
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwibmJmIjoxNTgxMDk0MzAzLCJleHAiOjE1ODEwOTc5MDMsImlzcyI6ImhsLXNvY2lhbG5ldHdvcmsxIiwiYXVkIjoiaGwtc29jaWFsbmV0d29yayJ9.egCJ7Ssla1gNMAv5IMKSY-3v1gnGVq66PFhlHU0EaJ4
-
-###
-
-GET http://localhost:5010/api/users/1
-
-###
-
-GET http://localhost:5010/api/users
-Content-Type: application/json
-
-###
-
-GET http://localhost:5011/api/users?MaxAge
-
-###
-
-GET http://localhost:5010/auth/api/users/1
-
-###
-
-GET http://localhost:5010/api/users/test
+GET http://localhost:5011/api/users?name=Mann+Delia&city=South%20Kaden&take=96
 
 
 
 ###
 
-GET http://localhost:5010/api/backend/api/users/test
-
-###
-
-GET http://localhost:5010/api/backend/api/users/test
-
-###
-
-GET http://localhost:5010/api/users/test
-
-###
-
-POST http://ec2-13-48-105-127.eu-north-1.compute.amazonaws.com/api/auth/register
-Content-Type: application/json
-
-{
-  "email": "user8@example.com",
-  "password": "string",
-  "repeatedPassword": "string",
-  "givenName": "Dich",
-  "familyName": "Tristov",
-  "age": 25,
-  "city": "Vzdrochniy",
-  "interests": "Drinking"
-}
-
-###
-
-PUT http://localhost:5010/api/users/2
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwibmJmIjoxNTgxMDkyMjc0LCJleHAiOjE1ODEwOTU4NzQsImlzcyI6ImhsLXNvY2lhbG5ldHdvcmsxIiwiYXVkIjoiaGwtc29jaWFsbmV0d29yayJ9.5pt59AfP7c90uItzdqItDLpo3STwqc_fIkFVQcGo32Q
-
-{
-  "email": "user6@example.com",
-  "city": "Vzdrochniy1",
-  "givenName": "Dich",
-  "familyName": "Tristov",
-  "interests": "Drinking",
-  "Age": 26
-}
-
-###

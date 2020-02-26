@@ -3,14 +3,9 @@ namespace SocialNetwork.Model
     public class GetUsersQuery
     {
         /// <summary>
-        /// Name
+        /// User's name
         /// </summary>
-        public string GivenName { get; set; }
-        
-        /// <summary>
-        /// Last name
-        /// </summary>
-        public string FamilyName { get; set; }
+        public string Name { get; set; }
         
         /// <summary>
         /// Max age
@@ -27,9 +22,5 @@ namespace SocialNetwork.Model
         /// </summary>
         public string City { get; set; }
         
-        /// <summary>
-        /// Interests
-        /// </summary>
-        public string Interests { get; set; }
     }
 }

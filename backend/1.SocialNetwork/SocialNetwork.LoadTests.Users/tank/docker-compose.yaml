@@ -1,0 +1,9 @@
+version: "3"
+services:
+  
+  yandex-tank:
+    image: direvius/yandex-tank
+    container_name: yandex-tank
+    volumes:
+      - .:/var/loadtest
+      - ~/.ssh:/root/.ssh
