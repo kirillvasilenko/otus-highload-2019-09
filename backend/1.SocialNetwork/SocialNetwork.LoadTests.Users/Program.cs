@@ -13,7 +13,7 @@ namespace SocialNetwork.LoadTests.Users
 
         private const string FileName = "ammo.txt";
         
-        private const int RequestsCount = 100;
+        private const int RequestsCount = 10_000;
         
         static void Main(string[] args)
         {

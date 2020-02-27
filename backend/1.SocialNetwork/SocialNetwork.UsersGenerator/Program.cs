@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Amursoft.PasswordHasher;
@@ -18,6 +19,14 @@ namespace SocialNetwork.UsersGenerator
 
     class Program
     {
+        private static int step;
+        private static int count;
+        private static bool onlyIfDbEmpty;
+        private static string connectionString;
+        private static Pbkdf2PasswordHasher hasher;
+        private static ILogger logger;
+        private static int generated = 0;
+        
         static async Task Main(string[] args)
         {
             IConfigurationRoot config = new ConfigurationBuilder()
@@ -25,14 +34,39 @@ namespace SocialNetwork.UsersGenerator
                 .AddCommandLine(args)
                 .Build();
 
-            var step = 500;
-            var count = config.GetValue("Count", 1000);
-            var onlyIfDbEmpty = config.GetValue("OnlyIfDbIsEmpty", true);
-            var connectionString = config["ConnectionString"];
+            step = 50;
+            count = config.GetValue("Count", 1000);
+            onlyIfDbEmpty = config.GetValue("OnlyIfDbIsEmpty", true);
+            connectionString = config["ConnectionString"];
 
-            var logger = CreateLogger();
-            var hasher = new Pbkdf2PasswordHasher(new Pdkdf2PasswordHasherOptions());
+            logger = CreateLogger();
+            hasher = new Pbkdf2PasswordHasher(new Pdkdf2PasswordHasherOptions());
 
+            var tasks = new List<Task>();
+            for (int i = 0; i < 30; i++)
+            {
+                tasks.Add(Task.Factory.StartNew(Make1));
+            }
+
+            Task.WaitAll(tasks.ToArray());
+
+
+            /*var admin = new User
+            {
+                Age = 20,
+                City = "Муха",
+                Email = "admin@adm.adm",
+                GivenName = "Админ",
+                FamilyName = "Административный",
+                IsActive = true,
+                Password = hasher.HashPassword("123"),
+                Interests = "администрирование"
+            };
+            await repo.AddUser(admin);*/
+        }
+
+        private static async Task Make1()
+        {
             await using var connectionController = new DbConnectionControllerMySql(connectionString);
             var repo = new UsersRepoMySql(connectionController, new NullLogger<UsersRepoMySql>());
             await OpenConnection(connectionController);
@@ -51,7 +85,7 @@ namespace SocialNetwork.UsersGenerator
                 var idxTo = idxFrom + step < count
                     ? idxFrom + step
                     : count;
-                var testUsers = new Faker<User>("ru")
+                var testUsers = new Faker<User>(/*"ru"*/)
                     .RuleFor(u => u.Id, (f, u) => 0)
                     .RuleFor(u => u.GivenName, (f, u) => f.Name.FirstName())
                     .RuleFor(u => u.FamilyName, (f, u) => f.Name.LastName())
@@ -66,22 +100,10 @@ namespace SocialNetwork.UsersGenerator
                 {
                     await repo.AddUser(user);
                 }
-                
-                logger.LogInformation($"{idxTo} have been generated.");
+
+                generated += step;
+                logger.LogInformation($"{generated} have been generated.");
             }
-            
-            /*var admin = new User
-            {
-                Age = 20,
-                City = "Муха",
-                Email = "admin@adm.adm",
-                GivenName = "Админ",
-                FamilyName = "Административный",
-                IsActive = true,
-                Password = hasher.HashPassword("123"),
-                Interests = "администрирование"
-            };
-            await repo.AddUser(admin);*/
         }
 
         private static async Task OpenConnection(IDbConnectionController controller)

@@ -14,6 +14,8 @@ Db/Backup/
 *.userosscache
 *.sln.docstates
 
+.terraform
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 yandex-tank-token.txt

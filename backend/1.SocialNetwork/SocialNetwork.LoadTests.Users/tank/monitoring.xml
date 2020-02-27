@@ -1,5 +1,5 @@
 <Monitoring>
-    <Host address="[target]" interval="1" username="kirill">
+    <Host address="[target]" interval="1" username="ubuntu" comment="service-host">
         <CPU fielddrop='["time_*", "usage_guest_nice"]'></CPU>
         <Kernel fielddrop='["active", "inactive", "total", "used_per*", "avail*"]'></Kernel>
         <Net fielddrop='["icmp*", "ip*", "udplite*", "tcp*", "udp*", "drop*", "err*"]' interfaces='["eth0","eth1","lo"]'></Net>
@@ -8,5 +8,33 @@
         <Disk devices='["vda1","sda1","sda2","sda3"]'></Disk>
         <Netstat />
     </Host>
+    <Host address="ec2-13-53-76-35.eu-north-1.compute.amazonaws.com" interval="1" username="ubuntu" comment="master-db">
+        <CPU fielddrop='["time_*", "usage_guest_nice"]'></CPU>
+        <Kernel fielddrop='["active", "inactive", "total", "used_per*", "avail*"]'></Kernel>
+        <Net fielddrop='["icmp*", "ip*", "udplite*", "tcp*", "udp*", "drop*", "err*"]' interfaces='["eth0","eth1","lo"]'></Net>
+        <System fielddrop='["n_users", "n_cpus", "uptime*"]'></System>
+        <Memory fielddrop='["active", "inactive", "total", "used_per*", "avail*"]'></Memory>
+        <Disk devices='["vda1","sda1","sda2","sda3"]'></Disk>
+        <Netstat />
+    </Host>
+    <Host address="ec2-13-53-182-71.eu-north-1.compute.amazonaws.com" interval="1" username="ubuntu" comment="slave1-db">
+        <CPU fielddrop='["time_*", "usage_guest_nice"]'></CPU>
+        <Kernel fielddrop='["active", "inactive", "total", "used_per*", "avail*"]'></Kernel>
+        <Net fielddrop='["icmp*", "ip*", "udplite*", "tcp*", "udp*", "drop*", "err*"]' interfaces='["eth0","eth1","lo"]'></Net>
+        <System fielddrop='["n_users", "n_cpus", "uptime*"]'></System>
+        <Memory fielddrop='["active", "inactive", "total", "used_per*", "avail*"]'></Memory>
+        <Disk devices='["vda1","sda1","sda2","sda3"]'></Disk>
+        <Netstat />
+    </Host>
+    <Host address="ec2-13-53-35-173.eu-north-1.compute.amazonaws.com" interval="1" username="ubuntu" comment="slave2-db">
+        <CPU fielddrop='["time_*", "usage_guest_nice"]'></CPU>
+        <Kernel fielddrop='["active", "inactive", "total", "used_per*", "avail*"]'></Kernel>
+        <Net fielddrop='["icmp*", "ip*", "udplite*", "tcp*", "udp*", "drop*", "err*"]' interfaces='["eth0","eth1","lo"]'></Net>
+        <System fielddrop='["n_users", "n_cpus", "uptime*"]'></System>
+        <Memory fielddrop='["active", "inactive", "total", "used_per*", "avail*"]'></Memory>
+        <Disk devices='["vda1","sda1","sda2","sda3"]'></Disk>
+        <Netstat />
+    </Host>
+    
 
 </Monitoring>
