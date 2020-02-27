@@ -1,0 +1,24 @@
+MySql commit transaction process:
+1.Prepare the transaction in the storage engine (InnoDB),
+2.Write the transaction to the binary logs,
+3.Complete the transaction in the storage engine,
+4.Return an acknowledgment to the client.
+
+Semi-sync in MySQL 5.5 and 5.6
+Встраивается между 3 и 4 шагом.
+
+Проблемы:
+- После шага 3 все пользователи инстанса могу видеть эту транзакцию, т.к. она уже complete в storage engine.
+Фантомные чтения.
+
+Lossless semi-sync from MySQL 5.7
+Встраивается между 2 и 3 шагом.
+Т.о. фантомные чтения уже не поисходят.
+
+Однако, общие проблемы (для асинхронной, semi-sync и lossless semi-sync):
+1.Мастер падает, после шага 2, и транзакция еще не попала ни в один слейв.
+2.Всю систему востановили, мастером назначили один из бывших слейвов, в системе все ок.
+3.Старый мастер поднимают, чтобы сделать из него слейв. При включении происходит процесс recovery,
+который увидя в бинарном логе выполненную транзакцию, донакатит ее в engine. Т.о. в системе
+появиться slave с лишней транзакцией.
+Recovery так себя ведет потому, что транзакции попавшие в лог (шаг 2) уже могли уехать в какой-нибудь slave.

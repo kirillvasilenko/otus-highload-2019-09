@@ -21,6 +21,7 @@ namespace SocialNetwork.UsersGenerator
     {
         private static int step;
         private static int count;
+        private static int threadsCount;
         private static bool onlyIfDbEmpty;
         private static string connectionString;
         private static Pbkdf2PasswordHasher hasher;
@@ -36,21 +37,27 @@ namespace SocialNetwork.UsersGenerator
 
             step = 50;
             count = config.GetValue("Count", 1000);
+            threadsCount = config.GetValue("ThreadsCount", 10);
             onlyIfDbEmpty = config.GetValue("OnlyIfDbIsEmpty", true);
             connectionString = config["ConnectionString"];
 
             logger = CreateLogger();
             hasher = new Pbkdf2PasswordHasher(new Pdkdf2PasswordHasherOptions());
 
-            var tasks = new List<Task>();
-            for (int i = 0; i < 30; i++)
+            if (!await IsGenerationNeeded())
             {
-                tasks.Add(Task.Factory.StartNew(Make1));
+                return;
+            }
+            
+            var tasks = new List<Task>();
+            for (int i = 0; i < threadsCount; i++)
+            {
+                tasks.Add(Task.Factory.StartNew(GenerateImpl));
             }
 
             Task.WaitAll(tasks.ToArray());
 
-
+            logger.LogInformation($"Total generated users: {generated}");
             /*var admin = new User
             {
                 Age = 20,
@@ -65,21 +72,24 @@ namespace SocialNetwork.UsersGenerator
             await repo.AddUser(admin);*/
         }
 
-        private static async Task Make1()
+        private static async Task<bool> IsGenerationNeeded()
+        {
+            if (!onlyIfDbEmpty) return true;
+            
+            await using var connectionController = new DbConnectionControllerMySql(connectionString);
+            var repo = new UsersRepoMySql(connectionController, new NullLogger<UsersRepoMySql>());
+            await OpenConnection(connectionController);
+            
+            var totalCount = await repo.GetUsersCount(new GetUsersQuery());
+            return totalCount == 0;
+        } 
+
+        private static async Task GenerateImpl()
         {
             await using var connectionController = new DbConnectionControllerMySql(connectionString);
             var repo = new UsersRepoMySql(connectionController, new NullLogger<UsersRepoMySql>());
             await OpenConnection(connectionController);
 
-            if (onlyIfDbEmpty)
-            {
-                var totalCount = await repo.GetUsersCount(new GetUsersQuery());
-                if (totalCount > 0)
-                {
-                    return;
-                }
-            }
-            
             for (var idxFrom = 0; idxFrom < count; idxFrom+=step)
             {
                 var idxTo = idxFrom + step < count
@@ -99,9 +109,9 @@ namespace SocialNetwork.UsersGenerator
                 foreach (var user in users)
                 {
                     await repo.AddUser(user);
+                    Interlocked.Increment(ref generated);
                 }
 
-                generated += step;
                 logger.LogInformation($"{generated} have been generated.");
             }
         }

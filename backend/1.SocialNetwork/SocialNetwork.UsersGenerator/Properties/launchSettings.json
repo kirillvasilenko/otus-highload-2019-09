@@ -8,6 +8,7 @@
       "environmentVariables": {
         "OnlyIfDbIsEmpty": "false",
         "Count": "10000",
+        "ThreadsCount": "10",
         
         "ConnectionString": "server=localhost;port=3306;database=socialnetwork;user=socialnetwork_app;password=socialnetwork_app" 
 
