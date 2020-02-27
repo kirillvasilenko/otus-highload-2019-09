@@ -1,5 +1,5 @@
 import { AccountClient, AuthClient, RegistrationClient, UsersClient } from "@kirillamurskiy/socialnetwork-client";
-import { getPublicRuntimeConfig } from "../utils/runtimeConfig";
+import { getApiUrl } from "../utils/runtimeConfig";
 import unfetch from "isomorphic-unfetch";
 import Token from "../utils/token";
 
@@ -61,6 +61,7 @@ class ClientFactory {
   }
 }
 
-const publicConfig = getPublicRuntimeConfig();
-const clientFactory = new ClientFactory(publicConfig.apiUrl);
+const apiUrl = getApiUrl();
+
+const clientFactory = new ClientFactory(apiUrl);
 export default clientFactory;

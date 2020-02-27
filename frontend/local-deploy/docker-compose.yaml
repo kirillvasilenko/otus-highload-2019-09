@@ -6,6 +6,8 @@ services:
     restart: unless-stopped
     environment:
       NODE_ENV: production
+      API_URL: http://localhost:5010
+      API_SERVER_URL: http://nginx:80
     ports:
       - 3000:3000
     networks:
