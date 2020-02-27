@@ -7,4 +7,4 @@ COPY node_modules app/node_modules
 
 WORKDIR app
 
-ENTRYPOINT ["yarn", "production"]
+ENTRYPOINT ["npm", "run", "production"]

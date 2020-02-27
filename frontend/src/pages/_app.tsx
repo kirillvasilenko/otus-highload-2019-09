@@ -27,8 +27,9 @@ class MyApp extends App<MyAppProps> {
       const appProps = await App.getInitialProps(appContext);
       props = { ...props, ...appProps };
     } catch (e) {
+      console.error(e);
       if (appContext.ctx.res) {
-        appContext.ctx.res.statusCode = e.status;
+        appContext.ctx.res.statusCode = e.status || 500;
       }
       props = { ...props, e, pageProps: undefined };
     }
@@ -52,7 +53,7 @@ class MyApp extends App<MyAppProps> {
       <ThemeProvider theme={theme}>
         <CssBaseline/>
         <UserContext.Provider value={user}>
-        {e ? <Error statusCode={e?.status}/> : <Component {...pageProps} />}
+        {e ? <Error statusCode={e?.status} title={e?.message}/> : <Component {...pageProps} />}
         </UserContext.Provider>
       </ThemeProvider>
     );

@@ -6,9 +6,8 @@ services:
     restart: unless-stopped
     environment:
       NODE_ENV: production
-      API_URL: huj
     ports:
-      - 5020:3000
+      - 3000:3000
     networks:
       - socialnetwork
 

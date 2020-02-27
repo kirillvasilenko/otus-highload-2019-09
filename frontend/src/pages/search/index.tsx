@@ -6,7 +6,7 @@ import MainLayout from "../../components/mainLayout/mainLayout";
 import {
   Container,
   createStyles, InputBase,
-  Theme,
+  Theme
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import SearchString from "../../modules/searchString/searchString";
@@ -39,7 +39,7 @@ const Search: React.FC<{ name: string }> = React.memo(({ name }) => {
   React.useEffect(() => {
     if (ref.current !== undefined) {
       ref.current.focus();
-      ref.current.selectionStart = ref.current.selectionEnd = name.length;
+      ref.current.selectionStart = ref.current.selectionEnd = searchString.length;
     }
   }, [searchString]);
 
@@ -67,8 +67,8 @@ const SearchPage: NextPage<{ users: UserDto[], name: string }> = ({ users, name 
   return (
     <MainLayout>
       <Container maxWidth="sm" className={classes.container}>
-        <Search name={name} />
-        <UserList users={users} />
+        <Search name={name}/>
+        <UserList users={users}/>
       </Container>
     </MainLayout>
   );
