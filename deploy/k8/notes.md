@@ -49,8 +49,4 @@
         imagePullPolicy: IfNotPresent # IfNotPresent or Never
     ...
     ```
-
-Нормально аутентифицироваться в GitHub packeges средствами k8 в kind не получается
-
-
-https://github.com/containerd/containerd/issues/3291
+### 2. Передать в nginx файлы с конфигурацией
