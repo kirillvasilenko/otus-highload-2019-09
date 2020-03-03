@@ -50,3 +50,30 @@
     ...
     ```
 ### 2. Передать в nginx файлы с конфигурацией
+
+1. Создать configMap с нужными файлами.
+    ```
+    kubectl create configmap nginx-config \
+        --from-file=nginx/default.conf \
+        --from-file=nginx/nginx.conf
+    ```
+
+2. Замапить нужные файлы в нужные места в целевом контейнере
+    ```
+    ...
+    containers:
+      - name: nginx
+        image: nginx
+        volumeMounts:
+          - name: nginx-conf
+            mountPath: /etc/nginx/nginx.conf
+            subPath: nginx.conf # key in map
+          - name: nginx-conf
+            mountPath: /etc/nginx/conf.d/default.conf
+            subPath: default.conf # key in map
+    volumes:
+      - name: nginx-conf
+        configMap:
+          name: nginx-config # inside this map several files
+    ...
+    ```
