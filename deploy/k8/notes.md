@@ -77,3 +77,54 @@
           name: nginx-config # inside this map several files
     ...
     ```
+   
+### 3. Заставить nginx нормально работать с k8 dns
+
+1. Нужно использовать dns имена сервисов как переменные, чтобы nginx
+использовал ttl, и нормально переживал изменение ip адресов и
+отстутствие целевых сервисов в сети в момент запуска.\
+В таком режиме работы nginx **не использует** resolv.conf, а значит и не
+читает от туда секцию *search*, а значит dns имена  нужно указыват в
+*FQDN* формате.
+    ```
+    server {                                                     
+        ...
+        location ... {
+            ...
+            # так не заработает
+            set $upstream_backend socialnetwork;
+            
+            # FQDN, так заработает
+            set $upstream_backend socialnetwork.default.svc.cluster.local;
+            
+            proxy_pass http://$upstream_backend;
+            ...
+        }
+        ...
+    }        
+    ```
+2. Нужно явно указать адрес dns сервиса (можно ip, можно dns имя). Т.к. 
+в случае указания dns имен сервисов как переменных, nginx не использует *resolv.conf*
+файл, а значит не читает секцию *nameserver*.
+    ```
+    server {                                                     
+        ...
+        listen 80;
+        
+        # можно FQDN
+        resolver kube-dns.kube-system.svc.cluster.local;     
+                         
+        # можноё достаточное для разрешения в текущем окружении,
+        # например, если текущее namespace для nginx deployment
+        # - default, то достаточно будет вот так
+        resolver kube-dns.kube-system;
+        
+        # вот так уже будет недостаточно, т.к. будет искать в
+        # kube-dns.default... 
+        resolver kube-dns;     
+   
+        location ... {
+        }
+    }
+    ```   
+ 

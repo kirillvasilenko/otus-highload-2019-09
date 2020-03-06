@@ -1,26 +1,29 @@
 apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
 kind: Deployment
 metadata:
-  name: backend
+  name: socialnetwork
   labels:
-    app: backend
+    app: socialnetwork
 spec:
   selector:
     matchLabels:
-      app: backend
+      app: socialnetwork
       tier: backend
   replicas: 1
   template:
     metadata:
       labels:
-        app: backend
+        app: socialnetwork
         tier: backend
     spec:
       containers:
-        - name: backend
+        - name: socialnetwork
           image: docker.pkg.github.com/kirillamurskiy/otus-highload-2019-09/socialnetwork:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: Development
 
   
