@@ -9,5 +9,7 @@ nodes:
     extraPortMappings:
       - containerPort: 31000
         hostPort: 5100
+      - containerPort: 31010
+        hostPort: 5110
   #- role: worker
   #- role: worker
