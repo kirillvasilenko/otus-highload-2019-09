@@ -1,0 +1,44 @@
+apiVersion: batch/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Job
+metadata:
+  name: socialnetwork-db-migrator
+  labels:
+    app: socialnetwork-db-migrator
+spec:
+  backoffLimit: 4
+  template:
+    metadata:
+      labels:
+        app: socialnetwork-db-migrator
+        tier: backend
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: socialnetwork-db-migrator
+          image: docker.pkg.github.com/kirillamurskiy/otus-highload-2019-09/socialnetwork-db-migrator:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: Development
+            - name: SocialNetwork__Server
+              value: mysql8
+            - name: SocialNetwork__Port
+              value: "3306"
+            - name: SocialNetwork__Creator
+              value: root
+            - name: SocialNetwork__CreatorPassword
+              value: admin
+            - name: SocialNetwork__CreatorDb
+              value: mysql
+            - name: SocialNetwork__Migrator
+              value: socialnetwork_migrator
+            - name: SocialNetwork__MigratorPassword
+              value: socialnetwork_migrator
+            - name: SocialNetwork__MigratorDb
+              value: socialnetwork
+            - name: SocialNetwork__CreateDb
+              value: "true"
+            - name: SocialNetwork__ShowPII
+              value: "true"
+
+  

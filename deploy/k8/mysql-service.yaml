@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql8
+  labels:
+    app: mysql8
+    tier: backend
+spec:
+  # comment or delete the following line if you want to use a LoadBalancer
+  type: NodePort
+  # if your cluster supports it, uncomment the following to automatically create
+  # an external load-balanced IP for the frontend service.
+  # type: LoadBalancer
+  ports:
+    - port: 3306
+      targetPort: 3306
+      nodePort: 31010
+  selector:
+    app: mysql8
+    tier: backend
