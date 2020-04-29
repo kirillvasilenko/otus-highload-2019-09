@@ -8,7 +8,7 @@
       "environmentVariables": {
 
         "SocialNetwork__Server": "localhost",
-        "SocialNetwork__Port": "3306",
+        "SocialNetwork__Port": "3307",
 
         "SocialNetwork__Creator": "root",
         "SocialNetwork__CreatorPassword": "admin",

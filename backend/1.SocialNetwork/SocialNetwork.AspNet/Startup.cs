@@ -18,6 +18,7 @@ using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using NSwag.Generation.Processors;
 using SocialNetwork.App.AwsSqs;
+using SocialNetwork.App.GcpPubSub;
 using SocialNetwork.App.InMemory;
 using SocialNetwork.App.RabbitMq;
 using SocialNetwork.Model;
@@ -64,6 +65,10 @@ namespace SocialNetwork.AspNet
             else if (notificationProvider == "Sqs")
             {
                 services.AddSocialNetworkAppSqs(Config.GetSection("Notification:Sqs"));
+            }
+            else if (notificationProvider == "PubSub")
+            {
+                services.AddSocialNetworkAppPubSub(Config.GetSection("Notification:PubSub"));
             }
             else
             {

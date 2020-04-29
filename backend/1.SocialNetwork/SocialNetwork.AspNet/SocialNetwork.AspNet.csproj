@@ -29,6 +29,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\SocialNetwork.App.AwsSqs\SocialNetwork.App.AwsSqs.csproj" />
+      <ProjectReference Include="..\SocialNetwork.App.GcpPubSub\SocialNetwork.App.GcpPubSub.csproj" />
       <ProjectReference Include="..\SocialNetwork.App.InMemory\SocialNetwork.App.InMemory.csproj" />
       <ProjectReference Include="..\SocialNetwork.App.RabbitMq\SocialNetwork.App.RabbitMq.csproj" />
       <ProjectReference Include="..\SocialNetwork.App\SocialNetwork.App.csproj" />

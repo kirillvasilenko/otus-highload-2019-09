@@ -49,7 +49,7 @@ services:
     container_name: socialnetwork-users-generator
     environment:
       - OnlyIfDbIsEmpty=true
-      - Count=10000
+      - Count=10
       - ConnectionString=server=${SocialNetworkServer};port=${SocialNetworkPort};database=${SocialNetworkDb};user=${SocialNetworkUser};password=${SocialNetworkUserPassword};
     depends_on:
       - socialnetwork_db_migrator
