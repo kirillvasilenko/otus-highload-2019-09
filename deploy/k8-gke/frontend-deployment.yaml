@@ -1,0 +1,32 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: frontend
+  labels:
+    app: frontend
+spec:
+  selector:
+    matchLabels:
+      app: frontend
+      tier: frontend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: frontend
+        tier: frontend
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      containers:
+        - name: frontend
+          image: docker.pkg.github.com/kirillamurskiy/otus-highload-2019-09/frontend:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: NODE_ENV
+              value: production
+            - name: API_SERVER_URL
+              value: http://nginx:80
+
+  
